@@ -1,24 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Route} from "react-router-dom";
+import 'bootstrap/dist/js/bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+
+import Connect_LoginContainer from "./Components/Login/LoginContainer";
+import NavContainer from "./Components/Navbar/NavContainer";
+import RegistrationCompose from "./Components/Registration/RegistrationContainer";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <NavContainer/>
+        <div className="container">
+            {/*<button onClick={()=>AuthAPI.Register("Mukesh","Mukesh","Mukesh","Maag@mail.ru","Pa$$w0rd.")}>Register</button>
+            <button onClick={()=>AuthAPI.Token("Maag@mail.ru","Pa$$w0rd.")}>login</button>
+            <button onClick={()=>AuthAPI.AddRole("Maag@mail.ru","Pa$$w0rd.","Administrator")}>Addrole</button>
+            <button onClick={()=>AuthAPI.RefreshToken()}>Refresh</button>
+            <button onClick={()=>AuthAPI.RevokeToken("07qHcBHN3s%2FnyLt7qIw8x%2BVeroBsUAmKvvYexkPKBzg")}>RevokeToken</button>
+            <button onClick={()=>AuthAPI.UserTokens("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdWtlc2gxIiwianRpIjoiNzUzOTMwNDgtNzJlZC00MjA1LTgwYmItOTk4OTk5ZTFmN2FkIiwiZW1haWwiOiJNdWtlc2hAbWFpbC5ydSIsInVpZCI6IjQ3ZDg0NjFhLTU5YTktNGE2My1hOGMxLTJjMjFlZmZmNTEwMyIsInJvbGVzIjoiVXNlciIsImV4cCI6MTYzMjk1MTY2NSwiaXNzIjoiU2VjdXJlQXBpIiwiYXVkIjoiU2VjdXJlQXBpVXNlciJ9.5cipLO3TFHikfmaYagVePLj3e6V2NC59JZxzv3AIo90"
+                ,"96f1617c-fd8e-4377-b242-fb0e2db133c0")}>UserTokens</button>
+            <button onClick={()=>DataAPI.Secured()}>Secured</button>*/}
+
+            <div className={'app-wrapper-content'}>
+                {/*       <Route render={()=><DialogsConainer/>} path="/dialogs"/>
+            <Route render={()=><ProfileContainer/>} path="/profile/:userId?"/>
+            <Route render={()=><UsersContainer/>} path="/users"/>*/}
+                <Route render={()=><Connect_LoginContainer/>} path="/login"/>
+                <Route render={()=><RegistrationCompose/>} path="/registration"/>
+
+            </div>
+        </div>
+
     </div>
   );
 }
