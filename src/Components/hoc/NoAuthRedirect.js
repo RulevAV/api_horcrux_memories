@@ -3,10 +3,10 @@ import React from "react";
 import {connect} from "react-redux";
 
 
-export const WithHomeRedirect = (Component) =>{
+export const NoAuthRedirect = (Component) =>{
     class RedirectComponent extends React.Component {
         render() {
-             if(this.props.isAuthenticated) return <Redirect to={"/"}/>
+             if(!this.props.isAuthenticated) return <Redirect to={"/"}/>
                 return <Component {...this.props}/>
         }
     }

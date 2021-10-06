@@ -1,6 +1,5 @@
-import React from "react";
 import {connect} from "react-redux";
-import {SetUserThunkCreator} from "../../redux/Auth-Reducer";
+import {UserRegisterThunkCreator} from "../../redux/Auth-Reducer";
 import {WithHomeRedirect} from "../hoc/HomeRedirect";
 import {compose} from "redux";
 import Registration from "./Registration";
@@ -8,12 +7,13 @@ import Registration from "./Registration";
 
 let mapStateToProps = (state:any)=>{
     return {
+        isRegister:state.authReducer.Register.isRegister,
     }
 };
 let mapDispatchToProps = (dispatch:any)=>{
     return{
-        SetUser(Email:string,Password:string){
-            dispatch(SetUserThunkCreator(Email,Password));
+        RegisterUser(FirstName:string,LastName:string,Username:string,Email:string,Password:string){
+            dispatch(UserRegisterThunkCreator(FirstName,LastName,Username,Email,Password));
         }
     }
 };

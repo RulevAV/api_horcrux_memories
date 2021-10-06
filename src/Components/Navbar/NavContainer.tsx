@@ -1,18 +1,22 @@
-import React from 'react'
 import {connect} from "react-redux";
 import Navbar from "./Navbar";
-import {LogoutThunkCreator} from "../../redux/Auth-Reducer";
+import { authCookieThunkCreator, LogoutThunkCreator} from "../../redux/Auth-Reducer";
 
 let mapStateToProps = (state:any) => {
     return {
-        isAuthenticated : state.authReducer.isAuthenticated,
+        isAuthenticated : state.authReducer.Auth.isAuthenticated,
+        roles:state.authReducer.Auth.roles,
     }
 }
 let mapDispatchToProps = (dispatch:any)=>{
     return{
         Logout(){
             dispatch(LogoutThunkCreator());
-        }
+        },
+        authCookie(){
+            dispatch(authCookieThunkCreator());
+        },
+
 
     }
 };

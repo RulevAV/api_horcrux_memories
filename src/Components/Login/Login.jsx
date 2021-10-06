@@ -31,16 +31,17 @@ const useValidation = (value,validations)=>{
                 case "isEmail":
                     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     setisEmail(!re.test(String(value).toLowerCase()));
+                    break;
+                default: break;
             }
         }
     },[value])
+
     useEffect(()=>{
         if (isEmpty ||minLengthError||maxLengthError||isEmail) {
-            console.log(false);
             setInputValid(false);
         }
                     else {
-            console.log(true);
             setInputValid(true);
         }
     },[isEmpty,minLengthError,maxLengthError,isEmail]);
@@ -108,7 +109,7 @@ const Login = (props) =>{
                     <span asp-validation-for="RememberMe"></span>
                 </div>
                 <div className="mb-3">
-                    <NavLink className="link-success"  to={"/registration"}>Зарегаться</NavLink>
+                    <NavLink className="link-success" onClick={props.RegisterUser()}  to={"/registration"}>Зарегаться</NavLink>
                     <a className="link-success" href={"https://maagserver/HorcruxMemories/Account/ForgotPassword"}>Забыли пароль?</a>
 
                 </div>

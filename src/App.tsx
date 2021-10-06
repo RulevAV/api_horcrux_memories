@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Route} from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import Connect_LoginContainer from "./Components/Login/LoginContainer";
+import ConnectLoginContainer from "./Components/Login/LoginContainer";
 import NavContainer from "./Components/Navbar/NavContainer";
 import RegistrationCompose from "./Components/Registration/RegistrationContainer";
+import AdminCompose from "./Components/Admin/AdminContainer";
+import HomeCompose from "./Components/Home/HomeContainer";
+
 
 function App() {
+
   return (
     <div className="App">
         <NavContainer/>
@@ -26,8 +31,11 @@ function App() {
                 {/*       <Route render={()=><DialogsConainer/>} path="/dialogs"/>
             <Route render={()=><ProfileContainer/>} path="/profile/:userId?"/>
             <Route render={()=><UsersContainer/>} path="/users"/>*/}
-                <Route render={()=><Connect_LoginContainer/>} path="/login"/>
+                <Route render={()=><ConnectLoginContainer/>} path="/login"/>
                 <Route render={()=><RegistrationCompose/>} path="/registration"/>
+                <Route render={()=><AdminCompose/>} exact path="/Admin"/>
+                <Route render={()=><HomeCompose/>} exact path="/"/>
+
 
             </div>
         </div>
