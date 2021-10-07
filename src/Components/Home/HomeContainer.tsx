@@ -6,6 +6,7 @@ import {
     GetQuestsReturnThunkCreator,
     GetQuestsThunkCreator,
 } from "../../redux/Question-Redux";
+import { SetIdRoot} from "../../redux/Test-Reducer";
 
 
 let mapStateToProps = (state:any)=>{
@@ -26,6 +27,9 @@ let mapDispatchToProps = (dispatch:any)=>{
         GetQuestsPagination(stories:any,Page:number){
             dispatch(GetQuestsPaginationThunkCreator(stories,Page));
         },
+        SetAskTest(IdRoot:string){
+            dispatch(SetIdRoot(IdRoot))
+        }
 
     }
 };

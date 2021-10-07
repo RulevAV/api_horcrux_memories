@@ -120,6 +120,7 @@ export const AuthAPI = {
 }
 
 const url_Question_Portions = ServerHorcruxMemories+"api/Question/Portions/";
+const url_Question_Test = ServerHorcruxMemories+"api/Test/";
 export const DataAPI = {
     Portions : (IdParent, Page, PortionsSize )=>{
         return AuthAPI.IsExistsToken().then(req=>{
@@ -135,6 +136,36 @@ export const DataAPI = {
         });
 
     },
+    TestStart : (IdRoot,nameTest)=>{
+        return AuthAPI.IsExistsToken().then(req=>{
+            let Token=getCookie("Token");
+            return  axios({
+                method: 'GET',
+                url:url_Question_Test,
+                headers: {
+                    'Authorization': `Bearer  ${Token}`,
+                },
+                params: {IdRoot,Type:nameTest}
+            })
+        });
+    },
+    TestNext : (IdRoot,TestHistory,id,isIgnoreTest,nameTest)=>{
+        return AuthAPI.IsExistsToken().then(req=>{
+            let Token=getCookie("Token");
+
+
+            return  axios({
+                method: 'POST',
+                url:url_Question_Test,
+                headers: {
+                    'Authorization': `Bearer  ${Token}`,
+                },
+                params:{Type:nameTest},
+                data: JSON.stringify({IdRoot,TestHistory,id,isIgnoreTest})
+            })
+        });
+    },
+
 }
 
 

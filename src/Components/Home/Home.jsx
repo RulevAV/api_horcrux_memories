@@ -6,13 +6,13 @@ import Pagination from "./Pagination/Pagination";
 const Home = (props) =>{
 
     useEffect(()=>{
-        if(props.isAuthenticated)
+        if(props.isAuthenticated && !props.DependOnParentQuestion.questions)
             props.GetQuests();
     },[props.isAuthenticated]);
 
 
     let Questions = props.DependOnParentQuestion.questions?.map((question)=>{
-            return <Question {...question} GetQuests={props.GetQuests} />
+            return <Question SetAskTest={props.SetAskTest} {...question} GetQuests={props.GetQuests} />
     });
     let P1 = useRef();
     let P2 = useRef();
