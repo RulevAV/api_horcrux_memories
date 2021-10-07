@@ -15,3 +15,43 @@
   grid-area: c;
   /*background-color: dodgerblue;*/
 }
+
+
+
+/*C#*/
+.content-end {
+  display: flex;
+  justify-content: flex-end; }
+
+.Question_img img {
+  width: 100%;
+  min-width: 50px; }
+
+.Question_Ask {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.Mycontainer {
+  position: relative;
+  text-align: center;
+  color: #ff0000; }
+
+.Mytop-right {
+  position: absolute;
+  top: 8px;
+  right: 16px; }
+
+.product-item {
+  position: relative; }
+.product-item-buy {
+  position: absolute;
+  bottom: 0; }
+
+.ckeditor p {
+  margin: 0;
+  padding: 0; }
+
+.Scroll {
+  overflow-x: scroll;
+  overflow-y: hidden; }

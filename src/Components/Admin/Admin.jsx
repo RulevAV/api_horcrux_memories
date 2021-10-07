@@ -17,9 +17,7 @@ const Admin = (props) =>{
     };
 
    let massRow = props.Users.map((u,index)=>{
-        let rolesUI = u.roles?.map((r,ri)=>{
-            return    <div key={ri} className={"link-primary"}>{r}</div>
-        });
+        //let rolesUI = u.roles?.join(" ");
         return <tr key={u.id}>
             <th scope="col">{index+1}</th>
             <th scope="col">{u.email}</th>
@@ -27,10 +25,10 @@ const Admin = (props) =>{
             <th scope="col">{u.userName}</th>
             <th scope="col">{u.email}</th>
             <th scope="col">
-                <div type="button" onClick={()=>{clickRol(u.email,u.roles)}} className="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <div type="button" onClick={()=>{clickRol(u.email,u.roles)}} className={""} data-bs-toggle="modal" data-bs-target="#exampleModal">
                     {
                         u.roles ===null || (u.roles?.length===0) ? <span className={"link-success"}>Добавить роль</span>
-                            : rolesUI
+                            : <span className={"link-primary"}>Смотреть</span>
                     }
                 </div>
             </th>

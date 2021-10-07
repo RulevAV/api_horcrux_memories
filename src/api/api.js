@@ -5,6 +5,10 @@ axios.defaults.headers['Content-Type'] = "application/json;charset=utf-8";
 //const ServerAuth = "https://maagserver/AuthServer/";
 const ServerAuth = "https://localhost:44397/";
 
+const ServerHorcruxMemories = "https://localhost:44370/";
+
+
+
 const url_register = ServerAuth+"api/user/register";
 const url_token = ServerAuth+"api/user/token";
 const url_AddDeleteRoles = ServerAuth+"api/user/add-delete-roles";
@@ -19,14 +23,13 @@ function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 function setResponseCookie(data){
-    var t = new Date();
+    /*var t = new Date();
     t.setHours(t.getHours() + 10);
-    let date = t.toUTCString();
+    let date = t.toUTCString();*/
     let dateToken = data.refreshTokenExpiration;
-    document.cookie = `RefreshToken=${data.refreshToken}; expires=` + date;
+    document.cookie = `RefreshToken=${data.refreshToken}; expires=true`;
     document.cookie = `Token=${data.token}; expires=` + dateToken;
 }
-
 
 export const AuthAPI = {
     Token : (Email,Password) => {
@@ -40,6 +43,13 @@ export const AuthAPI = {
                 return response;
         })
     },
+    Register : (FirstName,LastName,Username,Email,Password) => {
+        return axios({
+            method: 'POST',
+            url:url_register,
+            data: JSON.stringify({FirstName,LastName,Username,Email,Password})
+        })
+    },
     RefreshToken : ()=>{
         let RefreshToken=getCookie("RefreshToken");
         return  axios({
@@ -51,17 +61,19 @@ export const AuthAPI = {
             return response;
         })
     },
-    Register : (FirstName,LastName,Username,Email,Password) => {
-        return  AuthAPI.RefreshToken().then(req=>{
-            return axios({
-                method: 'POST',
-                url:url_register,
-                data: JSON.stringify({FirstName,LastName,Username,Email,Password})
-            })
-        })
+    IsExistsToken:()=>{
+        let promise = new Promise((resolve,reject) => {
+            let Token=getCookie("Token");
+            if(!Token)
+                AuthAPI.RefreshToken().then(resolve());
+            else
+            resolve();
+        });
+        return promise;
     },
+
     AddDeleteRole : (Email,Roles)=>{
-        return  AuthAPI.RefreshToken().then(req=>{
+        return  AuthAPI.IsExistsToken().then(req=>{
             let Token=getCookie("Token");
             return  axios({
                 method: 'POST',
@@ -74,7 +86,7 @@ export const AuthAPI = {
         })
     },
     RevokeToken : ()=>{
-        return AuthAPI.RefreshToken().then(req=>{
+        return AuthAPI.IsExistsToken().then(req=>{
             let RefreshToken=getCookie("RefreshToken");
             return  axios({
                 method: 'POST',
@@ -84,7 +96,7 @@ export const AuthAPI = {
         })
     },
     GetUser:()=>{
-        return AuthAPI.RefreshToken().then(req=>{
+        return AuthAPI.IsExistsToken().then(req=>{
             let Token=getCookie("Token");
             return  axios({
                 method: 'POST',
@@ -107,13 +119,21 @@ export const AuthAPI = {
     },
 }
 
-const url_Secured = "https://localhost:44370/api/Values";
+const url_Question_Portions = ServerHorcruxMemories+"api/Question/Portions/";
 export const DataAPI = {
-    Secured : ()=>{
-        return  axios({
-            method: 'POST',
-            url:url_Secured,
-        })
+    Portions : (IdParent, Page, PortionsSize )=>{
+        return AuthAPI.IsExistsToken().then(req=>{
+            let Token=getCookie("Token");
+            return  axios({
+                method: 'GET',
+                url:url_Question_Portions,
+                headers: {
+                    'Authorization': `Bearer  ${Token}`,
+                },
+                params: {IdParent, Page, PortionsSize}
+            })
+        });
+
     },
 }
 

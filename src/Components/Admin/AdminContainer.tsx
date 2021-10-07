@@ -2,13 +2,13 @@ import {connect} from "react-redux";
 import Admin from "./Admin";
 import {compose} from "redux";
 import {NoAuthRedirect} from "../hoc/NoAuthRedirect";
-import {GetUsersThunkCreator, SetUserRolesThunkCreator} from "../../redux/Auth-Reducer";
+import {GetUsersThunkCreator, SetUserRolesThunkCreator} from "../../redux/Admin-Reducer";
 
 
 let mapStateToProps = (state:any)=>{
     return {
-        Users : state.authReducer.Admin.Users,
-        AllRoles : state.authReducer.Admin.AllRoles,
+        Users : state.AdminReducer.Users,
+        AllRoles : state.AdminReducer.AllRoles,
     }
 };
 let mapDispatchToProps = (dispatch:any)=>{

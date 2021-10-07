@@ -76,7 +76,7 @@ const useInput = (initialValue,validations) =>{
 
 const Login = (props) =>{
 
-    const login = useInput("user@secureapi.com",{minLength:3,maxLength:40,isEmpty:true});
+    const login = useInput("maag@mail.ru",{minLength:3,maxLength:40,isEmpty:true});
     const password = useInput("Pa$$w0rd.",{minLength:6,isEmpty:true});
     const onClick = ()=>{
         props.SetUser(login.value,password.value);
