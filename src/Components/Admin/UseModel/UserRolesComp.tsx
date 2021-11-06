@@ -37,7 +37,7 @@ const UserRolesComp : React.FC<PropsType> = ({UserRoles,IdUser,SelectRoles,SetSe
         balance(mass,AllRoles);
     }
     let RolesModalUI = SelectRoles?.map((name:string, index:number)=>{
-        return <RoleUser name={name} index={index} DeleteRole={DeleteRole}/>
+        return <RoleUser key={index} name={name} index={index} DeleteRole={DeleteRole}/>
     });
     return   <table className="table">
         <thead>

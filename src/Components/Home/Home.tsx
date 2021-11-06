@@ -39,16 +39,18 @@ type PropsType = {
 
 }
 
-const Home :React.FC<PropsType> = ({...props}) =>{
+const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
+                                       stories,SetAskTest,GetQuestsPagination,GetQuestsReturn,GetQuests
+}) =>{
 
     useEffect(()=>{
-        if(props.isAuthenticated && !props.DependOnParentQuestion.questions)
-            props.GetQuests();
-    },[props.isAuthenticated]);
+        if(isAuthenticated && !DependOnParentQuestion.questions)
+            GetQuests();
+    },[isAuthenticated]);
 
 
-    let Questions = props.DependOnParentQuestion.questions?.map((question:QueryType)=>{
-            return <Question SetAskTest={props.SetAskTest} {...question} GetQuests={props.GetQuests} />
+    let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index)=>{
+            return <Question key={index} SetAskTest={SetAskTest} {...question} GetQuests={GetQuests} />
     });
     let P1 = useRef<any>();
     let P2 = useRef<any>();
@@ -62,19 +64,19 @@ const Home :React.FC<PropsType> = ({...props}) =>{
     }
 
     return <div >
-        <h1>{props.DependOnParentQuestion.nameParent}</h1>
+        <h1>{DependOnParentQuestion.nameParent}</h1>
         <div className="row">
             {
-                props.stories.length>1
-                    ?<a className="col-xs-12 col-sm-3 col-md-3 col-lg-2 col-xl-1 btn btn-success" onClick={()=>{props.GetQuestsReturn(props.stories);}}>Вернуться</a>
+                stories.length>1
+                    ?<a className="col-xs-12 col-sm-3 col-md-3 col-lg-2 col-xl-1 btn btn-success" onClick={()=>{GetQuestsReturn(stories);}}>Вернуться</a>
                     :null
             }
 
-            <span className="col-xs-12 col-sm-5 col-md-6 col-lg-8 col-xl-9">Количество элементов {props.DependOnParentQuestion.sizeQuestions}</span>
+            <span className="col-xs-12 col-sm-5 col-md-6 col-lg-8 col-xl-9">Количество элементов {DependOnParentQuestion.sizeQuestions}</span>
         </div>
-        <Pagination GetQuestsPagination={props.GetQuestsPagination} stories={props.stories} Link={P1} sizePage={props.DependOnParentQuestion.sizePage} page={props.DependOnParentQuestion.page}/>
+        <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
         {Questions}
-        <Pagination GetQuestsPagination={props.GetQuestsPagination} stories={props.stories} Link={P2} sizePage={props.DependOnParentQuestion.sizePage} page={props.DependOnParentQuestion.page}/>
+        <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P2} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
     </div>
 }
 

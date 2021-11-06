@@ -7,8 +7,7 @@ import {
     GetQuestsThunkCreator,
 } from "../../redux/Question-Redux";
 import { SetIdRoot} from "../../redux/Test-Reducer";
-import {AppStateType} from "../../redux/redux-store";
-import {WithAuthRedirect} from "../hoc/AuthRedirect";
+import {LoginRedirect} from "../hoc/LoginRedirect";
 
 type storiesType = {
     idParent: string,
@@ -40,7 +39,7 @@ let mapDispatchToProps = (dispatch:any)=>{
 };
 
 let HomeCompose = compose(
-    WithAuthRedirect,
+    LoginRedirect,
     connect(mapStateToProps,mapDispatchToProps)
 )(Home);
 export default HomeCompose;

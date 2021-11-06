@@ -9,7 +9,8 @@ type PropsType = {
 const TableUsers :React.FC<PropsType> = ({Users,idModal,SetIdUser})=>{
     let massRow = Users.map((u:UserType,index:number)=>{
 
-        return <RowTable user={u}
+        return <RowTable key={index}
+                         user={u}
                          index={index}
                          idModal={idModal}
                          SetIdUser={SetIdUser}

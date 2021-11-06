@@ -21,12 +21,12 @@ const Pagination:React.FC<PropsType> = ({sizePage,page,stories,GetQuestsPaginati
     for(let i=1; i<=sizePage; i++)
     {
         if (page === i){
-            mass.push(<li onClick={()=>{GetQuestsPagination(stories,i)}} className="page-item active">
+            mass.push(<li key={i} onClick={()=>{GetQuestsPagination(stories,i)}} className="page-item active">
                 <a className="page-link">{i}</a>
             </li>)
         }
         else {
-            mass.push(<li onClick={()=>{GetQuestsPagination(stories,i)}} className="page-item ">
+            mass.push(<li key={i} onClick={()=>{GetQuestsPagination(stories,i)}} className="page-item ">
                 <a className="page-link">{i}</a>
             </li>)
         }

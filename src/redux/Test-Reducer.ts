@@ -1,47 +1,54 @@
 import {LOG_OUT} from "./Auth-Reducer";
 import {DataAPI} from "../api/api";
+import {QueryType} from "./Question-Redux";
 
-let TEST_START = "TEST_START";
-let SET_ID_ROOT = "SET_ID_ROOT";
-let SET_TEST_HISTOTY="SET_TEST_HISTOTY";
-let TEST_CLEAR = "TEST_CLEAR";
+const TEST_START = "TEST_START";
+const SET_ID_ROOT = "SET_ID_ROOT";
+const SET_TEST_HISTOTY="SET_TEST_HISTOTY";
+const TEST_CLEAR = "TEST_CLEAR";
 
+type AskType = {
+    passedAsk: number
+    question: QueryType|null,
+    sizeAsk: number
+}
 
-let initialState = {
+type initialStateType ={
+    IdRoot:string,
+    Ask:AskType,
+    TestHistory:Array<string>
+}
+
+const initialState:initialStateType = {
     IdRoot:"",
     Ask:{
-        IdParent :"",
-        Name :"",
-        Description :"",
-        Images :"",
-        IsIgnoreTest :"",
-        IsHiddenContentTest :"",
+        passedAsk:0,
+        question:null,
+        sizeAsk:0
     },
     TestHistory:[]
 };
 export const TestReducer = (state=initialState, action : any) => {
     switch (action.type) {
         case TEST_START:{
-           // console.log(action)
             return {
                 ...state,
                 Ask:{
-                    ...action.data,
+                    ...action.Ask,
                 }
-
             };
         }
         case SET_ID_ROOT:{
             return {
                 ...state,
-                IdRoot: action.data,
+                IdRoot: action.IdRoot,
 
             };
         }
         case SET_TEST_HISTOTY:{
             return {
                 ...state,
-                TestHistory: action.data,
+                TestHistory: action.TestHistory,
             };
         }
         case LOG_OUT: {
@@ -55,17 +62,25 @@ export const TestReducer = (state=initialState, action : any) => {
 }
 
 //SET_ID_ROOT
-export let SetIdRoot =(data:any)=>{
+type SetIdRootType = {
+    type :typeof SET_ID_ROOT,
+    IdRoot : string,
+}
+export let SetIdRoot =(IdRoot:string):SetIdRootType=>{
     return {
         type : SET_ID_ROOT,
-        data
+        IdRoot
     }
 }
 //TEST_START
-export let SetAsk =(data:any)=>{
+type SetAskType = {
+    type : typeof TEST_START,
+    Ask:AskType
+}
+export let SetAsk =(Ask:AskType):SetAskType=>{
     return {
         type : TEST_START,
-        data
+        Ask
     }
 }
 export const StartAskThunkCreator = (IdRoot:string,nameTest:string) =>{
@@ -78,15 +93,22 @@ export const StartAskThunkCreator = (IdRoot:string,nameTest:string) =>{
 }
 
 //TEST_NEXT
-export let TestClear =()=>{
+type TestClearType = {
+    type : typeof TEST_CLEAR
+}
+export let TestClear =():TestClearType=>{
     return {
         type : TEST_CLEAR,
     }
 }
-export let SetTestHistory =(data:any)=>{
+type SetTestHistoryType = {
+    type : typeof SET_TEST_HISTOTY,
+    TestHistory:Array<string>
+}
+export let SetTestHistory =(TestHistory:Array<string>):SetTestHistoryType=>{
     return {
         type : SET_TEST_HISTOTY,
-        data
+        TestHistory
     }
 }
 export const NextAskThunkCreator = (IdRoot:string,TestHistory:Array<string>,id:string ,isIgnoreTest:boolean,nameTest:string) =>{

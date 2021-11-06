@@ -11,7 +11,6 @@ type PropsType = {
 }
 
 const Admin :React.FC<PropsType> = ({AllRoles,GetUsers,SetUserRoles,Users}) =>{
-
    useEffect(()=>{
         GetUsers();
     },[]);

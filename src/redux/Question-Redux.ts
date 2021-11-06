@@ -1,15 +1,43 @@
 import {DataAPI} from "../api/api";
 import {LOG_OUT} from "./Auth-Reducer";
-let GET_QUESTS = 'GET_QUESTS';
-let SET_STORE = "SET_STORE";
-let initialState = {
+const GET_QUESTS = 'GET_QUESTS';
+const SET_STORE = "SET_STORE";
+
+export type QueryType = {
+    dateAdd:string,
+    description: null|string,
+    id:string,
+    idParent:string,
+    images:string,
+    isHiddenContentTest: boolean
+    isIgnoreTest: boolean
+    name:string,
+}
+
+type DependOnParentQuestionType = {
+    idParent: string|null,
+    nameParent: string|null,
+    page: number
+    questions: Array<QueryType>|null
+    sizePage: number
+    sizeQuestions: number
+}
+type historyType = {
+    idParent: string,
+    page: number
+}
+type initialStateType = {
+    DependOnParentQuestion:DependOnParentQuestionType,
+    stories:Array<historyType>,
+}
+const initialState:initialStateType = {
     DependOnParentQuestion:{
-        Questions :undefined,
-        SizePage  :0,
-        Page  :0,
-        IdParent  :undefined,
-        NameParent  :undefined,
-        SizeQuestions  :0,
+        nameParent  :null,
+        idParent  :null,
+        page  :0,
+        questions :null,
+        sizePage  :0,
+        sizeQuestions  :0,
     },
     stories:[],
 };
@@ -41,8 +69,11 @@ export const QuestionReducer = (state=initialState, action : any) => {
 
 
 //GET_QUESTS
-export let SetQuests =(data:any)=>{
-
+type SetQuestsType = {
+    type : typeof GET_QUESTS,
+    data : DependOnParentQuestionType
+}
+export let SetQuests =(data:DependOnParentQuestionType):SetQuestsType=>{
     return {
         type : GET_QUESTS,
         data
@@ -59,7 +90,11 @@ export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSi
 }
 
 //SET_STORE
-export let SetStore =(data:any)=>{
+type SetStoreType = {
+    type : typeof SET_STORE,
+    data : historyType
+}
+export let SetStore =(data:historyType):SetStoreType=>{
 
     return {
         type : SET_STORE,
@@ -92,15 +127,4 @@ export const GetQuestsPaginationThunkCreator = (stories:any,Page:number) =>{
             dispatch(SetQuests(response.data))
         })
     }
-
-    /*if(stories.length>0)
-    {}
-    let hist = stories.pop();
-    console.log(stories,Page);*/
-    /*return (dispatch : any) => {
-        dispatch(SetStore(stories));
-        DataAPI.Portions(hist2.idParent,hist2.page).then((response:any)=>{
-            dispatch(SetQuests(response.data))
-        })
-    }*/
 }

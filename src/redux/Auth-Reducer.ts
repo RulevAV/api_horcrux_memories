@@ -1,51 +1,61 @@
 import {AuthAPI} from "../api/api";
 
-let SET_USER_DATA = 'SET_USER_DATE';
-export let LOG_OUT = "LOG_OUT";
-let USER_REGISTER = "USER_REGISTER";
-let initialState = {
+const SET_USER_DATA = 'SET_USER_DATE';
+export const LOG_OUT = "LOG_OUT";
+const USER_REGISTER = "USER_REGISTER";
+
+export type AuthType = {
+    message: string|null,
+    isAuthenticated: boolean,
+    userName: string|null,
+    email: string|null,
+    roles: Array<string>,
+    token: string|null,
+    refreshToken: string|null,
+    refreshTokenExpiration: string|null
+}
+export type Register ={
+    isRegister : boolean,
+    LoginRegistration:string,
+}
+
+const initialState = {
     Auth:{
-        message: undefined,
+        message: null,
         isAuthenticated: false,
-        userName: undefined,
-        email: undefined,
+        userName: null,
+        email: null,
         roles: [],
-        token: undefined,
-        refreshToken: undefined,
-        refreshTokenExpiration: undefined
-    },
+        token: null,
+        refreshToken: null,
+        refreshTokenExpiration: null
+    } as AuthType,
     Register: {
         isRegister : false,
         LoginRegistration:"",
-    },
-    Admin:{
-        Users:[],
-        AllRoles:[]
-    }
-
+    } as Register
 };
-export const authReducer = (state=initialState, action : any) => {
+export type initialStateType = typeof initialState;
+
+export const authReducer = (state=initialState, action : any) :initialStateType=> {
     switch (action.type) {
         case SET_USER_DATA:{
-
             return {
                 ...state,
                 Auth:{
                     ...action.data,
-                }
-
+                },
             };
         }
         case LOG_OUT:{
             return initialState
         }
         case USER_REGISTER:{
-
             return {
                 ...state,
                 Register: {
                     ...state.Register,
-                    isRegister : action.data.isRegister,
+                    isRegister : action.isRegister,
 
                 }
             };
@@ -53,9 +63,17 @@ export const authReducer = (state=initialState, action : any) => {
         default: return state;
     }
 }
+//Api type
+type PromiseApiType ={
+    status:number,
+    data:AuthType
+}
 //SET_USER_DATA
-export let SetUser =(data :any)=>{
-
+type SetUserType = {
+    type : typeof SET_USER_DATA,
+    data: AuthType
+}
+export let SetUser =(data :AuthType) : SetUserType=>{
     return {
         type : SET_USER_DATA,
         data: data
@@ -63,10 +81,11 @@ export let SetUser =(data :any)=>{
 }
 export const SetUserThunkCreator = (Email:string,Password:string) =>{
     return (dispatch : any) => {
-        AuthAPI.Token(Email,Password).then((response:any) =>{
-            if(response.status === 200)
+        AuthAPI.Token(Email,Password).then((response:PromiseApiType) =>{
+            let {status,data} = response;
+            if(status === 200)
             {
-               dispatch(SetUser(response.data));
+               dispatch(SetUser(data));
             }
         });
 
@@ -75,7 +94,7 @@ export const SetUserThunkCreator = (Email:string,Password:string) =>{
 }
 export const authCookieThunkCreator = () =>{
     return (dispatch : any) => {
-        AuthAPI.RefreshToken().then((response:any) =>{
+        AuthAPI.RefreshToken().then((response:PromiseApiType) =>{
             if(response.status === 200)
             {
                 if(response.data.isAuthenticated)
@@ -88,15 +107,15 @@ export const authCookieThunkCreator = () =>{
 }
 
 //USER_REGISTER
-export let UserRegister =(isRegister :boolean,Login:string)=>{
-
+type UserRegisterType = {
+    type : typeof USER_REGISTER,
+    isRegister :boolean
+}
+export let UserRegister =(isRegister :boolean,Login:string):UserRegisterType=>{
     return {
-        type : USER_REGISTER,
-        data: {
-            isRegister,
-            Login
+            type : USER_REGISTER,
+            isRegister :isRegister
         }
-    }
 }
 export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Username:string,Email:string,Password:string) =>{
     return (dispatch : any) => {
@@ -112,8 +131,10 @@ export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Userna
 }
 
 //LOG_OUT
-export let Logout =()=>{
-
+type LogoutType = {
+    type : typeof LOG_OUT,
+}
+export let Logout =():LogoutType=>{
     return {
         type : LOG_OUT,
     }
@@ -125,8 +146,6 @@ export const LogoutThunkCreator = () =>{
         });
     }
 }
-
-
 
 export default authReducer;
 

@@ -2,6 +2,7 @@ import {connect} from "react-redux";
 import Login from "./Login";
 import {SetUserThunkCreator, UserRegister} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
+import {HomeRedirectRedirect} from "../../hoc/HomeRedirect";
 
 
 let mapStateToProps = (state:any)=>{
@@ -21,6 +22,7 @@ let mapDispatchToProps = (dispatch:any)=>{
 };
 
 let Pcompose = compose(
+    HomeRedirectRedirect,
     connect(mapStateToProps,mapDispatchToProps)
 )(Login);
 export default Pcompose;
