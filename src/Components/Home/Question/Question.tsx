@@ -2,7 +2,7 @@ import img from "../../../img/2T5qG95FFcs.jpg";
 import {NavLink} from "react-router-dom";
 import React from "react";
 
-const Question = (props) =>{
+const Question:React.FC<any> = (props) =>{
 
     let image=new Image();
     image.src = img;

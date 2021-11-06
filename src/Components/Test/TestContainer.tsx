@@ -7,7 +7,6 @@ import {
     NextAskThunkCreator,
     StartAskThunkCreator,
 } from "../../redux/Test-Reducer";
-import {TestRedirect} from "../hoc/TestRedirect";
 
 
 let mapStateToProps = (state:any)=>{
@@ -28,7 +27,6 @@ let mapDispatchToProps = (dispatch:any)=>{
 
 
 let TestCompose = compose(
-    TestRedirect,
     connect(mapStateToProps,mapDispatchToProps)
 )(Test);
 

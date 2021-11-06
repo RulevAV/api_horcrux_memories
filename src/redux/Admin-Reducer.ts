@@ -4,8 +4,10 @@ import {LOG_OUT} from "./Auth-Reducer";
 let GET_USER = "GET_USER";
 let SET_USER_ROLES = "SET_USER_ROLES";
 
-
-
+export type InitialStateType = {
+    Users:Array<any>,
+    AllRoles:Array<any>
+}
 
 let initialState = {
     Users:[],
@@ -51,6 +53,13 @@ export let SetUsers =(Users:any,AllRoles:any)=>{
         AllRoles
     }
 }
+
+
+type InitializedSeccessActionType ={
+    type: typeof GET_USER,
+
+}
+
 export const GetUsersThunkCreator = () =>{
     return (dispatch : any) => {
         AuthAPI.GetUser().then((response:any) =>{

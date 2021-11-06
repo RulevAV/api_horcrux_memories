@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
-import {UserRegisterThunkCreator} from "../../redux/Auth-Reducer";
-import {WithHomeRedirect} from "../hoc/HomeRedirect";
+import {UserRegisterThunkCreator} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
 import Registration from "./Registration";
 
@@ -18,7 +17,6 @@ let mapDispatchToProps = (dispatch:any)=>{
     }
 };
 let RegistrationCompose = compose(
-    WithHomeRedirect,
     connect(mapStateToProps,mapDispatchToProps)
 )(Registration);
 export default RegistrationCompose;

@@ -2,9 +2,18 @@ import img from "../../../img/2T5qG95FFcs.jpg";
 import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
 
+type PropsType = {
+    isIgnoreTest:string,
+    isHiddenContentTest:string,
+    images:string,
+    name:string,
+    id:string,
+    QuestionTestFun:any,
+    description:any,
+}
 
-let QuestionTest = (props) =>{
-    let isIgnoreTest = !!props?.isIgnoreTest;
+let QuestionTest:React.FC<PropsType> = ({...props}) =>{
+    let isIgnoreTest = !!props ? props.isIgnoreTest:"";
 
     let [isHidden,SetIsHidden]= useState(!!props?.isHiddenContentTest);
 

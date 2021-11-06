@@ -48,7 +48,7 @@ export let SetQuests =(data:any)=>{
         data
     }
 }
-export const GetQuestsThunkCreator = (IdParent:string, Page:number, PortionsSize?:number) =>{
+export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSize?:number) =>{
 
     return (dispatch : any) => {
         DataAPI.Portions(IdParent, Page, PortionsSize).then((response:any)=>{

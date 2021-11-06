@@ -2,11 +2,11 @@ import * as axios from "axios";
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Content-Type'] = "application/json;charset=utf-8";
 
-//const ServerAuth = "https://maagserver/AuthServer/";
-const ServerAuth = "https://localhost:44397/";
+const ServerAuth = "https://maagserver/AuthServer/";
+//const ServerAuth = "https://localhost:44397/";
 
-const ServerHorcruxMemories = "https://localhost:44370/";
-
+//const ServerHorcruxMemories = "https://localhost:44370/";
+const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
 
 
 const url_register = ServerAuth+"api/user/register";
