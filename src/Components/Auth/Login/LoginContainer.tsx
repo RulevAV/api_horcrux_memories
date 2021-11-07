@@ -3,9 +3,10 @@ import Login from "./Login";
 import {SetUserThunkCreator, UserRegister} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
 import {HomeRedirectRedirect} from "../../hoc/HomeRedirect";
+import {AppStateType} from "../../../redux/redux-store";
 
 
-let mapStateToProps = (state:any)=>{
+let mapStateToProps = (state:AppStateType)=>{
     return {
     }
 };

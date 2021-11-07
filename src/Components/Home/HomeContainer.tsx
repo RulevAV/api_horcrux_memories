@@ -2,16 +2,28 @@ import {connect} from "react-redux";
 import Home from "./Home";
 import {compose} from "redux";
 import {
+    DependOnParentQuestionType,
     GetQuestsPaginationThunkCreator,
     GetQuestsReturnThunkCreator,
-    GetQuestsThunkCreator,
+    GetQuestsThunkCreator, historyType,
 } from "../../redux/Question-Redux";
 import { SetIdRoot} from "../../redux/Test-Reducer";
 import {LoginRedirect} from "../hoc/LoginRedirect";
+import {AppStateType} from "../../redux/redux-store";
 
-type storiesType = {
-    idParent: string,
-    page: number
+export type mapStateToPropsType = {
+    isAuthenticated:boolean,
+    DependOnParentQuestion:DependOnParentQuestionType
+    stories:Array<historyType>
+}
+export type mapDispatchToPropsType = {
+    GetQuests:(IdParent?:string, Page?:number, PortionsSize?:number) => void,
+    GetQuestsReturn:(stories:Array<historyType>)=> void,
+    GetQuestsPagination:(stories:Array<historyType>,Page:number)=> void,
+    SetAskTest:(IdRoot:string)=> void,
+}
+export type ownPropsType = {
+    pageTitle:string
 }
 
 let mapStateToProps = (state:any)=>{
@@ -26,10 +38,10 @@ let mapDispatchToProps = (dispatch:any)=>{
         GetQuests(IdParent?:string, Page?:number, PortionsSize?:number){
             dispatch(GetQuestsThunkCreator(IdParent, Page, PortionsSize));
         },
-        GetQuestsReturn(stories:Array<storiesType>){
+        GetQuestsReturn(stories:Array<historyType>){
             dispatch(GetQuestsReturnThunkCreator(stories));
         },
-        GetQuestsPagination(stories:Array<storiesType>,Page:number){
+        GetQuestsPagination(stories:Array<historyType>,Page:number){
             dispatch(GetQuestsPaginationThunkCreator(stories,Page));
         },
         SetAskTest(IdRoot:string){
@@ -40,6 +52,7 @@ let mapDispatchToProps = (dispatch:any)=>{
 
 let HomeCompose = compose(
     LoginRedirect,
-    connect(mapStateToProps,mapDispatchToProps)
+    //<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState>
+    connect<mapStateToPropsType,mapDispatchToPropsType,ownPropsType,AppStateType>(mapStateToProps,mapDispatchToProps)
 )(Home);
 export default HomeCompose;

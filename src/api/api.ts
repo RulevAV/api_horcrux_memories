@@ -1,4 +1,4 @@
-import * as axios from "axios";
+import axios from "axios";
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Content-Type'] = "application/json;charset=utf-8";
 
@@ -16,23 +16,22 @@ const url_refresh_token = ServerAuth+"api/user/refresh-token";
 const url_revoke_token = ServerAuth+"api/user/revoke-token";
 const url_user_tokens = ServerAuth+"api/user/tokens/";
 const url_GetUsers = ServerAuth+"api/user/GetUsers";
-function getCookie(name) {
+function getCookie(name:string) {
     let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-function setResponseCookie(data){
-    /*var t = new Date();
-    t.setHours(t.getHours() + 10);
-    let date = t.toUTCString();*/
+function setResponseCookie(data :any){
+
+    console.log(data)
     let dateToken = data.refreshTokenExpiration;
     document.cookie = `RefreshToken=${data.refreshToken}; expires=true`;
     document.cookie = `Token=${data.token}; expires=` + dateToken;
 }
 
 export const AuthAPI = {
-    Token : (Email,Password) => {
+    Token : (Email:string,Password:string) => {
         return  axios({
             method: 'POST',
             url:url_token,
@@ -43,7 +42,7 @@ export const AuthAPI = {
                 return response;
         })
     },
-    Register : (FirstName,LastName,Username,Email,Password) => {
+    Register : (FirstName:string,LastName:string,Username:string,Email:string,Password:string) => {
         return axios({
             method: 'POST',
             url:url_register,
@@ -62,7 +61,7 @@ export const AuthAPI = {
         })
     },
     IsExistsToken:()=>{
-        let promise = new Promise((resolve,reject) => {
+        let promise = new Promise((resolve:any,reject) => {
             let Token=getCookie("Token");
             if(!Token)
                 AuthAPI.RefreshToken().then(resolve());
@@ -72,7 +71,7 @@ export const AuthAPI = {
         return promise;
     },
 
-    AddDeleteRole : (Email,Roles)=>{
+    AddDeleteRole : (Email:string,Roles:string[])=>{
         return  AuthAPI.IsExistsToken().then(req=>{
             let Token=getCookie("Token");
             return  axios({
@@ -108,7 +107,7 @@ export const AuthAPI = {
         });
 
     },
-    UserTokens : (Token,id)=>{
+    UserTokens : (Token:string,id:string)=>{
         return  axios({
             method: 'POST',
             url:url_user_tokens+id,
@@ -122,7 +121,7 @@ export const AuthAPI = {
 const url_Question_Portions = ServerHorcruxMemories+"api/Question/Portions/";
 const url_Question_Test = ServerHorcruxMemories+"api/Test/";
 export const DataAPI = {
-    Portions : (IdParent, Page, PortionsSize )=>{
+    Portions : (IdParent?:string, Page?:number, PortionsSize?:number )=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let Token=getCookie("Token");
             return  axios({
@@ -136,7 +135,7 @@ export const DataAPI = {
         });
 
     },
-    TestStart : (IdRoot,nameTest)=>{
+    TestStart : (IdRoot:string,nameTest:string)=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let Token=getCookie("Token");
             return  axios({
@@ -149,7 +148,7 @@ export const DataAPI = {
             })
         });
     },
-    TestNext : (IdRoot,TestHistory,id,isIgnoreTest,nameTest)=>{
+    TestNext : (IdRoot:string,TestHistory:string[],id:string,isIgnoreTest:boolean,nameTest:string)=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let Token=getCookie("Token");
 

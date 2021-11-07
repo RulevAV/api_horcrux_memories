@@ -1,6 +1,7 @@
 import {Redirect} from "react-router-dom";
 import React from "react";
 import {connect} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
 
 
 export const LoginRedirect = (Component:any)=>{
@@ -9,7 +10,7 @@ export const LoginRedirect = (Component:any)=>{
         if(!props.isAuthenticated) return <Redirect to={"/login"}/>
         return <Component {...props}/>
     }
-    let mapStateToPropsForRedirect = (state:any) => {
+    let mapStateToPropsForRedirect = (state:AppStateType) => {
         return {
             isAuthenticated : state.authReducer.Auth.isAuthenticated,
         }

@@ -14,5 +14,6 @@ let reducer = combineReducers({
 type RootReduserType = typeof reducer;
 export type AppStateType = ReturnType<RootReduserType>
 
+
 let store = createStore(reducer,applyMiddleware(thunk));
 export default store;

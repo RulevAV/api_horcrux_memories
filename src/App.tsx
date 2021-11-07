@@ -23,7 +23,7 @@ function App() {
                 <Route render={()=><ConnectLoginContainer/>} path="/login"/>
                 <Route render={()=><RegistrationCompose/>} path="/registration"/>
                 <Route render={()=><AdminCompose/>} exact path="/Admin"/>
-                <Route render={()=><HomeCompose/>} exact path="/"/>
+                <Route render={()=><HomeCompose pageTitle={"Hi"}/>} exact path="/"/>
                 <Route render={()=><WithTestContainer/>} exact path="/Test/:nameTest"/>
             </div>
         </div>

@@ -1,6 +1,8 @@
 import {LOG_OUT} from "./Auth-Reducer";
 import {DataAPI} from "../api/api";
 import {QueryType} from "./Question-Redux";
+import {Dispatch} from "react";
+import {AppStateType} from "./redux-store";
 
 const TEST_START = "TEST_START";
 const SET_ID_ROOT = "SET_ID_ROOT";
@@ -28,7 +30,7 @@ const initialState:initialStateType = {
     },
     TestHistory:[]
 };
-export const TestReducer = (state=initialState, action : any) => {
+export const TestReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
         case TEST_START:{
             return {
@@ -61,6 +63,14 @@ export const TestReducer = (state=initialState, action : any) => {
     }
 }
 
+//AllTypeAction
+type ActionsTypes = SetAskType | SetIdRootType | TestClearType | SetTestHistoryType | ClearState;
+
+//Clear state
+type ClearState = {
+    type : typeof LOG_OUT
+}
+
 //SET_ID_ROOT
 type SetIdRootType = {
     type :typeof SET_ID_ROOT,
@@ -84,7 +94,7 @@ export let SetAsk =(Ask:AskType):SetAskType=>{
     }
 }
 export const StartAskThunkCreator = (IdRoot:string,nameTest:string) =>{
-    return (dispatch : any) => {
+    return (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
         DataAPI.TestStart(IdRoot,nameTest).then((response:any) =>{
             dispatch(SetTestHistory([]));
             dispatch(SetAsk(response.data));
@@ -101,6 +111,8 @@ export let TestClear =():TestClearType=>{
         type : TEST_CLEAR,
     }
 }
+
+//SET_TEST_HISTOTY
 type SetTestHistoryType = {
     type : typeof SET_TEST_HISTOTY,
     TestHistory:Array<string>
@@ -112,7 +124,7 @@ export let SetTestHistory =(TestHistory:Array<string>):SetTestHistoryType=>{
     }
 }
 export const NextAskThunkCreator = (IdRoot:string,TestHistory:Array<string>,id:string ,isIgnoreTest:boolean,nameTest:string) =>{
-    return (dispatch : any) => {
+    return (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
         DataAPI.TestNext(IdRoot,TestHistory,id,isIgnoreTest,nameTest).then((response:any) =>{
             if(!response.data){
                 dispatch(TestClear());

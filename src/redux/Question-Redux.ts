@@ -1,5 +1,7 @@
 import {DataAPI} from "../api/api";
 import {LOG_OUT} from "./Auth-Reducer";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 const GET_QUESTS = 'GET_QUESTS';
 const SET_STORE = "SET_STORE";
 
@@ -14,7 +16,7 @@ export type QueryType = {
     name:string,
 }
 
-type DependOnParentQuestionType = {
+export type DependOnParentQuestionType = {
     idParent: string|null,
     nameParent: string|null,
     page: number
@@ -22,7 +24,7 @@ type DependOnParentQuestionType = {
     sizePage: number
     sizeQuestions: number
 }
-type historyType = {
+export type historyType = {
     idParent: string,
     page: number
 }
@@ -41,7 +43,8 @@ const initialState:initialStateType = {
     },
     stories:[],
 };
-export const QuestionReducer = (state=initialState, action : any) => {
+
+export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
         case GET_QUESTS:
             let history ={
@@ -68,6 +71,15 @@ export const QuestionReducer = (state=initialState, action : any) => {
 }
 
 
+//AllTypeAction
+type ActionsTypes = SetQuestsType | SetStoreType | ClearState;
+
+//Clear state
+type ClearState = {
+    type : typeof LOG_OUT
+}
+
+
 //GET_QUESTS
 type SetQuestsType = {
     type : typeof GET_QUESTS,
@@ -79,9 +91,8 @@ export let SetQuests =(data:DependOnParentQuestionType):SetQuestsType=>{
         data
     }
 }
-export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSize?:number) =>{
-
-    return (dispatch : any) => {
+export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSize?:number) :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
+    return async (dispatch) => {
         DataAPI.Portions(IdParent, Page, PortionsSize).then((response:any)=>{
             dispatch(SetQuests(response.data))
         })
@@ -101,11 +112,11 @@ export let SetStore =(data:historyType):SetStoreType=>{
         data
     }
 }
-export const GetQuestsReturnThunkCreator = (stories:any) =>{
+export const GetQuestsReturnThunkCreator = (stories:any) :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
     let hist = stories.pop();
     let hist2 = stories.pop();
 
-    return (dispatch : any) => {
+    return async (dispatch) => {
         dispatch(SetStore(stories));
         DataAPI.Portions(hist2.idParent,hist2.page).then((response:any)=>{
             dispatch(SetQuests(response.data))
@@ -113,9 +124,9 @@ export const GetQuestsReturnThunkCreator = (stories:any) =>{
     }
 }
 
-export const GetQuestsPaginationThunkCreator = (stories:any,Page:number) =>{
+export const GetQuestsPaginationThunkCreator = (stories:any,Page:number) :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> =>{
 
-    return (dispatch : any) => {
+    return async (dispatch) => {
         let idParent;
         if(stories.length>0)
         {

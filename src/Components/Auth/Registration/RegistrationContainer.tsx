@@ -2,9 +2,10 @@ import {connect} from "react-redux";
 import {UserRegisterThunkCreator} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
 import Registration from "./Registration";
+import {AppStateType} from "../../../redux/redux-store";
 
 
-let mapStateToProps = (state:any)=>{
+let mapStateToProps = (state:AppStateType)=>{
     return {
         isRegister:state.authReducer.Register.isRegister,
     }

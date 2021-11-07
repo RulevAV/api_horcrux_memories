@@ -1,43 +1,14 @@
 import React, {useEffect, useRef} from "react";
 import Question from "./Question/Question";
 import Pagination from "./Pagination/Pagination";
-
-type storiesType = {
-    idParent: string,
-    page: number
-}
-
-type QueryType = {
-    dateAdd:string,
-    description: null|string,
-    id:string,
-    idParent:string,
-    images:string,
-    isHiddenContentTest: boolean
-    isIgnoreTest: boolean
-    name:string,
-}
-
-type storeQuest = {
-    idParent:string,
-    nameParent: string,
-    page: number,
-    questions: Array<QueryType>,
-    sizePage: number,
-    sizeQuestions: number
-}
-
-type PropsType = {
-    isAuthenticated:boolean,
-    DependOnParentQuestion:storeQuest,
-    stories: Array<storiesType>,
-    SetAskTest:(IdRoot:string)=>void,
-    GetQuestsReturn:(stories:Array<storiesType>)=>void,
-    GetQuests:(IdParent?:string, Page?:number, PortionsSize?:number)=>void,
-    GetQuestsPagination:(stories: Array<storiesType>, Page: number) => void,
+import {QueryType} from "../../redux/Question-Redux";
+import {mapDispatchToPropsType, mapStateToPropsType, ownPropsType} from "./HomeContainer";
 
 
-}
+
+type PropsType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType;
+
+
 
 const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
                                        stories,SetAskTest,GetQuestsPagination,GetQuestsReturn,GetQuests

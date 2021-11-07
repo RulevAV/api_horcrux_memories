@@ -1,10 +1,14 @@
 import {AuthAPI} from "../api/api";
 import {LOG_OUT} from "./Auth-Reducer";
+import {AppStateType} from "./redux-store";
+import {Dispatch} from "react";
+import {ThunkAction} from "redux-thunk";
+import * as process from "process";
 
 const GET_USER = "GET_USER";
 const SET_USER_ROLES = "SET_USER_ROLES";
 
-type user = {
+export type user = {
     email: string|null
     firstName: string|null
     id: string|null
@@ -19,7 +23,8 @@ let initialState = {
     AllRoles:[]
 };
 
-export const AdminReducer = (state=initialState, action : any):InitialStateType=> {
+
+export const AdminReducer = (state=initialState, action : ActionsTypes):InitialStateType=> {
     switch (action.type) {
         case GET_USER:{
             return {
@@ -51,6 +56,14 @@ export const AdminReducer = (state=initialState, action : any):InitialStateType=
     }
 }
 
+//AllTypeAction
+type ActionsTypes = SetUsersActionType | SetRolesType | ClearState;
+
+//очистить state
+type ClearState ={ 
+    type: typeof LOG_OUT
+}
+
 //GET_USER
 type SetUsersActionType ={
     type: typeof GET_USER,
@@ -61,7 +74,7 @@ export const SetUsers =(Users:Array<user>,AllRoles:Array<string>) :SetUsersActio
  return {type : GET_USER, Users,AllRoles }
 }
 export const GetUsersThunkCreator = () =>{
-    return (dispatch : any) => {
+    return (dispatch : Dispatch<ActionsTypes>,getState:()=>AppStateType) => {
         AuthAPI.GetUser().then((response:any) =>{
             dispatch(SetUsers(response.data.users,response.data.allRoles));
         });
@@ -83,8 +96,8 @@ export let SetRoles =(Email:string,Roles:Array<string>) :SetRolesType=>{
         Roles
     }
 }
-export const SetUserRolesThunkCreator = (Email:string,Roles:Array<string>) =>{
-    return (dispatch : any) => {
+export const SetUserRolesThunkCreator = (Email:string,Roles:Array<string>) : ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
+    return async (dispatch ) => {
         AuthAPI.AddDeleteRole(Email,Roles).then((response:any) =>{
             dispatch(SetRoles(Email,Roles));
         });
