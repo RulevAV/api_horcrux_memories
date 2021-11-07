@@ -14,6 +14,10 @@ let reducer = combineReducers({
 type RootReduserType = typeof reducer;
 export type AppStateType = ReturnType<RootReduserType>
 
+type PropertiesTypes<T> = T extends {[key:string] : infer U}  ? U : never;
+
+export type InfoActionsTpes<T extends {[key:string] : (...arg:any[])=>any} > = ReturnType<PropertiesTypes<T>>;
+
 
 let store = createStore(reducer,applyMiddleware(thunk));
 export default store;

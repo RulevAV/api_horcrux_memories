@@ -1,10 +1,8 @@
 import {AuthAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
+import {AppStateType, InfoActionsTpes} from "./redux-store";
 
-const SET_USER_DATA = 'SET_USER_DATE';
 export const LOG_OUT = "LOG_OUT";
-const USER_REGISTER = "USER_REGISTER";
 
 export type AuthType = {
     message: string|null,
@@ -41,8 +39,7 @@ export type initialStateType = typeof initialState;
 
 export const authReducer = (state=initialState, action : ActionsTypes) :initialStateType=> {
     switch (action.type) {
-        case SET_USER_DATA:{
-
+        case "SET_USER_DATA":{
             return {
                 ...state,
                 Auth:{
@@ -53,7 +50,7 @@ export const authReducer = (state=initialState, action : ActionsTypes) :initialS
         case LOG_OUT:{
             return initialState
         }
-        case USER_REGISTER:{
+        case "USER_REGISTER":{
             return {
                 ...state,
                 Register: {
@@ -73,26 +70,22 @@ type PromiseApiType ={
     data:AuthType
 }
 //AllTypeAction
-type ActionsTypes = SetUserType | UserRegisterType | LogoutType;
+type ActionsTypes = InfoActionsTpes<typeof AuthActions>;
+
+export const AuthActions = {
+    SetUser :(data :AuthType)=>({type : "SET_USER_DATA", data: data } as const),
+    UserRegister :(isRegister :boolean,Login:string)=>({type : "USER_REGISTER",isRegister :isRegister}as const),
+    Logout :()=>({type : LOG_OUT} as const)
+}
 
 //SET_USER_DATA
-type SetUserType = {
-    type : typeof SET_USER_DATA,
-    data: AuthType
-}
-export let SetUser =(data :AuthType) : SetUserType=>{
-    return {
-        type : SET_USER_DATA,
-        data: data
-    }
-}
 export const SetUserThunkCreator = (Email:string,Password:string) =>{
     return (dispatch : any) => {
         AuthAPI.Token(Email,Password).then((response:PromiseApiType) =>{
             let {status,data} = response;
             if(status === 200)
             {
-               dispatch(SetUser(data));
+               dispatch(AuthActions.SetUser(data));
             }
         });
 
@@ -105,7 +98,7 @@ export const authCookieThunkCreator = () :ThunkAction<Promise<void>, AppStateTyp
             if(response.status === 200)
             {
                 if(response.data.isAuthenticated)
-                    dispatch(SetUser(response.data));
+                    dispatch(AuthActions.SetUser(response.data));
             }
         });
 
@@ -114,22 +107,12 @@ export const authCookieThunkCreator = () :ThunkAction<Promise<void>, AppStateTyp
 }
 
 //USER_REGISTER
-type UserRegisterType = {
-    type : typeof USER_REGISTER,
-    isRegister :boolean
-}
-export let UserRegister =(isRegister :boolean,Login:string):UserRegisterType=>{
-    return {
-            type : USER_REGISTER,
-            isRegister :isRegister
-        }
-}
 export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Username:string,Email:string,Password:string) :ThunkAction<Promise<void>, ActionsTypes, unknown, ActionsTypes> =>{
     return async (dispatch ) => {
         AuthAPI.Register(FirstName,LastName,Username,Email,Password).then((response:any) =>{
             if(response.status === 200)
             {
-                dispatch(UserRegister(true,Username));
+                dispatch(AuthActions.UserRegister(true,Username));
             }
         });
 
@@ -138,18 +121,10 @@ export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Userna
 }
 
 //LOG_OUT
-type LogoutType = {
-    type : typeof LOG_OUT,
-}
-export let Logout =():LogoutType=>{
-    return {
-        type : LOG_OUT,
-    }
-}
 export const LogoutThunkCreator = ()  :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
     return async (dispatch ) => {
         AuthAPI.RevokeToken().then((response:any) =>{
-            dispatch(Logout());
+            dispatch(AuthActions.Logout());
         });
     }
 }

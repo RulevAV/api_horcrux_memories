@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Login from "./Login";
-import {SetUserThunkCreator, UserRegister} from "../../../redux/Auth-Reducer";
+import {SetUserThunkCreator, AuthActions} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
 import {HomeRedirectRedirect} from "../../hoc/HomeRedirect";
 import {AppStateType} from "../../../redux/redux-store";
@@ -17,7 +17,7 @@ let mapDispatchToProps = (dispatch:any)=>{
             dispatch(SetUserThunkCreator(Email,Password));
         },
         RegisterUser(){
-            dispatch(UserRegister(false,""));
+            dispatch(AuthActions.UserRegister(false,""));
         }
     }
 };

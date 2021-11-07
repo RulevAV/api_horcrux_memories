@@ -7,7 +7,7 @@ import {
     GetQuestsReturnThunkCreator,
     GetQuestsThunkCreator, historyType,
 } from "../../redux/Question-Redux";
-import { SetIdRoot} from "../../redux/Test-Reducer";
+import { TestActions} from "../../redux/Test-Reducer";
 import {LoginRedirect} from "../hoc/LoginRedirect";
 import {AppStateType} from "../../redux/redux-store";
 
@@ -45,7 +45,7 @@ let mapDispatchToProps = (dispatch:any)=>{
             dispatch(GetQuestsPaginationThunkCreator(stories,Page));
         },
         SetAskTest(IdRoot:string){
-            dispatch(SetIdRoot(IdRoot))
+            dispatch(TestActions.SetIdRoot(IdRoot))
         }
     }
 };
