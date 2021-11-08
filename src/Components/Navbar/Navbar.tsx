@@ -1,14 +1,18 @@
 import React, {useState} from 'react'
 import {NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 type PropsType = {
     Logout: ()=>void,
     authCookie: ()=>void,
-    isAuthenticated: boolean
     roles:Array<string>
 }
 
 const Navbar:React.FC<PropsType> = ({...props}) =>{
+    const isAuthenticated = useSelector((state:any) =>{
+        return state.authReducer.Auth.isAuthenticated;
+    })
+
     useState(()=>{
         props.authCookie();
     });
@@ -35,7 +39,7 @@ const Navbar:React.FC<PropsType> = ({...props}) =>{
                     }
                 </ul>
 
-                {!props.isAuthenticated
+                {!isAuthenticated
                     ?<NavLink className="btn btn-outline-light" to={'/login'} > Войти</NavLink>
                     :<button onClick={props.Logout} className="btn btn-outline-light"> Выйти</button>
 

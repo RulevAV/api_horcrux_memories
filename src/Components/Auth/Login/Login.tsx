@@ -4,20 +4,22 @@ import  {useInput} from "../UseValidator";
 
 type PropsType = {
     SetUser:(Email:string,Password:string)=>void,
-    RegisterUser:()=>void
+    RegisterUser:()=>void,
+    title:string
 }
 
-const Login:React.FC<PropsType> = ({SetUser, RegisterUser}) =>{
+const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
 
     const login = useInput("maag@mail.ru",{minLength:3,maxLength:40,isEmpty:true});
     const password = useInput("Pa$$w0rd.",{minLength:6,isEmpty:true});
     const onClick = ()=>{
         SetUser(login.value,password.value);
     }
+
     return <div>
         <div className="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 col-xxl-2">
             <div className="div-box" >
-                <h1>Вход в личный кабинет</h1>
+                <h1>{title}</h1>
 
                 <div className="mb-3">
                     <label className="form-label" >Логин</label>

@@ -5,7 +5,6 @@ import {AppStateType} from "../../redux/redux-store";
 
 let mapStateToProps = (state:AppStateType) => {
     return {
-        isAuthenticated : state.authReducer.Auth.isAuthenticated,
         roles:state.authReducer.Auth.roles,
     }
 }

@@ -1,6 +1,5 @@
-import {AuthAPI} from "../api/api";
-import {ThunkAction} from "redux-thunk";
-import {AppStateType, InfoActionsTpes} from "./redux-store";
+import {AuthAPI} from "../api/API_AuthServer";
+import {InfoActionsTypes, ThunkActionType} from "./redux-store";
 
 export const LOG_OUT = "LOG_OUT";
 
@@ -18,6 +17,8 @@ export type Register ={
     isRegister : boolean,
     LoginRegistration:string,
 }
+
+type ThankType = ThunkActionType<ActionsTypes,Promise<void>>;
 
 const initialState = {
     Auth:{
@@ -70,7 +71,7 @@ type PromiseApiType ={
     data:AuthType
 }
 //AllTypeAction
-type ActionsTypes = InfoActionsTpes<typeof AuthActions>;
+type ActionsTypes = InfoActionsTypes<typeof AuthActions>;
 
 export const AuthActions = {
     SetUser :(data :AuthType)=>({type : "SET_USER_DATA", data: data } as const),
@@ -79,8 +80,8 @@ export const AuthActions = {
 }
 
 //SET_USER_DATA
-export const SetUserThunkCreator = (Email:string,Password:string) =>{
-    return (dispatch : any) => {
+export const SetUserThunkCreator = (Email:string,Password:string) :ThankType=>{
+    return async (dispatch ) => {
         AuthAPI.Token(Email,Password).then((response:PromiseApiType) =>{
             let {status,data} = response;
             if(status === 200)
@@ -92,7 +93,7 @@ export const SetUserThunkCreator = (Email:string,Password:string) =>{
 
     }
 }
-export const authCookieThunkCreator = () :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> =>{
+export const authCookieThunkCreator = () :ThankType =>{
     return async (dispatch ) => {
         AuthAPI.RefreshToken().then((response:PromiseApiType) =>{
             if(response.status === 200)
@@ -107,7 +108,7 @@ export const authCookieThunkCreator = () :ThunkAction<Promise<void>, AppStateTyp
 }
 
 //USER_REGISTER
-export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Username:string,Email:string,Password:string) :ThunkAction<Promise<void>, ActionsTypes, unknown, ActionsTypes> =>{
+export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Username:string,Email:string,Password:string) :ThankType =>{
     return async (dispatch ) => {
         AuthAPI.Register(FirstName,LastName,Username,Email,Password).then((response:any) =>{
             if(response.status === 200)
@@ -121,7 +122,7 @@ export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Userna
 }
 
 //LOG_OUT
-export const LogoutThunkCreator = ()  :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
+export const LogoutThunkCreator = ()  :ThankType  =>{
     return async (dispatch ) => {
         AuthAPI.RevokeToken().then((response:any) =>{
             dispatch(AuthActions.Logout());

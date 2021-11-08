@@ -1,6 +1,6 @@
-import {AuthAPI} from "../api/api";
+import {AuthAPI} from "../api/API_AuthServer";
 import {LOG_OUT} from "./Auth-Reducer";
-import {AppStateType, InfoActionsTpes} from "./redux-store";
+import {AppStateType, InfoActionsTypes} from "./redux-store";
 import {Dispatch} from "react";
 import {ThunkAction} from "redux-thunk";
 
@@ -53,7 +53,7 @@ export const AdminReducer = (state=initialState, action : ActionsTypes):InitialS
 }
 
 //AllTypeAction
-type ActionsTypes = InfoActionsTpes<typeof actions>;
+type ActionsTypes = InfoActionsTypes<typeof actions>;
 export const actions = {
     SetUsers: (Users: Array<user>, AllRoles: Array<string>) => ({type: "ADMIN_GET_USER", Users, AllRoles} as const),
     SetRoles: (Email: string, Roles: Array<string>) => ({type: "ADMIN_SET_USER_ROLES", Email, Roles} as const),

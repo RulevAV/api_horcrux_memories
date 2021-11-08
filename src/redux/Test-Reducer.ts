@@ -1,8 +1,8 @@
 import {LOG_OUT} from "./Auth-Reducer";
-import {DataAPI} from "../api/api";
 import {QueryType} from "./Question-Redux";
 import {Dispatch} from "react";
-import {AppStateType, InfoActionsTpes} from "./redux-store";
+import {AppStateType, InfoActionsTypes} from "./redux-store";
+import {DataAPI} from "../api/API_HorcruxMemories";
 
 type AskType = {
     passedAsk: number
@@ -57,7 +57,7 @@ export const TestReducer = (state=initialState, action : ActionsTypes) => {
     }
 }
 //AllTypeAction
-type ActionsTypes = InfoActionsTpes<typeof TestActions>;
+type ActionsTypes = InfoActionsTypes<typeof TestActions>;
 
 export const TestActions = {
     SetIdRoot :(IdRoot:string)=>({type : "SET_ID_ROOT",IdRoot} as const),

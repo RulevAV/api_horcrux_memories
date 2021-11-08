@@ -1,7 +1,6 @@
-import {DataAPI} from "../api/api";
 import {LOG_OUT} from "./Auth-Reducer";
-import {ThunkAction} from "redux-thunk";
-import {AppStateType, InfoActionsTpes} from "./redux-store";
+import {InfoActionsTypes, ThunkActionType} from "./redux-store";
+import {DataAPI} from "../api/API_HorcruxMemories";
 
 export type QueryType = {
     dateAdd:string,
@@ -26,6 +25,8 @@ export type historyType = {
     idParent: string,
     page: number
 }
+
+type ThankType = ThunkActionType<ActionsTypes,Promise<void>>;
 type initialStateType = {
     DependOnParentQuestion:DependOnParentQuestionType,
     stories:Array<historyType>,
@@ -41,6 +42,7 @@ const initialState:initialStateType = {
     },
     stories:[],
 };
+
 
 export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
@@ -70,7 +72,7 @@ export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
 
 
 //AllTypeAction
-type ActionsTypes = InfoActionsTpes<typeof QuestionAction>;
+type ActionsTypes = InfoActionsTypes<typeof QuestionAction>;
 
 export const QuestionAction = {
     SetQuests :(data:DependOnParentQuestionType)=>({type : "GET_QUESTS",data }as const),
@@ -79,7 +81,7 @@ export const QuestionAction = {
 }
 
 //GET_QUESTS
-export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSize?:number) :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
+export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSize?:number) : ThankType =>{
     return async (dispatch) => {
         DataAPI.Portions(IdParent, Page, PortionsSize).then((response:any)=>{
             dispatch(QuestionAction.SetQuests(response.data))
@@ -87,8 +89,9 @@ export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSi
 
     }
 }
+
 //SET_STORE
-export const GetQuestsReturnThunkCreator = (stories:any) :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
+export const GetQuestsReturnThunkCreator = (stories:any)  :ThankType =>{
     let hist = stories.pop();
     let hist2 = stories.pop();
     return async (dispatch) => {
@@ -98,7 +101,7 @@ export const GetQuestsReturnThunkCreator = (stories:any) :ThunkAction<Promise<vo
         })
     }
 }
-export const GetQuestsPaginationThunkCreator = (stories:any,Page:number) :ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> =>{
+export const GetQuestsPaginationThunkCreator = (stories:any,Page:number)  :ThankType  =>{
     return async (dispatch) => {
         let idParent;
         if(stories.length>0)

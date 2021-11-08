@@ -11,16 +11,17 @@ import RegistrationCompose from "./Components/Auth/Registration/RegistrationCont
 import AdminCompose from "./Components/Admin/AdminContainer";
 import HomeCompose from "./Components/Home/HomeContainer";
 import WithTestContainer from "./Components/Test/TestContainer";
+import {WithHomeRedirect} from "./Components/hoc/HomeRedirect";
 
+let Login = WithHomeRedirect(ConnectLoginContainer);
 
-function App() {
-
+const App : React.FC= () => {
   return (
     <div className="App">
         <NavContainer/>
         <div className="container">
             <div className={'app-wrapper-content'}>
-                <Route render={()=><ConnectLoginContainer/>} path="/login"/>
+                <Route render={()=><Login title={"Вход в аккаунт"} />} path="/login"/>
                 <Route render={()=><RegistrationCompose/>} path="/registration"/>
                 <Route render={()=><AdminCompose/>} exact path="/Admin"/>
                 <Route render={()=><HomeCompose pageTitle={"Hi"}/>} exact path="/"/>
