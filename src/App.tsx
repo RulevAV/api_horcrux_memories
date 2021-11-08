@@ -6,19 +6,19 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import ConnectLoginContainer from "./Components/Auth/Login/LoginContainer";
-import NavContainer from "./Components/Navbar/NavContainer";
 import RegistrationCompose from "./Components/Auth/Registration/RegistrationContainer";
 import AdminCompose from "./Components/Admin/AdminContainer";
 import HomeCompose from "./Components/Home/HomeContainer";
 import WithTestContainer from "./Components/Test/TestContainer";
 import {WithHomeRedirect} from "./Components/hoc/HomeRedirect";
+import Navbar from "./Components/Navbar/Navbar";
 
 let Login = WithHomeRedirect(ConnectLoginContainer);
 
 const App : React.FC= () => {
   return (
     <div className="App">
-        <NavContainer/>
+        <Navbar/>
         <div className="container">
             <div className={'app-wrapper-content'}>
                 <Route render={()=><Login title={"Вход в аккаунт"} />} path="/login"/>

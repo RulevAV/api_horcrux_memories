@@ -1,13 +1,6 @@
 import React, {useEffect} from "react";
 import QuestionTest from "./QuestionTest/QuestionTest";
-
-type TextType={
-    Test: {IdRoot: string, Ask: any, TestHistory: any}
-    history: any
-    location: any
-    match: any
-    staticContext: undefined|string
-}
+import { useHistory} from "react-router-dom"
 
 type PropsType = {
     Test:{
@@ -39,6 +32,9 @@ let Test : React.FC<PropsType> = ({...props}) =>{
         // props.NextAsk(props.IdRoot,props.TestHistory,props.id,props.isIgnoreTest,props.nameTest);
     }
 
+    let history = useHistory();
+
+    console.log(history)
     return<div>
         <h1>Test</h1>
         <h3>{State.TestHistory.length+1 + "/" + State.Ask.sizeAsk}</h3>

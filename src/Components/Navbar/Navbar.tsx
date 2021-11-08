@@ -1,23 +1,33 @@
 import React, {useState} from 'react'
 import {NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {authCookieThunkCreator, LogoutThunkCreator} from "../../redux/Auth-Reducer";
 
 type PropsType = {
-    Logout: ()=>void,
-    authCookie: ()=>void,
-    roles:Array<string>
 }
 
 const Navbar:React.FC<PropsType> = ({...props}) =>{
     const isAuthenticated = useSelector((state:any) =>{
         return state.authReducer.Auth.isAuthenticated;
-    })
+    });
+    const roles = useSelector((state:any) =>{
+        return state.authReducer.Auth.roles;
+    });
+
+    const dispatch = useDispatch();
+
+    const Logout = ()=>{
+        dispatch(LogoutThunkCreator());
+    };
+    const authCookie = ()=>{
+        dispatch(authCookieThunkCreator());
+    };
 
     useState(()=>{
-        props.authCookie();
+        authCookie?.();
     });
-    let Administrator= props.roles?.filter((item:string) => item === "Administrator");
-    let Moderator= props.roles?.filter((item:string) => item === "Moderator");
+    let Administrator= roles?.filter((item:string) => item === "Administrator");
+    let Moderator= roles?.filter((item:string) => item === "Moderator");
 
     return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
@@ -41,7 +51,7 @@ const Navbar:React.FC<PropsType> = ({...props}) =>{
 
                 {!isAuthenticated
                     ?<NavLink className="btn btn-outline-light" to={'/login'} > Войти</NavLink>
-                    :<button onClick={props.Logout} className="btn btn-outline-light"> Выйти</button>
+                    :<button onClick={Logout} className="btn btn-outline-light"> Выйти</button>
 
                 }
             </div>
