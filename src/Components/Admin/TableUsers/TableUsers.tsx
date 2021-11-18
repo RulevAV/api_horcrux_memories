@@ -1,6 +1,6 @@
 import React from "react";
-import RowTable, {UserType} from "./RowTable";
-
+import RowTable from "./RowTable";
+import {UserType} from "../../../redux/Admin-Reducer";
 type PropsType = {
     Users:Array<UserType>,
     idModal:string,
@@ -19,12 +19,13 @@ const TableUsers :React.FC<PropsType> = ({Users,idModal,SetIdUser})=>{
     return  <table className="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">FirstName</th>
-            <th scope="col">LastName</th>
-            <th scope="col">UserName</th>
-            <th scope="col">Email</th>
-            <th scope="col">Роли</th>
+            <th id={"index"} scope="col">#</th>
+            <th id={"email"} scope="col">FirstName</th>
+            <th id={"lastName"} scope="col">LastName</th>
+            <th id={"firstName"} scope="col">UserName</th>
+            <th id={"userName"} scope="col">Email</th>
+            <th id={"roles"} scope="col">Роли</th>
+            <th id={"btn"} scope="col"></th>
         </tr>
         </thead>
         <tbody>

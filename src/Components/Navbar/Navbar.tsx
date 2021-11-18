@@ -1,66 +1,71 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {NavLink} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {authCookieThunkCreator, LogoutThunkCreator} from "../../redux/Auth-Reducer";
+import {TypeProps} from "./NavbarContainer";
 
-type PropsType = {
+const Burger = () =>{
+    return <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                   data-bs-target="#navbar" aria-controls="navbar"
+                   aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+    </button>
 }
 
-const Navbar:React.FC<PropsType> = ({...props}) =>{
-    const isAuthenticated = useSelector((state:any) =>{
-        return state.authReducer.Auth.isAuthenticated;
-    });
-    const roles = useSelector((state:any) =>{
-        return state.authReducer.Auth.roles;
-    });
+const CreatorItem = (role:string,name:string,Link:string)=>{
+    return {role,name,Link}
+}
 
-    const dispatch = useDispatch();
+const AllItemsMenu = [
+    CreatorItem("Administrator","Администратор","Admin"),
+    CreatorItem("Moderator","Модератор","Moderator"),
+];
 
-    const Logout = ()=>{
-        dispatch(LogoutThunkCreator());
-    };
-    const authCookie = ()=>{
-        dispatch(authCookieThunkCreator());
-    };
+const CreatorLogo = () => Promise.resolve("SPA_HorcruxMemories");
 
-    useState(()=>{
-        authCookie?.();
-    });
-    let Administrator= roles?.filter((item:string) => item === "Administrator");
-    let Moderator= roles?.filter((item:string) => item === "Moderator");
+const itemsLink = (roles:Array<string>) =>{
+    if(!roles) return null;
+
+    const ItemsMenu = AllItemsMenu.filter(item => roles.includes(item.role));
+    const ItemsMenuUI = ItemsMenu.map((u,index)=>{
+        return <li key={index} className="nav-item">
+            <NavLink className="nav-link active" to={"/"+u.Link}>{u.name}</NavLink>
+        </li>
+    })
+    return ItemsMenuUI;
+}
+
+const Navbar:React.FC<TypeProps> = ({data,Logout,RefreshAuthCookie}) =>{
+
+    let [LogoName,setLogoName] = useState("");
+    console.log("Navbar")
+    useEffect(()=>{
+        RefreshAuthCookie?.();//добавить обновление при изменении ролей
+
+        let GetStringLogo = async () =>{//Для тренировки теста
+          const str= await CreatorLogo();
+            setLogoName(str);
+        }
+        GetStringLogo();
+    },[]);
+
+    let ItemsLink = itemsLink(data.roles);
 
     return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
-            <NavLink className="navbar-brand " to={"/"} >SPA_HorcruxMemories</NavLink>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarColor01">
-                                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                   {!!Administrator.length?<li className="nav-item">
-                        <NavLink className="nav-link active" to={"/Admin"}>Администратор</NavLink>
-                    </li>:null
-                    }
-                    {!!Moderator.length?<li className="nav-item">
-                        <NavLink className="nav-link active" to={"/Moderator"}>Модератор</NavLink>
-                    </li>:null
-                    }
+            {LogoName?<NavLink className="navbar-brand " to={"/"} >SPA_HorcruxMemories</NavLink>:null}
+
+            <Burger/>
+            <div className="collapse navbar-collapse" id="navbar">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    {ItemsLink}
                 </ul>
 
-                {!isAuthenticated
-                    ?<NavLink className="btn btn-outline-light" to={'/login'} > Войти</NavLink>
-                    :<button onClick={Logout} className="btn btn-outline-light"> Выйти</button>
-
+                {!data.isAuthenticated
+                    ?<NavLink className="btn btn-outline-light" to={'/login'}> Войти</NavLink>
+                    :<NavLink className="btn btn-outline-light" to={'/login'} onClick={Logout}> Выйти</NavLink>
                 }
             </div>
         </div>
     </nav>
-
 }
-
-
-
 
 export default Navbar;

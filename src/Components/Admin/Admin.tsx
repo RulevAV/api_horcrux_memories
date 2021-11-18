@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import TableUsers from "./TableUsers/TableUsers";
 import ModalContent from "./UseModel/ModalContent";
-import {UserType} from "./TableUsers/RowTable";
+import {UserType} from "../../redux/Admin-Reducer";
+
 
 type PropsType = {
     AllRoles:Array<string>,

@@ -51,7 +51,6 @@ let mapDispatchToProps = (dispatch:any)=>{
 };
 
 let HomeCompose = compose(
-    LoginRedirect,
     //<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState>
     connect<mapStateToPropsType,mapDispatchToPropsType,ownPropsType,AppStateType>(mapStateToProps,mapDispatchToProps)
 )(Home);

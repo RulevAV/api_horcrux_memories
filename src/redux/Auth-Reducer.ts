@@ -93,7 +93,7 @@ export const SetUserThunkCreator = (Email:string,Password:string) :ThankType=>{
 
     }
 }
-export const authCookieThunkCreator = () :ThankType =>{
+export const RefreshAuthCookieThunkCreator = () :ThankType =>{
     return async (dispatch ) => {
         AuthAPI.RefreshToken().then((response:PromiseApiType) =>{
             if(response.status === 200)

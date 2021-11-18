@@ -5,17 +5,19 @@ import {Dispatch} from "react";
 import {ThunkAction} from "redux-thunk";
 
 
-export type user = {
-    email: string|null
-    firstName: string|null
-    id: string|null
-    lastName: string|null
+export type UserType = {
+    id: number,
+    email:string,
+    lastName:string,
+    firstName:string,
+    userName:string,
+    roles: Array<string>,
 }
 export type InitialStateType = {
-    Users:Array<user>,
+    Users:Array<UserType>,
     AllRoles:Array<string>
 }
-let initialState = {
+export let initialState = {
     Users:[],
     AllRoles:[]
 };
@@ -30,7 +32,7 @@ export const AdminReducer = (state=initialState, action : ActionsTypes):InitialS
             };
         }
         case "ADMIN_SET_USER_ROLES":{
-            let mass = state.Users.map((e:user)=>{
+            let mass = state.Users.map((e:UserType)=>{
                 if(e.email !==action.Email)
                 return e;
                 else return {
@@ -55,7 +57,7 @@ export const AdminReducer = (state=initialState, action : ActionsTypes):InitialS
 //AllTypeAction
 type ActionsTypes = InfoActionsTypes<typeof actions>;
 export const actions = {
-    SetUsers: (Users: Array<user>, AllRoles: Array<string>) => ({type: "ADMIN_GET_USER", Users, AllRoles} as const),
+    SetUsers: (Users: Array<UserType>, AllRoles: Array<string>) => ({type: "ADMIN_GET_USER", Users, AllRoles} as const),
     SetRoles: (Email: string, Roles: Array<string>) => ({type: "ADMIN_SET_USER_ROLES", Email, Roles} as const),
     ClearState: () => ({type: LOG_OUT} as const),
 }
