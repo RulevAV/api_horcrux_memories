@@ -1,6 +1,9 @@
-import {render, screen} from "@testing-library/react";
 import React from "react";
 import TableUsers from "./TableUsers";
+import {configure, mount} from "enzyme";
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+configure({ adapter: new Adapter() });
+
 
 const User = {
     id: 1,
@@ -12,22 +15,23 @@ const User = {
 }
 const Users= [User];
 
-const PropsType = {
-    Users: Array[User],
-    index: 1,
-    idModal: "string",
-    SetIdUser: (value) => {}
+const RowAttribute = (row,Attribute)=>{
+    let mass = row.map((childNode) => {
+        return childNode.prop(Attribute);
+    })
+    return mass;
 }
+
 describe('Admin>TableUsers> component', ()=>{
     it('TableUsers Render', ()=>{
         let SetIdUser = ()=>{};
-        let dom = render(<TableUsers Users={Users}  idModal={"User"} SetIdUser={SetIdUser}/>);
-        let elem = dom.find
-        //let thead = screen.;
-        //screen.debug()
-        //const linkElement = screen.getByText('Admin');
-        //expect(onChange).toHaveBeenCalledTimes(5);
-        //expect(Role).toBeInTheDocument();
+        let dom = mount(<TableUsers Users={Users}  idModal={"User"} SetIdUser={SetIdUser}/>);
+        let row = dom.find("thead tr").children();
+        let row2 = dom.find("tbody tr").children();
+
+        expect(RowAttribute(row,"id")).toMatchObject(RowAttribute(row2,"id"));
+
+
     })
 
 });

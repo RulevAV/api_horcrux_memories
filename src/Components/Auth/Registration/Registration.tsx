@@ -65,7 +65,7 @@ const Registration = (props:any) =>{
                             }type="submit" className="btn btn-primary">Войти</button>
                 </div>
             </div>
-                : <h1>Пользователь зарешистрирован</h1>
+                : <h1>Пользователь зарегистрирован</h1>
             }
         </div>
     </div>

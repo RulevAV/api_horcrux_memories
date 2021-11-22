@@ -8,7 +8,6 @@ import {
     GetQuestsThunkCreator, historyType,
 } from "../../redux/Question-Redux";
 import { TestActions} from "../../redux/Test-Reducer";
-import {LoginRedirect} from "../hoc/LoginRedirect";
 import {AppStateType} from "../../redux/redux-store";
 
 export type mapStateToPropsType = {

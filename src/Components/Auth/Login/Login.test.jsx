@@ -15,10 +15,15 @@ describe('Login component', ()=>{
         </BrowserRouter>,)
 
         //Типы поиска
-        expect( screen.getByLabelText(/Логин/i)).toBeInTheDocument();//исшет label по содержимым html
+        expect( screen.getByLabelText(/Логин/i)).toBeInTheDocument();//ищет label по содержимым html
         expect( screen.getByPlaceholderText(/Введите логин/i)).toBeInTheDocument();//поиск элементов по Placeholder
         expect( screen.getByAltText(/icon_User/i)).toBeInTheDocument();//ищет картинки по alt атрибуту
         expect( screen.getByDisplayValue(/maag@mail.ru/i)).toBeInTheDocument();//проверить value input
     })
+    it('Login Render null', ()=>{
 
+        render( <BrowserRouter basename="/">
+            <Login />
+        </BrowserRouter>,)
+    })
 });

@@ -19,8 +19,8 @@ describe('Home component', ()=>{
         </BrowserRouter>)
         //screen.debug()
         //Типы поиска
-        expect( screen.queryByText(/SPA_HorcruxMemories/i)).toBeNull();//сначала эдлемента нет
-        expect(await screen.findByText(/SPA_HorcruxMemories/i)).toBeInTheDocument();//когда выполнится асинхронный код должна появиться соответствующая строка
+        //expect( screen.queryByText(/SPA_HorcruxMemories/i)).toBeNull();//сначала эдлемента нет
+        //expect(await screen.findByText(/SPA_HorcruxMemories/i)).toBeInTheDocument();//когда выполнится асинхронный код должна появиться соответствующая строка
     })
 
 });

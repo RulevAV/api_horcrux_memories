@@ -35,23 +35,16 @@ const itemsLink = (roles:Array<string>) =>{
 
 const Navbar:React.FC<TypeProps> = ({data,Logout,RefreshAuthCookie}) =>{
 
-    let [LogoName,setLogoName] = useState("");
-    console.log("Navbar")
     useEffect(()=>{
         RefreshAuthCookie?.();//добавить обновление при изменении ролей
 
-        let GetStringLogo = async () =>{//Для тренировки теста
-          const str= await CreatorLogo();
-            setLogoName(str);
-        }
-        GetStringLogo();
     },[]);
 
     let ItemsLink = itemsLink(data.roles);
 
     return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
-            {LogoName?<NavLink className="navbar-brand " to={"/"} >SPA_HorcruxMemories</NavLink>:null}
+            {<NavLink className="navbar-brand " to={"/"} >SPA_HorcruxMemories</NavLink>}
 
             <Burger/>
             <div className="collapse navbar-collapse" id="navbar">

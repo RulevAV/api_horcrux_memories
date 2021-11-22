@@ -13,9 +13,9 @@ const RowTable : React.FC<PropsType> = ({user,index,idModal,SetIdUser})=>{
     let callback = ()=>{
         SetIdUser(index,user.roles);
     }
-    let btn = <div onClick={callback} className={""} data-bs-toggle="modal" data-bs-target={"#"+ idModal}>
-        <span className={"link-primary"}>{"Открыть"}</span>
-    </div>
+    let btn = <button id={"btnOpen"} onClick={callback} className={"btn btn-outline-primary"} data-bs-toggle="modal" data-bs-target={"#"+ idModal}>
+        Открыть
+    </button>
 
     return <tr key={user.id}>
         <td id={"index"} >{index+1}</td>
@@ -23,7 +23,7 @@ const RowTable : React.FC<PropsType> = ({user,index,idModal,SetIdUser})=>{
         <td id={"lastName"}>{user.lastName}</td>
         <td id={"firstName"}>{user.firstName}</td>
         <td id={"userName"}>{user.userName}</td>
-        <td id={"roles"}>{user.roles.join('\n')}</td>
+        <td id={"roles"}>{user.roles?.join('\n')}</td>
         <td id={"btn"}>{btn}</td>
     </tr>
 }

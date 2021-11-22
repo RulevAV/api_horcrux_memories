@@ -16,17 +16,10 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
 
     let [loading,setloading] = useState("");
     useEffect(()=>{
-
-            const LoadQuestion = async ()=>{
-                const user = await getUser();
-                setloading("Загруженно");
-            }
-            LoadQuestion();
-
-
+        getUser();
     },[]);
 
-    /*useEffect(()=>{
+    useEffect(()=>{
         if(isAuthenticated)
         {
             const LoadQuestion = async ()=>{
@@ -36,10 +29,10 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
             LoadQuestion();
         }
 
-    },[isAuthenticated]);*/
+    },[isAuthenticated]);
 
 
-   /* let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index)=>{
+    let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index)=>{
             return <Question key={index} SetAskTest={SetAskTest} {...question} GetQuests={GetQuests} />
     });
     let P1 = useRef<any>();
@@ -52,21 +45,20 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
           P1.current.scrollLeft=e.target.scrollLeft;
         }
     }
-*/
 
 
     return <div>
         {loading && <h1>{loading}</h1>}
-        {/*<h1>{ isAuthenticated? "Раздел: "+DependOnParentQuestion.nameParent:"Войдите в аккаунт"}</h1>
+        <h1>{ isAuthenticated? "Раздел: "+DependOnParentQuestion.nameParent:"Войдите в аккаунт"}</h1>
         <div className="row">
             <a className="col-xs-12 col-sm-3 col-md-3 col-lg-2 col-xl-1 btn btn-success" onClick={()=>{GetQuestsReturn(stories);}}>Вернуться</a>
             <span className="col-xs-12 col-sm-5 col-md-6 col-lg-8 col-xl-9">Количество элементов {DependOnParentQuestion.sizeQuestions}</span>
         </div>
 
         <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
-        {Questions}
+        {/*{Questions}*/}
         <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P2} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
-*/}
+
     </div>
 }
 

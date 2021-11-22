@@ -1,7 +1,10 @@
 import React from "react";
 import {configure,mount} from "enzyme";
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Admin from "./Admin";
+import AdminCompose from "./AdminContainer";
+import {Provider} from "react-redux";
+import store from "../../redux/redux-store";
+
 configure({ adapter: new Adapter() });
 
 
@@ -11,12 +14,13 @@ describe('Admin>TableUsers> component', ()=>{
     const GetUsers = jest.fn()
 
     it('RowTable test props', ()=>{
-        let dom = mount(<Admin AllRoles={AllRoles}
-                               GetUsers={GetUsers}
-                               SetUserRoles={""}
-                               Users={null}/>
+        let dom = mount(
+            <Provider store={store}>
+                <AdminCompose />
+            </Provider>
         );
-        expect(GetUsers).toHaveBeenCalled()
+
+        //expect(GetUsers).toHaveBeenCalled()
     })
 
 });

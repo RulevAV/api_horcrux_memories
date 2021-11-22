@@ -5,15 +5,14 @@ type PropsType = {
     name:string,
     DeleteRole : (name:string)=>void
 }
-
+//Запись таблицы ролей
 const RoleUser : React.FC<PropsType> = ({index, name, DeleteRole})=>{
         return <tr key={index}>
             <th scope="row">{index+1}</th>
             <td>{name}</td>
             <td>
-                <button type="button" onClick={()=>{DeleteRole(name)}} className="btn btn-outline-danger">
+                <button id={"btnDelete"} type="button" onClick={()=>{DeleteRole(name)}} className="btn btn-outline-danger">
                     <i className="bi bi-trash"></i>
-                    Button
                 </button></td>
         </tr>
 

@@ -1,6 +1,9 @@
 import {render, screen,queryByAttribute } from "@testing-library/react";
 import RowTable from "./RowTable";
 import React from "react";
+import {configure, mount} from "enzyme";
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+configure({ adapter: new Adapter() });
 
 const User = {
     id: 1,
@@ -16,14 +19,15 @@ const PropsType = {
     idModal: "string",
     SetIdUser: (index,roles) => {}
 }
-describe('Admin>TableUsers> component', ()=>{
-    //beforeAll()
-//let fn = jest.fn(x=>x**2);
-//expect(fn).toBeCalledTimes()
-    it('RowTable Render without crashing', ()=>{
-       let dom = render(<table>
+
+
+describe('Admin>TableUsers>RowTable component', ()=>{
+    const fn = jest.fn()
+
+    it('RowTable matching names by id', ()=>{
+        let dom = render(<table>
             <tbody id="tbody">
-                <RowTable {...PropsType}/>
+            <RowTable user={User} index={0} idModal={"idModal"} SetIdUser={fn} />
             </tbody>
         </table>);
         const getById = queryByAttribute.bind(null, 'id');
@@ -44,15 +48,12 @@ describe('Admin>TableUsers> component', ()=>{
         expect(roles.innerHTML).toBe(User.roles.join("\n"));
 
 
-
-
-
         //screen.getbyid('index')
 
         //getBy //возвращает либо элемент либо ошибку. (затрудняет проверку которых в разметке быть не должно) из за условий не успевает отработать
         //queryBy - когда утверждаем что элемента нет в разметке
         //findBy - используется для асинхронных элементов(которых в
-                   // начале разметке небыло но при выполнении асинхронного кода они появятся)
+                   // начале разметке не было но при выполнении асинхронного кода они появятся)
 
         //expect( screen.queryByText(/Что то левое/i)).toBeNull();//элемента быть не должно
         //expect( screen.getByRole('table')).toBeInTheDocument();//?
@@ -63,6 +64,17 @@ describe('Admin>TableUsers> component', ()=>{
         //const linkElement = screen.getByText('Admin');
         /*expect(onChange).toHaveBeenCalledTimes(5);*/
        /* expect(Role).toBeInTheDocument();*/
+    })
+    it('RowTable test props', ()=>{
+        let dom = mount(<table>
+            <tbody id="tbody">
+            <RowTable user={User} index={0} idModal={"idModal"} SetIdUser={fn} />
+            </tbody>
+        </table>);
+        let btn = dom.find('#btnOpen');
+        btn.simulate('click');
+        //console.log(asd.debug())
+        expect(fn).toHaveBeenCalled()
     })
 
 });

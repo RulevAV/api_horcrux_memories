@@ -9,35 +9,43 @@ type PropsType = {
     IdUser : number|null
 
 }
+//balance - Убирает дубликаты
+//В меню выбора не предлагают ролей которые уже есть
+export const balance = (_userRole:Array<string>,_AllRoles:Array<string>,Setdropdown:(value:Array<string>)=>void,SetSelectRoles:(value:Array<string>)=>void)=>{
 
+    let drop= !!_userRole?_AllRoles.filter( ( el:string ) => !_userRole.includes( el ) )
+        :_AllRoles;
+    Setdropdown(drop);
+    SetSelectRoles(_userRole);
+
+}
+
+//Добавить роль пользователю
+export const AddRole = (name:string,SelectRoles:Array<string>,AllRoles:Array<string>,Setdropdown:(value:Array<string>)=>void,SetSelectRoles:(value:Array<string>)=>void)=>{
+    let massRole = !!name?[]:[name];//
+    let Roles = SelectRoles ? [...SelectRoles,name]: massRole
+    balance(Roles,AllRoles,Setdropdown,SetSelectRoles);
+
+}
+//Удалить роль у пользователя
+export let DeleteRole = (name:string,SelectRoles:Array<string>,AllRoles:Array<string>,Setdropdown:(value:Array<string>)=>void,SetSelectRoles:(value:Array<string>)=>void)=>{
+    let mass = SelectRoles.filter((u:string)=> u!==name);
+    balance(mass,AllRoles,Setdropdown,SetSelectRoles);
+}
+
+
+//Таблица ролей в модальном окне
 const UserRolesComp : React.FC<PropsType> = ({UserRoles,IdUser,SelectRoles,SetSelectRoles,AllRoles})=>{
     let [dropdown,Setdropdown] = useState<string[]>([]);
-    let balance = (_userRole:Array<string>,_AllRoles:Array<string>)=>{
-        let drop = _userRole ? _AllRoles.filter( ( el:string ) => !_userRole.includes( el ) )
-            :_AllRoles;
-        Setdropdown(drop);
-        SetSelectRoles(_userRole);
-    }
     useEffect(()=>{
-        balance(UserRoles,AllRoles);
+        balance(UserRoles,AllRoles,Setdropdown,SetSelectRoles);
+
     },[IdUser]);
-
-
-
-
-    let AddRole = (name:string)=>{
-        let mass = SelectRoles ? [name,...SelectRoles]: [name]
-        balance(mass,AllRoles);
-    }
     let AllRolesUI = dropdown?.map((u,i)=>{
-        return  <li key={i} onClick={()=>{AddRole(u)}}><a className="dropdown-item" href="#">{u}</a></li>
+        return  <li key={i} onClick={()=>{AddRole(u,SelectRoles,AllRoles,Setdropdown,SetSelectRoles)}}><a className="dropdown-item" href="#">{u}</a></li>
     });
-    let DeleteRole = (name:string)=>{
-        let mass = SelectRoles.filter((u:string)=> u!==name);
-        balance(mass,AllRoles);
-    }
     let RolesModalUI = SelectRoles?.map((name:string, index:number)=>{
-        return <RoleUser key={index} name={name} index={index} DeleteRole={DeleteRole}/>
+        return <RoleUser key={index} name={name} index={index} DeleteRole={()=>{DeleteRole(name,SelectRoles,AllRoles,Setdropdown,SetSelectRoles);}}/>
     });
     return   <table className="table">
         <thead>
@@ -57,7 +65,7 @@ const UserRolesComp : React.FC<PropsType> = ({UserRoles,IdUser,SelectRoles,SetSe
                               aria-expanded="false">
                           Добавить роль
                       </button>
-                      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <ul id={"AllRolesUI"} className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                               {AllRolesUI}
                       </ul>
                   </div>

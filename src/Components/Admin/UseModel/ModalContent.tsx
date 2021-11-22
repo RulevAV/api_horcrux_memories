@@ -33,7 +33,7 @@ const ModalContent : React.FC<PropsType> = ({SetIdUser, AllRoles, Email, idModal
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button onClick={()=>{
+                    <button id={"Save"} onClick={()=>{
                            SetUserRoles(Email,SelectRoles);
                     }} type="button" className="btn btn-primary" data-bs-dismiss="modal">Сохранить</button>
                 </div>

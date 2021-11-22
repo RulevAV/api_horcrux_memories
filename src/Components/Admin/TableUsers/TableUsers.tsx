@@ -7,7 +7,7 @@ type PropsType = {
     SetIdUser:(asd:number|null)=>void
 }
 const TableUsers :React.FC<PropsType> = ({Users,idModal,SetIdUser})=>{
-    let massRow = Users.map((u:UserType,index:number)=>{
+    let massRow = Users?.map((u:UserType,index:number)=>{
 
         return <RowTable key={index}
                          user={u}
@@ -17,6 +17,7 @@ const TableUsers :React.FC<PropsType> = ({Users,idModal,SetIdUser})=>{
         />
     });
     return  <table className="table table-bordered">
+        <caption> Все пользователи </caption>
         <thead>
         <tr>
             <th id={"index"} scope="col">#</th>
