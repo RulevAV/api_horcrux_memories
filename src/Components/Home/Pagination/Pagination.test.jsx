@@ -1,9 +1,10 @@
-import {render, screen} from "@testing-library/react";
-import React, {useRef} from "react";
+import React from "react";
 import Pagination from "./Pagination";
-
-let sizePage = 1;
-let page=2;
+import {configure, mount} from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+configure({ adapter: new Adapter() });
+let sizePage = 2;
+let page=1;
 let stories = [{idParent:"",page:5}];
 describe('Pagination component', ()=>{
     const fn = jest.fn()
@@ -11,8 +12,16 @@ describe('Pagination component', ()=>{
     const useRefSpy = jest.spyOn(React, 'useRef').mockReturnValueOnce({ current: { focus } });
     it('Pagination Render', ()=>{
 
-        render( <Pagination sizePage={sizePage} page={page} stories={stories} GetQuestsPagination={fn} Link={useRefSpy}/>)
+        let dom = mount( <Pagination id={"Pagination"} sizePage={sizePage} page={page} stories={stories} GetQuestsPagination={fn} Link={useRefSpy}/>)
+        let btn = dom.find("a");
+        for(let i=0; i<btn.length;i++)
+        {
+            btn.at(i).simulate("click");
+        }
 
+        //fireEvent.click(btn);
+        //const btn2 = getById(dom.container, 'PaginationNext');
+        //fireEvent.click(btn2);
     })
 
 });

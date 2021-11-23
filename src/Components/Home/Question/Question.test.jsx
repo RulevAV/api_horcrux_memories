@@ -1,4 +1,4 @@
-import {render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import React from "react";
 import Question from "./Question";
 import {BrowserRouter} from "react-router-dom";
@@ -19,9 +19,21 @@ describe('Question component', ()=>{
     const GetQuests = jest.fn();
     it('Question Render', ()=>{
 
-        render( <BrowserRouter basename="/">
+        let dom = render( <BrowserRouter basename="/">
                 <Question key={index} SetAskTest={SetAskTest} {...Query} GetQuests={GetQuests}/>
         </BrowserRouter>)
+
+        let temp = dom.getByText("Открыть");
+        fireEvent.click(temp);
+    })
+    it('Question Question_img', ()=>{
+
+        let dom = render( <BrowserRouter basename="/">
+            <Question key={index} SetAskTest={SetAskTest} {...Query} GetQuests={GetQuests}/>
+        </BrowserRouter>)
+
+        let temp = dom.container.querySelector(".Question_img a");
+        fireEvent.click(temp);
     })
 
 });

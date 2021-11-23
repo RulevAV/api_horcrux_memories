@@ -56,13 +56,13 @@ const Registration = (props:any) =>{
 
 
                 <div className="row">
-                    <button onClick={onClick}
+                    <button id={"Register"}  onClick={onClick}
                             disabled={
                                 !Username.inputValid
                                 ||!Password.inputValid
                                 ||!Email.inputValid
                                 ||!FirstName.inputValid
-                            }type="submit" className="btn btn-primary">Войти</button>
+                            }type="submit" className="btn btn-primary">Зарегаться</button>
                 </div>
             </div>
                 : <h1>Пользователь зарегистрирован</h1>

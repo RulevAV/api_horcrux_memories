@@ -40,12 +40,12 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                     <input id="RememberMe" type="checkbox" className="form-check-input" />
                 </div>
                 <div className="mb-3">
-                    <NavLink className="link-success" onClick={()=>{RegisterUser()}}  to={"/registration"}>Зарегаться</NavLink>
+                    <NavLink id={"Registration"} className="link-success" onClick={RegisterUser}  to={"/registration"}>Зарегаться</NavLink>
                     <a className="link-success" href={"https://maagserver/HorcruxMemories/Account/ForgotPassword"}>Забыли пароль?</a>
                 </div>
 
                 <div className="row">
-                    <button onClick={onClick} disabled={!login.inputValid ||!password.inputValid} type="submit" className="btn btn-primary">Войти</button>
+                    <button id={"Exit"} onClick={onClick} disabled={!login.inputValid ||!password.inputValid} type="submit" className="btn btn-primary">Войти</button>
                 </div>
             </div>
         </div>

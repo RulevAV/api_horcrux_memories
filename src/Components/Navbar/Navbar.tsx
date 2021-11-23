@@ -19,8 +19,6 @@ const AllItemsMenu = [
     CreatorItem("Moderator","Модератор","Moderator"),
 ];
 
-const CreatorLogo = () => Promise.resolve("SPA_HorcruxMemories");
-
 const itemsLink = (roles:Array<string>) =>{
     if(!roles) return null;
 

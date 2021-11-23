@@ -61,12 +61,16 @@ export const actions = {
     SetRoles: (Email: string, Roles: Array<string>) => ({type: "ADMIN_SET_USER_ROLES", Email, Roles} as const),
     ClearState: () => ({type: LOG_OUT} as const),
 }
+
+
 export const GetUsersThunkCreator = () =>{
-    return (dispatch : Dispatch<ActionsTypes>,getState:()=>AppStateType) => {
-        AuthAPI.GetUser().then((response:any) =>{
+    return async (dispatch : Dispatch<ActionsTypes>,getState:()=>AppStateType) => {
+        await AuthAPI.GetUser().then((response:any) =>{
             dispatch(actions.SetUsers(response.data.users,response.data.allRoles));
         });
-
+       /* AuthAPI.GetUser().then((temp : any)=>{
+            console.log(temp)
+        });*/
 
     }
 }

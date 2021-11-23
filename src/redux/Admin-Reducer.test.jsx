@@ -1,4 +1,10 @@
-import AdminReducer, {actions, initialState} from "./Admin-Reducer";
+import AdminReducer, {actions, GetUsersThunkCreator, initialState, SetUserRolesThunkCreator} from "./Admin-Reducer";
+import {AuthAPI} from "../api/API_AuthServer";
+
+jest.mock("../api/API_AuthServer")
+const AuthAPIMock = AuthAPI;
+
+
 
 let User1 = {
     id: 1,
@@ -38,8 +44,11 @@ let AllRoles=["role1","role2"];
 
 
 
-
 describe('test admin reducer', ()=>{
+
+    const dispatchMock = jest.fn();
+
+
     it('test action SetUsers', ()=>{
         //1 test state
         let SetUsers = actions.SetUsers(Users,AllRoles);
@@ -79,6 +88,27 @@ describe('test admin reducer', ()=>{
         let ClearState = actions.ClearState();
         newState = AdminReducer(newState,ClearState);
         expect(newState).toStrictEqual(initialState);
+    });
+    it('test action ThunkCreator',async ()=>{
+        const thunk = GetUsersThunkCreator();
+        const response ={
+            data :{
+                users:[],
+                allRoles:[]
+            }
+        };
+        let prom = Promise.resolve(response);
+        AuthAPIMock.GetUser.mockReturnValue(prom);
+        await thunk(dispatchMock,()=>{});
+        expect(dispatchMock).toBeCalled();
+    });
+    it('test action SetUserRolesThunkCreator', async()=>{
+        const thunk = SetUserRolesThunkCreator();
+
+        let prom = Promise.resolve();
+        AuthAPIMock.AddDeleteRole.mockReturnValue(prom);
+        await thunk(dispatchMock,()=>{});
+        expect(dispatchMock).toBeCalled();
     });
 })
 

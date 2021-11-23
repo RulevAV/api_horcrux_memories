@@ -27,8 +27,8 @@ export type ownPropsType = {
 
 let mapStateToProps = (state:any)=>{
     return {
-        isAuthenticated : state.authReducer.Auth.isAuthenticated,
         DependOnParentQuestion: state.QuestionReducer.DependOnParentQuestion,
+        isAuthenticated : state.authReducer.Auth.isAuthenticated,
         stories:state.QuestionReducer.stories,
     }
 };
@@ -51,6 +51,7 @@ let mapDispatchToProps = (dispatch:any)=>{
 
 let HomeCompose = compose(
     //<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState>
+    //mapStateToPropsType,mapDispatchToPropsType,ownPropsType,AppStateType
     connect<mapStateToPropsType,mapDispatchToPropsType,ownPropsType,AppStateType>(mapStateToProps,mapDispatchToProps)
 )(Home);
 export default HomeCompose;

@@ -13,10 +13,11 @@ const ModalContent : React.FC<PropsType> = ({SetIdUser, AllRoles, Email, idModal
     let [SelectRoles,SetSelectRoles] = useState<Array<string>>([]);
 
     let myModalEl: HTMLElement | null = document.getElementById(idModal);
+
     myModalEl?.addEventListener('hidden.bs.modal', function (event) {
         SetIdUser(null);
     })
-
+    
     return  <div className="modal fade" id={idModal}  aria-labelledby="exampleModalLabel"  aria-hidden="true">
         <div className="modal-dialog">
             <div className="modal-content">
@@ -32,7 +33,7 @@ const ModalContent : React.FC<PropsType> = ({SetIdUser, AllRoles, Email, idModal
                                    AllRoles={AllRoles}/>
                 </div>
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button id={"Close"} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                     <button id={"Save"} onClick={()=>{
                            SetUserRoles(Email,SelectRoles);
                     }} type="button" className="btn btn-primary" data-bs-dismiss="modal">Сохранить</button>

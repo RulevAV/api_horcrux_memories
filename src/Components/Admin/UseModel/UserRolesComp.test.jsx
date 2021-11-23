@@ -2,7 +2,6 @@ import React from "react";
 import {configure, mount, shallow} from "enzyme";
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import UserRolesComp, {AddRole, balance, DeleteRole} from "./UserRolesComp";
-import ModalContent from "./ModalContent";
 configure({ adapter: new Adapter() });
 
 let UserRoles;
@@ -57,23 +56,28 @@ describe('Admin>UseModel UserRolesComp', ()=>{
         expect(SelectRoles).toMatchObject(["role1","role6"]);
     })
     //Render
-    it('test Render UserRolesComp null', ()=>{
+    it('test Render AllRolesUI click AddRole', ()=>{
         let dom = mount(  <UserRolesComp UserRoles={UserRoles}
                                          IdUser={IdUser}
                                          SelectRoles={SelectRoles}
                                          SetSelectRoles={fn}
                                          AllRoles={AllRoles}/>);
+        let btn = dom.find("#AllRolesUI");
+        let li = btn.children().first();
+        //console.log(li.debug())
+        li.simulate('click');
     })
-    it('test Render UserRolesComp', ()=>{
+
+    it('test Render UserRolesComp click DeleteRole', ()=>{
         const dom = mount(  <UserRolesComp UserRoles={UserRoles}
                                          IdUser={IdUser}
-                                         SelectRoles={null}
+                                         SelectRoles={["role1","role2"]}
                                          SetSelectRoles={fn}
                                          AllRoles={AllRoles}/>)
-let AllRolesUI = dom.children();
-        console.log(AllRolesUI)
+        let btnDelete = dom.find("RoleUser").first().find("#btnDelete")
+        btnDelete.simulate('click');
+        //console.log(btnDelete.debug())
         //expect(AllRolesUI).toHaveBeenCalled();
     });
-
 
 });

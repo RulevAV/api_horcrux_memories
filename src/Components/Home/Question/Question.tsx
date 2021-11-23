@@ -24,8 +24,8 @@ const Question:React.FC<any> = (props) =>{
             </div>
             <div className="row flex-row-reverse Question_Ask-buy">
                 <a className="m-1 col-xs-12 col-lg-2 btn btn-light" onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
-                <NavLink className="m-1 col-xs-12 col-lg-2 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Normal'} > Начать тест</NavLink>
-                <NavLink className="m-1 col-xs-12 col-lg-4 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Global'} > Начать подробный тест</NavLink>
+                <NavLink id={"TestNormal"} className="m-1 col-xs-12 col-lg-2 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Normal'} > Начать тест</NavLink>
+                <NavLink id={"TestGlobal"} className="m-1 col-xs-12 col-lg-4 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Global'} > Начать подробный тест</NavLink>
             </div>
         </div>
     </div>

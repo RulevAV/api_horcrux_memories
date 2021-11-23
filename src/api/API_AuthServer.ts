@@ -1,4 +1,5 @@
 import axios from "axios";
+import {getCookie, setResponseCookie} from "./CookieFunction";
 /*
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Content-Type'] = "application/json;charset=utf-8";
@@ -15,18 +16,6 @@ const AuthGuery = axios.create({
     }
 });
 
-export function getCookie(name:string) {
-    let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
-function setResponseCookie(data :any){
-    let dateToken = data.refreshTokenExpiration;
-    document.cookie = `RefreshToken=${data.refreshToken}; expires=true`;
-    document.cookie = `Token=${data.token}; expires=` + dateToken;
-}
-
 type ResponseTokenType = {
     email: string
     isAuthenticated: boolean
@@ -37,7 +26,6 @@ type ResponseTokenType = {
     token: string
     userName: string
 }
-
 enum ResultCodesEnum {
     Success=0,
     Error = 1,

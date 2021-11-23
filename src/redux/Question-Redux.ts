@@ -31,7 +31,7 @@ type initialStateType = {
     DependOnParentQuestion:DependOnParentQuestionType,
     stories:Array<historyType>,
 }
-const initialState:initialStateType = {
+export const initialState:initialStateType = {
     DependOnParentQuestion:{
         nameParent  :null,
         idParent  :null,
@@ -46,7 +46,7 @@ const initialState:initialStateType = {
 
 export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
-        case "GET_QUESTS":
+        case "SET_QUESTS":
             let history ={
                 idParent: action.data.idParent,
                 page: action.data.page
@@ -75,7 +75,7 @@ export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
 type ActionsTypes = InfoActionsTypes<typeof QuestionAction>;
 
 export const QuestionAction = {
-    SetQuests :(data:DependOnParentQuestionType)=>({type : "GET_QUESTS",data }as const),
+    SetQuests :(data:DependOnParentQuestionType)=>({type : "SET_QUESTS",data }as const),
     SetStore :(data:historyType)=>({type : "SET_STORE", data }as const),
     LOG_OUT :()=>({type : LOG_OUT }as const)
 }

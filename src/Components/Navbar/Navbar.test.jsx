@@ -10,17 +10,20 @@ const data = {
     roles: ['User', 'Moderator', 'Administrator'],
 }
 
-describe('Home component', ()=>{
-    it('Home Render', async ()=>{
+describe('Navbar component', ()=>{
+    it('Navbar Render', async ()=>{
         render(  <BrowserRouter basename="/">
             <Provider store={store}>
                 <Navbar data={data} Logout={()=>{}} RefreshAuthCookie={()=>{}}/>
             </Provider>
         </BrowserRouter>)
-        //screen.debug()
-        //Типы поиска
-        //expect( screen.queryByText(/SPA_HorcruxMemories/i)).toBeNull();//сначала эдлемента нет
-        //expect(await screen.findByText(/SPA_HorcruxMemories/i)).toBeInTheDocument();//когда выполнится асинхронный код должна появиться соответствующая строка
+    })
+    it('Navbar Render null', async ()=>{
+        render(  <BrowserRouter basename="/">
+            <Provider store={store}>
+                <Navbar data={{}}/>
+            </Provider>
+        </BrowserRouter>)
     })
 
 });

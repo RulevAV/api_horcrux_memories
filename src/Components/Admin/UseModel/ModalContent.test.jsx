@@ -26,5 +26,20 @@ describe('Admin>UseModel>ModalContent component', ()=>{
         btn.simulate('click');
         expect(fn).toHaveBeenCalled()
     })
+    it('ModalContent test hidden', ()=>{
+        let dom = mount(<ModalContent
+            SetIdUser={"qwe-123"}
+            AllRoles={AllRoles}
+            Email={"Email"}
+            idModal={"User"}
+            UserRoles={UserRoles}
+            IdUser={IdUser}
+            SetUserRoles={fn}/>
+        );
+        /*let Save = dom.find('#Save');
+        Save.simulate('click');
+        let Close = dom.find('#Close');
+        Close.simulate('click');*/
 
+    })
 });

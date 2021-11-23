@@ -8,28 +8,15 @@ import {mapDispatchToPropsType, mapStateToPropsType, ownPropsType} from "./HomeC
 
 type PropsType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType;
 
-const  getUser = () =>Promise.resolve({id:1,name:""});
+
 
 const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
                                        stories,SetAskTest,GetQuestsPagination,GetQuestsReturn,GetQuests
 }) =>{
 
-    let [loading,setloading] = useState("");
     useEffect(()=>{
-        getUser();
+        GetQuests();
     },[]);
-
-    useEffect(()=>{
-        if(isAuthenticated)
-        {
-            const LoadQuestion = async ()=>{
-                GetQuests();
-                setloading("Загруженно");
-            }
-            LoadQuestion();
-        }
-
-    },[isAuthenticated]);
 
 
     let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index)=>{
@@ -48,17 +35,15 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
 
 
     return <div>
-        {loading && <h1>{loading}</h1>}
         <h1>{ isAuthenticated? "Раздел: "+DependOnParentQuestion.nameParent:"Войдите в аккаунт"}</h1>
         <div className="row">
-            <a className="col-xs-12 col-sm-3 col-md-3 col-lg-2 col-xl-1 btn btn-success" onClick={()=>{GetQuestsReturn(stories);}}>Вернуться</a>
+            <a id={"Return"} className="col-xs-12 col-sm-3 col-md-3 col-lg-2 col-xl-1 btn btn-success" onClick={()=>{GetQuestsReturn(stories);}}>Вернуться</a>
             <span className="col-xs-12 col-sm-5 col-md-6 col-lg-8 col-xl-9">Количество элементов {DependOnParentQuestion.sizeQuestions}</span>
         </div>
 
-        <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
-        {/*{Questions}*/}
-        <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P2} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
-
+        <Pagination id={"Pagination1"} GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
+        {Questions}
+        <Pagination id={"Pagination2"} GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P2} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
     </div>
 }
 

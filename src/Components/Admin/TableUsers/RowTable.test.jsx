@@ -31,15 +31,13 @@ describe('Admin>TableUsers>RowTable component', ()=>{
             </tbody>
         </table>);
         const getById = queryByAttribute.bind(null, 'id');
-        const temp = queryByAttribute("id",dom.container,"index");
+        //const temp = queryByAttribute("id",dom.container,"index");
         const index = getById(dom.container, 'index');
         const email = getById(dom.container, 'email');
         const lastName = getById(dom.container, 'lastName');
         const firstName = getById(dom.container, 'firstName');
         const userName = getById(dom.container, 'userName');
         const roles = getById(dom.container, 'roles');
-        expect(temp.innerHTML).not.toContain()
-        expect(temp.innerHTML).toBe(User.id.toString());
         expect(index.innerHTML).toBe(User.id.toString());
         expect(email.innerHTML).toBe(User.email);
         expect(lastName.innerHTML).toBe(User.lastName);
@@ -65,7 +63,7 @@ describe('Admin>TableUsers>RowTable component', ()=>{
         /*expect(onChange).toHaveBeenCalledTimes(5);*/
        /* expect(Role).toBeInTheDocument();*/
     })
-    it('RowTable test props', ()=>{
+    it('RowTable test click Open', ()=>{
         let dom = mount(<table>
             <tbody id="tbody">
             <RowTable user={User} index={0} idModal={"idModal"} SetIdUser={fn} />

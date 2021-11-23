@@ -6,7 +6,7 @@ configure({ adapter: new Adapter() });
 describe('Admin>UseModel> RoleUser', ()=>{
     const fn = jest.fn()
 
-    it('RoleUser test props', ()=>{
+    it('RoleUser test click Delete', ()=>{
         let dom = mount(<table>
             <tbody>
             <RoleUser index={0} name={"name"} DeleteRole={fn} />

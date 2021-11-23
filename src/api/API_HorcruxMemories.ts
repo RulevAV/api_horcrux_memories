@@ -1,6 +1,6 @@
 import axios from "axios";
-import {AuthAPI, getCookie} from "./API_AuthServer";
-
+import {AuthAPI} from "./API_AuthServer";
+import {getCookie} from "./CookieFunction";
 const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
 //const ServerHorcruxMemories = "https://localhost:44370/";
 const DataGuery = axios.create({

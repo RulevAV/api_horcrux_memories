@@ -27,8 +27,6 @@ let Test : React.FC<PropsType> = ({...props}) =>{
             isIgnoreTest,
             props.match.params.nameTest
         );
-        //nameTest={props.match.params.nameTest}
-        // props.NextAsk(props.IdRoot,props.TestHistory,props.id,props.isIgnoreTest,props.nameTest);
     }
     return<div>
         <h1>Test</h1>

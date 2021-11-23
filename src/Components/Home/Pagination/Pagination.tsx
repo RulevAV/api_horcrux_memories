@@ -6,6 +6,7 @@ type storiesType = {
 }
 
 type PropsType = {
+    id:string
     sizePage: number,
     page: number,
     stories: Array<storiesType>,
@@ -14,27 +15,27 @@ type PropsType = {
 }
 
 
-const Pagination:React.FC<PropsType> = ({sizePage,page,stories,GetQuestsPagination,Link}) =>{
+const Pagination:React.FC<PropsType> = ({id,sizePage,page,stories,GetQuestsPagination,Link}) =>{
 
 
     let mass=[];
     for(let i=1; i<=sizePage; i++)
     {
         if (page === i){
-            mass.push(<li key={i} onClick={()=>{GetQuestsPagination(stories,i)}} className="page-item active">
-                <a className="page-link">{i}</a>
+            mass.push(<li
+                key={i} className="page-item active">
+                <a onClick={()=>{GetQuestsPagination(stories,i)}} className="page-link">{i}</a>
             </li>)
         }
         else {
-            mass.push(<li key={i} onClick={()=>{GetQuestsPagination(stories,i)}} className="page-item ">
-                <a className="page-link">{i}</a>
+            mass.push(<li key={i} className="page-item ">
+                <a  onClick={()=>{GetQuestsPagination(stories,i)}} className="page-link">{i}</a>
             </li>)
         }
     }
 
 
-    return <nav  className="d-flex justify-content-center " aria-label="Page navigation example">
-
+    return <nav id={id} className="d-flex justify-content-center " aria-label="Page navigation example">
         <div className="page-item"><a className="page-link" onClick={()=>{GetQuestsPagination(stories,page-1)}}>Previous</a>
         </div>
         <ul ref={Link} className="pagination Scroll m-0">

@@ -42,7 +42,7 @@ const UserRolesComp : React.FC<PropsType> = ({UserRoles,IdUser,SelectRoles,SetSe
 
     },[IdUser]);
     let AllRolesUI = dropdown?.map((u,i)=>{
-        return  <li key={i} onClick={()=>{AddRole(u,SelectRoles,AllRoles,Setdropdown,SetSelectRoles)}}><a className="dropdown-item" href="#">{u}</a></li>
+        return  <li  key={i} onClick={()=>{AddRole(u,SelectRoles,AllRoles,Setdropdown,SetSelectRoles)}}><a className="dropdown-item" href="#">{u}</a></li>
     });
     let RolesModalUI = SelectRoles?.map((name:string, index:number)=>{
         return <RoleUser key={index} name={name} index={index} DeleteRole={()=>{DeleteRole(name,SelectRoles,AllRoles,Setdropdown,SetSelectRoles);}}/>
