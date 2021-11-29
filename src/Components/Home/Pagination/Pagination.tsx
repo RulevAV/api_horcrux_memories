@@ -34,7 +34,6 @@ const Pagination:React.FC<PropsType> = ({id,sizePage,page,stories,GetQuestsPagin
         }
     }
 
-
     return <nav id={id} className="d-flex justify-content-center " aria-label="Page navigation example">
         <div className="page-item"><a className="page-link" onClick={()=>{GetQuestsPagination(stories,page-1)}}>Previous</a>
         </div>

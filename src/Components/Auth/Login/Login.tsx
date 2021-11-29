@@ -1,6 +1,6 @@
 import React from 'react'
 import {NavLink} from "react-router-dom";
-import  {useInput} from "../UseValidator";
+import {outValid, useInput} from "../UseValidator";
 import user from '../../../img/User.png';
 type PropsType = {
     SetUser:(Email:string,Password:string)=>void,
@@ -25,16 +25,13 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                 <div className="mb-3">
                     <label htmlFor="Login" className="form-label" >Логин</label>
                     <input id="Login" placeholder="Введите логин" onChange={login.onChange} value={login.value} onBlur={login.onBlur} className="form-control" name="UserName"/>
-                    {(login.isDirty && login.isEmpty ) && <div style={{color:"red"}}>{login.isEmpty}</div>}
-                    {(login.isDirty && login.minLengthError) && <div style={{color:"red"}}>{login.minLengthError}</div>}
-                    {(login.isDirty && login.maxLengthError) && <div style={{color:"red"}}>{login.maxLengthError}</div>}
-                    {(login.isDirty && login.isEmail) && <div style={{color:"red"}}>Не является почтой</div>}
+                    {outValid(login)}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="Password" className="form-label" >Пароль</label>
                     <input id="Password" onChange={password.onChange} value={password.value} onBlur={password.onBlur}  className="form-control" name="Password"/>
-                    {(password.isDirty && password.isEmpty ) && <div style={{color:"red"}}>{password.isEmpty}</div>}
-                    {(password.isDirty && password.minLengthError ) && <div style={{color:"red"}}>{password.minLengthError}</div>}   </div>
+                    {outValid(password)}
+                </div>
                 <div className="mb-3">
                     <label htmlFor="RememberMe" className="form-label" >Запоинить меня?</label>
                     <input id="RememberMe" type="checkbox" className="form-check-input" />

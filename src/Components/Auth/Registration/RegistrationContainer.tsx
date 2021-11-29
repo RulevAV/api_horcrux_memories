@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {UserRegisterThunkCreator} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
-import Registration from "./Registration";
+import {default as WichRegistration} from "./Registration";
 import {AppStateType} from "../../../redux/redux-store";
 
 
@@ -17,7 +17,7 @@ let mapDispatchToProps = (dispatch:any)=>{
         }
     }
 };
-let RegistrationCompose = compose(
+let Registration = compose(
     connect(mapStateToProps,mapDispatchToProps)
-)(Registration);
-export default RegistrationCompose;
+)(WichRegistration);
+export default Registration;

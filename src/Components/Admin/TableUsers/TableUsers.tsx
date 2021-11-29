@@ -1,19 +1,20 @@
 import React from "react";
 import RowTable from "./RowTable";
 import {UserType} from "../../../redux/Admin-Reducer";
+import {IdUserType} from "../Admin";
 type PropsType = {
     Users:Array<UserType>,
-    idModal:string,
-    SetIdUser:(asd:number|null)=>void
+    handleShow:()=>void
+    SetIdUser:(value:IdUserType)=>void
 }
-const TableUsers :React.FC<PropsType> = ({Users,idModal,SetIdUser})=>{
+const TableUsers :React.FC<PropsType> = ({Users,handleShow,SetIdUser})=>{
     let massRow = Users?.map((u:UserType,index:number)=>{
 
         return <RowTable key={index}
                          user={u}
                          index={index}
-                         idModal={idModal}
                          SetIdUser={SetIdUser}
+                         handleShow={handleShow}
         />
     });
     return  <table className="table table-bordered">

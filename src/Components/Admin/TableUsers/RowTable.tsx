@@ -1,22 +1,20 @@
 import React from "react";
 import {UserType} from "../../../redux/Admin-Reducer";
-
+import { Button } from 'react-bootstrap';
+import {IdUserType} from "../Admin";
 
 type PropsType = {
     user: UserType,
     index: number,
-    idModal: string,
-    SetIdUser: (index:number,roles:Array<string>) => void
+    SetIdUser: (value:IdUserType) => void
+    handleShow:()=>void
 }
 
-const RowTable : React.FC<PropsType> = ({user,index,idModal,SetIdUser})=>{
+const RowTable : React.FC<PropsType> = ({user,index,handleShow,SetIdUser})=>{
     let callback = ()=>{
-        SetIdUser(index,user.roles);
+        SetIdUser(index);
+        handleShow();
     }
-    let btn = <button id={"btnOpen"} onClick={callback} className={"btn btn-outline-primary"} data-bs-toggle="modal" data-bs-target={"#"+ idModal}>
-        Открыть
-    </button>
-
     return <tr key={user.id}>
         <td id={"index"} >{index+1}</td>
         <td id={"email"}>{user.email}</td>
@@ -24,7 +22,9 @@ const RowTable : React.FC<PropsType> = ({user,index,idModal,SetIdUser})=>{
         <td id={"firstName"}>{user.firstName}</td>
         <td id={"userName"}>{user.userName}</td>
         <td id={"roles"}>{user.roles?.join('\n')}</td>
-        <td id={"btn"}>{btn}</td>
+        <td id={"btn"}>  <Button variant="primary" onClick={callback}>
+            Открыть
+        </Button></td>
     </tr>
 }
 

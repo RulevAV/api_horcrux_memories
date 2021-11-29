@@ -10,7 +10,6 @@ const Question:React.FC<any> = (props) =>{
         image = new Image();
         image.src = 'data:image/png;base64,' + props.images;
     }
-
     return <div key={props.id} className="row bg-secondary m-1 p-1 Question">
         <div className="col-sm-4 Question_img">
             <a onClick={()=>{props.GetQuests(props.id)}}>

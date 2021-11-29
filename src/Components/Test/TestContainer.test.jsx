@@ -7,6 +7,7 @@ import {LOG_OUT} from "../../redux/Auth-Reducer";
 import {createStore} from "redux";
 import WithTestContainer from "./TestContainer";
 import {BrowserRouter} from "react-router-dom";
+import QuestionTest from "./QuestionTest/QuestionTest";
 
 configure({ adapter: new Adapter() });
 
@@ -22,7 +23,7 @@ const initialState = {
                 description: null,
                 images:"",
                 isIgnoreTest: false,
-                isHiddenContentTest: false,
+                isHiddenContentTest: true,
                 id: "71c035d0-6855-4626-a33d-08d97c198df7",
                 dateAdd: "2021-09-20T16:52:53"
             },
@@ -69,8 +70,7 @@ let Store = createStore(reducer,initialState);
 Store.dispatch=jest.fn();
 
 const renderWithRedux = (
-    component,
-    {initialState, store=Store}={}
+    component,store=Store
 
 )=>{
     return{
@@ -83,14 +83,45 @@ const renderWithRedux = (
 };
 
 
-describe('Admin>TableUsers> component', ()=>{
-    const GetUsers = jest.fn()
-
-    it('RowTable test props', ()=>{
+describe('QuestionTest component', ()=>{
+    let QuestionTestFun = jest.fn();
+    let SetIsHiddenFun = jest.fn();
+    it('QuestionTestFun', ()=>{
         let dom = renderWithRedux(<WithTestContainer/>);
         let temp = dom.queryByText("Дальше");
         fireEvent.click(temp);
         //expect(GetUsers).toHaveBeenCalled()
     })
+    it('QuestionTestFun test null', ()=>{
+          let dom = renderWithRedux(<QuestionTest/>);
 
+    })
+    it('QuestionTestFun test images', ()=>{
+        let dom = renderWithRedux(
+            <QuestionTest images={"images"}/>
+        );
+    })
+    it('QuestionTestFun test IgnoreTest', ()=>{
+        let dom = renderWithRedux(
+            <QuestionTest/>
+        );
+        let isIgnoreTest = dom.container.querySelector("#isIgnoreTest")
+        fireEvent.click(isIgnoreTest)
+    })
+    it('QuestionTestFun test SetIsHidden', ()=>{
+        let dom = renderWithRedux(
+            <QuestionTest/>
+        );
+        let Show = dom.getByText("Показать")
+        fireEvent.click(Show)
+    })
+    it('QuestionTestFun test next', ()=>{
+       /* let dom = renderWithRedux(
+            <QuestionTest images={"images"} QuestionTestFun={QuestionTestFun} SetIsHidden={SetIsHiddenFun}/>
+        );*/
+        /* let temp1 = dom.find('[value="Дальше"]')
+         temp1.simulate("click");
+         let temp2 = dom.find('[value="Показать"]')
+         temp2.simulate("click");*/
+    })
 });

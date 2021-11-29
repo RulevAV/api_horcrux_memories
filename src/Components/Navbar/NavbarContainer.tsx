@@ -9,7 +9,6 @@ export type TypeProps= {
         roles : Array<string>
     },
     Logout:()=>void,
-    RefreshAuthCookie:()=>void
 }
 
 const NavbarContainer = ()=>{
@@ -23,11 +22,9 @@ const NavbarContainer = ()=>{
     const Logout = ()=>{
         dispatch(LogoutThunkCreator());
     };
-    const RefreshAuthCookie = ()=>{
-        dispatch(RefreshAuthCookieThunkCreator());
-    };
 
-    return <Navbar data={data} Logout={Logout} RefreshAuthCookie={RefreshAuthCookie}/>
+
+    return <Navbar data={data} Logout={Logout}/>
 }
 
 export default NavbarContainer;

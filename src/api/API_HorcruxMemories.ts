@@ -1,6 +1,6 @@
 import axios from "axios";
 import {AuthAPI} from "./API_AuthServer";
-import {getCookie} from "./CookieFunction";
+import Cookies from "js-cookie";
 const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
 //const ServerHorcruxMemories = "https://localhost:44370/";
 const DataGuery = axios.create({
@@ -14,7 +14,7 @@ const DataGuery = axios.create({
 export const DataAPI = {
     Portions : (IdParent?:string, Page?:number, PortionsSize?:number )=>{
         return AuthAPI.IsExistsToken().then(req=>{
-            let Token=getCookie("Token");
+            let Token=Cookies.get("Token");
             let config = {
                 headers: {
                     'Authorization': `Bearer  ${Token}`
@@ -27,7 +27,7 @@ export const DataAPI = {
     },
     TestStart : (IdRoot:string,nameTest:string)=>{
         return AuthAPI.IsExistsToken().then(req=>{
-            let Token=getCookie("Token");
+            let Token=Cookies.get("Token");
             let config = {
                 headers: {
                     'Authorization': `Bearer  ${Token}`
@@ -39,7 +39,7 @@ export const DataAPI = {
     },
     TestNext : (IdRoot:string,TestHistory:string[],id:string,isIgnoreTest:boolean,nameTest:string)=>{
         return AuthAPI.IsExistsToken().then(req=>{
-            let Token=getCookie("Token");
+            let Token=Cookies.get("Token");
             let data= JSON.stringify({IdRoot,TestHistory,id,isIgnoreTest})
             let config = {
                 headers: {

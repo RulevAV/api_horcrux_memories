@@ -1,6 +1,6 @@
 import {cleanup, fireEvent, queryByAttribute, render, screen} from "@testing-library/react";
 
-import React from "react";
+import React, {useState} from "react";
 import {Provider} from "react-redux";
 
 import HomeCompose from "./HomeContainer";
@@ -14,19 +14,19 @@ let Query = {
     description: "null|string",
     id:"string",
     idParent:"string",
-    images:"string",
+    images:"null",
     isHiddenContentTest: true,
     isIgnoreTest: true,
     name:"string",
 }
-const initialState = {
+let initialState = {
     QuestionReducer:{
         DependOnParentQuestion:{
             idParent: "string|null",
             nameParent: "string|null",
             page: 1,
             questions: [Query],
-            sizePage: 1,
+            sizePage: 2,
             sizeQuestions: 1
         },
         stories:[],
@@ -68,9 +68,14 @@ Store.dispatch=jest.fn();
 
 const renderWithRedux = (
     component,
-    {initialState, store=Store}={}
+    initialState
 
 )=>{
+    let store=Store;
+    if(initialState){
+        store = createStore(reducer,initialState);
+        store.dispatch=jest.fn();
+    }
     return{
         ...render(  <BrowserRouter basename="/">
             <Provider store={store} >{component}</Provider>
@@ -82,6 +87,9 @@ const renderWithRedux = (
 
 describe('Home component', ()=>{
     let GetQuestsPagination=jest.fn();
+    const SetAskTest = jest.fn()
+    const GetQuests = jest.fn();
+    //Home
     it('Home Render', ()=>{
         renderWithRedux( <HomeCompose/>)
     })
@@ -110,4 +118,48 @@ describe('Home component', ()=>{
         fireEvent.click(temp2);
     })
 
+    //Question
+    it('Question Question_img', ()=>{
+        let dom= renderWithRedux( <HomeCompose />)
+                let temp = dom.container.querySelector(".Question_img a");
+                fireEvent.click(temp);
+    })
+    it('Question Question_img=null', ()=>{
+        let state =JSON.parse(JSON.stringify(initialState));
+        state.QuestionReducer.DependOnParentQuestion.questions[0].images=null;
+        let dom= renderWithRedux( <HomeCompose />,state);
+
+    })
+    it('Question click Open ', ()=>{
+
+        let dom= renderWithRedux( <HomeCompose />)
+
+           let temp = dom.getByText("Открыть");
+           fireEvent.click(temp);
+    })
+    it('Question Pagination click ', ()=>{
+
+        let dom= renderWithRedux( <HomeCompose />)
+          //let dom = mount( <Pagination id={"Pagination"} sizePage={sizePage} page={page} stories={stories} GetQuestsPagination={fn} Link={useRefSpy}/>)
+        let items = dom.container.querySelectorAll("#Pagination1 a");
+        for(let i=0; i<items.length;i++)
+        {
+           fireEvent.click(items[i]);
+        }
+    })
+
+
+    //Pagination
+    it('Scroll Pagination', ()=>{
+
+
+        let dom= renderWithRedux( <HomeCompose />)
+        let ul1 = dom.container.querySelector("#Pagination1 ul");
+        let ul2 = dom.container.querySelector("#Pagination2 ul");
+
+        fireEvent.scroll(ul1, { target: { scrollX: 100000 } });
+        fireEvent.scroll(ul2, { target: { scrollX: 100000 } });
+
+
+    })
 });

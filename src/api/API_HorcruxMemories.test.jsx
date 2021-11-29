@@ -6,10 +6,15 @@ configure({ adapter: new Adapter() });
 
 
 
-describe('Admin>TableUsers> component', ()=>{
+describe('DataAPI', ()=>{
 
-    it('RowTable test props', ()=>{
-        //DataAPI
+    it('Portions', ()=>{
+        DataAPI.Portions();
     })
-
+    it('TestNext', ()=>{
+        DataAPI.TestNext();
+    })
+    it('TestStart', ()=>{
+        DataAPI.TestStart();
+    })
 });

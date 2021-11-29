@@ -3,8 +3,8 @@ import {NavLink} from "react-router-dom";
 import React, {useState} from "react";
 
 type PropsType = {
-    isIgnoreTest:string,
-    isHiddenContentTest:string,
+    isIgnoreTest:boolean,
+    isHiddenContentTest:boolean,
     images:string,
     name:string,
     id:string,
@@ -13,9 +13,8 @@ type PropsType = {
 }
 
 let QuestionTest:React.FC<PropsType> = ({...props}) =>{
-    let isIgnoreTest = !!props ? props.isIgnoreTest:"";
-
-    let [isHidden,SetIsHidden]= useState(!!props?.isHiddenContentTest);
+    let [isIgnoreTest,setIsIgnoreTest] = useState(props.isIgnoreTest);
+    let [isHidden,SetIsHidden]= useState(props.isHiddenContentTest);
 
     let image=new Image();
     image.src = img;
@@ -29,8 +28,10 @@ let QuestionTest:React.FC<PropsType> = ({...props}) =>{
             <div className="row">
                 <div className="d-flex flex-row-reverse ">
                     <div className="form-check form-switch">
-                        <input className="form-check-input" type="checkbox" value={isIgnoreTest} id="flexSwitchCheckDefault"/>
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Пропускать этот вопрос</label>
+                        <input className="form-check-input" type="checkbox" id="isIgnoreTest" checked={isIgnoreTest} onClick={()=>{
+                            setIsIgnoreTest(!isIgnoreTest)
+                        }}/>
+                        <label className="form-check-label" htmlFor="isIgnoreTest">Пропускать этот вопрос</label>
                     </div>
                 </div>
             </div>

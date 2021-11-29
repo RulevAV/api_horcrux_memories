@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Login from "./Login";
+import {default as WichLogin} from "./Login";
 import {SetUserThunkCreator, AuthActions} from "../../../redux/Auth-Reducer";
 import {compose} from "redux";
 import {AppStateType} from "../../../redux/redux-store";
@@ -21,7 +21,7 @@ let mapDispatchToProps = (dispatch:any)=>{
     }
 };
 
-let Pcompose = compose(
+let Login = compose(
     connect(mapStateToProps,mapDispatchToProps)
-)(Login);
-export default Pcompose;
+)(WichLogin);
+export default Login;

@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
-import Admin from "./Admin";
 import {compose} from "redux";
 import {GetUsersThunkCreator, SetUserRolesThunkCreator} from "../../redux/Admin-Reducer";
+import Admin from "./Admin";
 
 
 let mapStateToProps = (state:any)=>{

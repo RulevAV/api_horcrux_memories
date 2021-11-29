@@ -31,15 +31,8 @@ const itemsLink = (roles:Array<string>) =>{
     return ItemsMenuUI;
 }
 
-const Navbar:React.FC<TypeProps> = ({data,Logout,RefreshAuthCookie}) =>{
-
-    useEffect(()=>{
-        RefreshAuthCookie?.();//добавить обновление при изменении ролей
-
-    },[]);
-
+const Navbar:React.FC<TypeProps> = ({data,Logout}) =>{
     let ItemsLink = itemsLink(data.roles);
-
     return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
             {<NavLink className="navbar-brand " to={"/"} >SPA_HorcruxMemories</NavLink>}

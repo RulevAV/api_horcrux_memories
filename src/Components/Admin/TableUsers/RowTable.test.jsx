@@ -1,4 +1,4 @@
-import {render, screen,queryByAttribute } from "@testing-library/react";
+import {render, screen, queryByAttribute, fireEvent} from "@testing-library/react";
 import RowTable from "./RowTable";
 import React from "react";
 import {configure, mount} from "enzyme";
@@ -22,12 +22,12 @@ const PropsType = {
 
 
 describe('Admin>TableUsers>RowTable component', ()=>{
-    const fn = jest.fn()
-
+    const handleShow = jest.fn()
+    const SetIdUser = jest.fn()
     it('RowTable matching names by id', ()=>{
         let dom = render(<table>
             <tbody id="tbody">
-            <RowTable user={User} index={0} idModal={"idModal"} SetIdUser={fn} />
+            <RowTable user={User} index={0} SetIdUser={SetIdUser} />
             </tbody>
         </table>);
         const getById = queryByAttribute.bind(null, 'id');
@@ -63,16 +63,4 @@ describe('Admin>TableUsers>RowTable component', ()=>{
         /*expect(onChange).toHaveBeenCalledTimes(5);*/
        /* expect(Role).toBeInTheDocument();*/
     })
-    it('RowTable test click Open', ()=>{
-        let dom = mount(<table>
-            <tbody id="tbody">
-            <RowTable user={User} index={0} idModal={"idModal"} SetIdUser={fn} />
-            </tbody>
-        </table>);
-        let btn = dom.find('#btnOpen');
-        btn.simulate('click');
-        //console.log(asd.debug())
-        expect(fn).toHaveBeenCalled()
-    })
-
 });
