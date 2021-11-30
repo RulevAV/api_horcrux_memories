@@ -47,6 +47,18 @@ export const TestReducer = (state=initialState, action : ActionsTypes) => {
                 TestHistory: action.TestHistory,
             };
         }
+        case "SHOW_CONTENT":{
+            return {
+                ...state,
+                Ask:{
+                    ...state.Ask,
+                    question:{
+                        ...state.Ask.question,
+                        isHiddenContentTest: action.value
+                    }
+                }
+            };
+        }
         case LOG_OUT: {
             return initialState;
         }
@@ -63,6 +75,7 @@ export const TestActions = {
     SetIdRoot :(IdRoot:string)=>({type : "SET_ID_ROOT",IdRoot} as const),
     SetAsk :(Ask:AskType)=>( {type : "TEST_START",Ask}as const),
     TestClear : ()=>({type : "TEST_CLEAR"}as const),
+    ShowContent:(value:boolean)=>({type : "SHOW_CONTENT",value} as const),
     SetTestHistory :(TestHistory:Array<string>)=>({type : "SET_TEST_HISTOTY",TestHistory}as const),
     LOG_OUT : ()=>({type : "LOG_OUT"}as const),
 }

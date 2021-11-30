@@ -36,7 +36,7 @@ const Admin :React.FC<PropsType> = ({AllRoles,GetUsers,SetUserRoles,Users}) =>{
     }
 
    return <div>
-                <h1>Admin</h1>
+                <h1 className={"text-success"}>Admin</h1>
                    <div className={"table-responsive"}>
                         <TableUsers Users={Users}
                                     handleShow={handleShow}

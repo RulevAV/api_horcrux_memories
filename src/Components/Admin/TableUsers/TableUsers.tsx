@@ -17,7 +17,7 @@ const TableUsers :React.FC<PropsType> = ({Users,handleShow,SetIdUser})=>{
                          handleShow={handleShow}
         />
     });
-    return  <table className="table table-bordered">
+    return  <table className="table table-dark">
         <caption> Все пользователи </caption>
         <thead>
         <tr>

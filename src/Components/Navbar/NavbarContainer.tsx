@@ -1,6 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
-import {LogoutThunkCreator, RefreshAuthCookieThunkCreator} from "../../redux/Auth-Reducer";
+import {
+    AuthActions, AuthType,
+    LogoutThunkCreator,
+} from "../../redux/Auth-Reducer";
 import Navbar from "./Navbar";
+import Cookies from "js-cookie";
 
 
 export type TypeProps= {
@@ -9,6 +13,7 @@ export type TypeProps= {
         roles : Array<string>
     },
     Logout:()=>void,
+    InitialApp:()=>void,
 }
 
 const NavbarContainer = ()=>{
@@ -22,9 +27,11 @@ const NavbarContainer = ()=>{
     const Logout = ()=>{
         dispatch(LogoutThunkCreator());
     };
+    const InitialApp = ()=>{
+        dispatch(AuthActions.InitialApp());
+    };
 
-
-    return <Navbar data={data} Logout={Logout}/>
+    return <Navbar data={data} Logout={Logout} InitialApp={InitialApp}/>
 }
 
 export default NavbarContainer;

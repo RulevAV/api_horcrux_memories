@@ -31,7 +31,10 @@ const itemsLink = (roles:Array<string>) =>{
     return ItemsMenuUI;
 }
 
-const Navbar:React.FC<TypeProps> = ({data,Logout}) =>{
+const Navbar:React.FC<TypeProps> = ({data,Logout,InitialApp}) =>{
+    useEffect(()=>{
+        InitialApp();
+    },[]);
     let ItemsLink = itemsLink(data.roles);
     return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">

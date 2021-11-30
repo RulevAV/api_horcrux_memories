@@ -1,5 +1,6 @@
 import {AuthAPI} from "../api/API_AuthServer";
 import {InfoActionsTypes, ThunkActionType} from "./redux-store";
+import Cookies from "js-cookie";
 
 export const LOG_OUT = "LOG_OUT";
 
@@ -34,7 +35,8 @@ const initialState = {
     Register: {
         isRegister : false,
         LoginRegistration:"",
-    } as Register
+    } as Register,
+    InitialApp:false
 };
 export type initialStateType = typeof initialState;
 
@@ -49,7 +51,10 @@ export const authReducer = (state=initialState, action : ActionsTypes) :initialS
             };
         }
         case LOG_OUT:{
-            return initialState
+            return {
+                ...initialState,
+                InitialApp :state.InitialApp
+            }
         }
         case "USER_REGISTER":{
             return {
@@ -59,6 +64,23 @@ export const authReducer = (state=initialState, action : ActionsTypes) :initialS
                     isRegister : action.isRegister,
 
                 }
+            };
+        }
+        case "INITIAL_APP":{
+            let Auth=Cookies.get("Auth");
+            let data = Auth ? JSON.parse(Auth):null;
+            if(data){
+                return {
+                    ...state,
+                    Auth:{
+                        ...data,
+                    },
+                    InitialApp:true
+                };
+            }
+            return {
+                ...state,
+                InitialApp:true
             };
         }
         default: return state;
@@ -76,7 +98,8 @@ type ActionsTypes = InfoActionsTypes<typeof AuthActions>;
 export const AuthActions = {
     SetUser :(data :AuthType)=>({type : "SET_USER_DATA", data: data } as const),
     UserRegister :(isRegister :boolean,Login:string)=>({type : "USER_REGISTER",isRegister :isRegister}as const),
-    Logout :()=>({type : LOG_OUT} as const)
+    Logout :()=>({type : LOG_OUT} as const),
+    InitialApp:()=>({type : "INITIAL_APP"}as const)
 }
 
 //SET_USER_DATA
@@ -120,6 +143,10 @@ export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Userna
 
     }
 }
+
+
+
+
 
 //LOG_OUT
 export const LogoutThunkCreator = ()  :ThankType  =>{

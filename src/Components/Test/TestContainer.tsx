@@ -5,7 +5,7 @@ import { withRouter} from "react-router-dom"
 import Test from "./Test";
 import {
     NextAskThunkCreator,
-    StartAskThunkCreator,
+    StartAskThunkCreator, TestActions,
 } from "../../redux/Test-Reducer";
 
 
@@ -21,6 +21,9 @@ let mapDispatchToProps = (dispatch:any)=>{
         },
         NextAsk(IdRoot:string,TestHistory:Array<string>,id:string ,isIgnoreTest:boolean,nameTest:string){
             dispatch(NextAskThunkCreator(IdRoot,TestHistory,id,isIgnoreTest,nameTest));
+        },
+        ShowContent(value:boolean){
+            dispatch(TestActions.ShowContent(value));
         },
     }
 };

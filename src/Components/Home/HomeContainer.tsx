@@ -5,7 +5,7 @@ import {
     DependOnParentQuestionType,
     GetQuestsPaginationThunkCreator,
     GetQuestsReturnThunkCreator,
-    GetQuestsThunkCreator, historyType,
+    GetQuestsThunkCreator, historyType, QuestionAction,
 } from "../../redux/Question-Redux";
 import { TestActions} from "../../redux/Test-Reducer";
 import {AppStateType} from "../../redux/redux-store";
@@ -17,8 +17,9 @@ export type mapStateToPropsType = {
 }
 export type mapDispatchToPropsType = {
     GetQuests:(IdParent?:string, Page?:number, PortionsSize?:number) => void,
-    GetQuestsReturn:(stories:Array<historyType>)=> void,
-    GetQuestsPagination:(stories:Array<historyType>,Page:number)=> void,
+    ClearQuests:()=>void,
+    GetQuestsReturn:(history:historyType)=> void,
+    GetQuestsPagination:(history:historyType,Page:number)=> void,
     SetAskTest:(IdRoot:string)=> void,
 }
 export type ownPropsType = {
@@ -37,11 +38,14 @@ let mapDispatchToProps = (dispatch:any)=>{
         GetQuests(IdParent?:string, Page?:number, PortionsSize?:number){
             dispatch(GetQuestsThunkCreator(IdParent, Page, PortionsSize));
         },
-        GetQuestsReturn(stories:Array<historyType>){
-            dispatch(GetQuestsReturnThunkCreator(stories));
+        ClearQuests(){
+            dispatch(QuestionAction.ClearQuests())
         },
-        GetQuestsPagination(stories:Array<historyType>,Page:number){
-            dispatch(GetQuestsPaginationThunkCreator(stories,Page));
+        GetQuestsReturn(history:historyType){
+            dispatch(GetQuestsReturnThunkCreator(history));
+        },
+        GetQuestsPagination(history:historyType,Page:number){
+            dispatch(GetQuestsPaginationThunkCreator(history,Page));
         },
         SetAskTest(IdRoot:string){
             dispatch(TestActions.SetIdRoot(IdRoot))

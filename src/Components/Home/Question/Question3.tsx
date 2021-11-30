@@ -12,15 +12,13 @@ const Question:React.FC<any> = (props) =>{
         image.src = 'data:image/png;base64,' + props.images;
     }
     let Color = "green";//blue,red,green,yellow
-   /* <a className="m-1 col-xs-12 col-lg-2 btn btn-light" onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
-    <NavLink id={"TestNormal"} className="m-1 col-xs-12 col-lg-2 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Normal'} > Начать тест</NavLink>
-    <NavLink id={"TestGlobal"} className="m-1 col-xs-12 col-lg-4 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Global'} > Начать подробный тест</NavLink>
-*/
-    return <article className={"postcard dark " + Color}>
+    let theme = "dark";//light,dark
+
+    return <article className={"postcard "+ theme + " " + Color}>
         <a onClick={()=>{props.GetQuests(props.id)}} className="postcard__img_link" href="#">
             <img className="postcard__img" src={image.src} alt="Image Title"/>
         </a>
-        <div className="postcard__text">
+        <div className={"postcard__text " + (theme==="light"?"t-dark":"")}>
             <h1 className={"postcard__title "+Color}><a onClick={()=>{props.GetQuests(props.id)}} href="#">{props.name}</a></h1>
             <div className="postcard__subtitle small">
                 <time dateTime="2020-05-25 12:00:00">
@@ -32,9 +30,7 @@ const Question:React.FC<any> = (props) =>{
 
             </div>
             <ul className="postcard__tagbox">
-               {/* <a className="m-1 col-xs-12 col-lg-2 btn btn-light" onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
 
-*/}
                 <li className="tag__item">
                     <a onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
                 </li>

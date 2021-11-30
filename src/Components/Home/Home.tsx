@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import Question from "./Question/Question3";
-import Pagination from "./Pagination/Pagination";
+import Pagination from "./Pagination/Pagination2";
 import {QueryType} from "../../redux/Question-Redux";
 import {mapDispatchToPropsType, mapStateToPropsType, ownPropsType} from "./HomeContainer";
 import {Row,Col} from "react-bootstrap";
+import Breadcrumb from "../breadcrumb";
 
 
 type PropsType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType;
@@ -11,12 +12,15 @@ type PropsType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType;
 
 
 const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
-                                       stories,SetAskTest,GetQuestsPagination,GetQuestsReturn,GetQuests
+                                       stories,SetAskTest,GetQuestsPagination,GetQuestsReturn,GetQuests,ClearQuests
 }) =>{
     let P1 = useRef<any>();
     let P2 = useRef<any>();
     useEffect(()=>{
         GetQuests();
+        return ()=>{
+            ClearQuests();
+        }
     },[]);
     useEffect(()=>{
         if (P1.current && P2.current){
@@ -32,17 +36,21 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
             return <Question key={index} SetAskTest={SetAskTest} {...question} GetQuests={GetQuests} />
     });
 
-    return <div>
-        <h1>{ isAuthenticated? "Раздел: "+DependOnParentQuestion.nameParent:"Войдите в аккаунт"}</h1>
-        <div className="row">
-            <a id={"Return"} className="col-xs-12 col-sm-3 col-md-3 col-lg-2 col-xl-1 btn btn-success" onClick={()=>{GetQuestsReturn(stories);}}>Вернуться</a>
-            <span className="col-xs-12 col-sm-5 col-md-6 col-lg-8 col-xl-9">Количество элементов {DependOnParentQuestion.sizeQuestions}</span>
-        </div>
-        <Pagination id={"Pagination1"} GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
-        {Questions}
 
-            <Pagination id={"Pagination2"} GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P2} sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
-    </div>
+
+
+    return <div>
+       <Breadcrumb stories={stories} GetQuestsReturn={GetQuestsReturn}/>
+        <div className="row">
+        </div>
+
+        <Pagination id={"Pagination1"} GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1}
+                    sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
+        {Questions}
+       {/* {DependOnParentQuestion.questions? null
+            : <Pagination id={"Pagination2"} GetQuestsPagination={GetQuestsPagination} stories={stories} Link={P1}
+                          sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
+        }*/}  </div>
 }
 
 

@@ -23,7 +23,8 @@ export type DependOnParentQuestionType = {
 }
 export type historyType = {
     idParent: string,
-    page: number
+    page: number,
+    name:string
 }
 
 type ThankType = ThunkActionType<ActionsTypes,Promise<void>>;
@@ -49,7 +50,8 @@ export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
         case "SET_QUESTS":
             let history ={
                 idParent: action.data.idParent,
-                page: action.data.page
+                page: action.data.page,
+                name: action.data.nameParent
             }
             return {
                 ...state,
@@ -59,10 +61,21 @@ export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
                 stories:[...state.stories,history]
             };
         case "SET_STORE":
+            let newstories = [];
+            for (let i in state.stories)
+            {
+                if(state.stories[i].idParent===action.data.idParent)
+                    break;
+                else
+                    newstories.push(state.stories[i]);
+            }
+
             return {
                 ...state,
-                stories:action.data
+                stories:newstories
             };
+        case "CLEAR_QUEST":
+            return initialState;
         case LOG_OUT: {
             return initialState;
         }
@@ -77,6 +90,7 @@ type ActionsTypes = InfoActionsTypes<typeof QuestionAction>;
 export const QuestionAction = {
     SetQuests :(data:DependOnParentQuestionType)=>({type : "SET_QUESTS",data }as const),
     SetStore :(data:historyType)=>({type : "SET_STORE", data }as const),
+    ClearQuests :()=>({type : "CLEAR_QUEST" }as const),
     LOG_OUT :()=>({type : LOG_OUT }as const)
 }
 
@@ -91,26 +105,21 @@ export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSi
 }
 
 //SET_STORE
-export const GetQuestsReturnThunkCreator = (stories:any)  :ThankType =>{
-    let hist = stories.pop();
-    let hist2 = stories.pop();
+export const GetQuestsReturnThunkCreator = (history:historyType)  :ThankType =>{
+
     return async (dispatch) => {
-        dispatch(QuestionAction.SetStore(stories));
-        DataAPI.Portions(hist2.idParent,hist2.page).then((response:any)=>{
+        dispatch(QuestionAction.SetStore(history));
+        DataAPI.Portions(history.idParent,history.page).then((response:any)=>{
             dispatch(QuestionAction.SetQuests(response.data))
         })
     }
 }
-export const GetQuestsPaginationThunkCreator = (stories:any,Page:number)  :ThankType  =>{
+export const GetQuestsPaginationThunkCreator = (history:historyType,Page:number)  :ThankType  =>{
     return async (dispatch) => {
-        let idParent;
-        if(stories.length>0)
-        {
-            let hist = stories.pop();
-            idParent = hist.idParent;
-        }
-        dispatch(QuestionAction.SetStore(stories));
-        DataAPI.Portions(idParent,Page).then((response:any)=>{
+
+        history.page=Page;
+        dispatch(QuestionAction.SetStore(history));
+        DataAPI.Portions(history.idParent,history.page).then((response:any)=>{
             dispatch(QuestionAction.SetQuests(response.data))
         })
     }

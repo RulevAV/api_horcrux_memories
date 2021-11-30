@@ -45,14 +45,23 @@ export const setCookies = (data:TokenUserType)=>{
     let RefreshToken = data?.refreshToken;
     if(Token)
     {
-        let date = new Date( Date.parse(data.refreshTokenExpiration) );
-        Cookies.set("Token",data.token, {expires:date });
+        Cookies.set("Token",data.token);
     }
     if(RefreshToken)
     {
-        Cookies.set("RefreshToken",data.refreshToken);
+        let date = new Date( Date.parse(data.refreshTokenExpiration) );
+        Cookies.set("RefreshToken",data.refreshToken,{expires:date });
     }
-    Cookies.set("Auth",data);
+    if(data)
+    {
+        Cookies.set("Auth",JSON.stringify(data));
+    }
+}
+
+export const deleteCookies = ()=>{
+    Cookies.remove("Token");
+    Cookies.remove("RefreshToken");
+    Cookies.remove("Auth");
 }
 
 //token,refreshToken,refreshTokenExpiration
@@ -67,10 +76,9 @@ export const AuthAPI = {
     },
     RefreshToken : ()=>{
         let RefreshToken=Cookies.get("RefreshToken");
-
         let data = JSON.stringify({RefreshToken});
         return  AuthGuery.post<ResponseTokenType>("api/user/refresh-token",data).then(response =>{
-            setCookies(response.data);
+           setCookies(response.data);
             return response;
         })
     },
@@ -81,10 +89,10 @@ export const AuthAPI = {
     },
 
     IsExistsToken:()=>{
-        let promise = new Promise((resolve:any,reject) => {
+        let promise = new Promise((resolve:any,reject:any) => {
             let Token=Cookies.get("Token");
             if(!Token){
-                AuthAPI.RefreshToken().then(resolve());
+                AuthAPI.RefreshToken().then(resolve).catch(reject);
             }
             else {
                 resolve();
@@ -109,7 +117,8 @@ export const AuthAPI = {
         return AuthAPI.IsExistsToken().then(req=>{
             let RefreshToken=Cookies.get("RefreshToken");
             let data =  JSON.stringify({RefreshToken})
-            return AuthGuery.post('api/user/revoke-token',data)
+            deleteCookies();
+            return AuthGuery.post('api/user/revoke-token',data).then()
         })
     },
     GetUser:()=>{
