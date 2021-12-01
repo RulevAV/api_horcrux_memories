@@ -15,7 +15,7 @@ let Breadcrumb:React.FC<propsType> = ({stories,GetQuestsReturn})=>{
             return <li key={i} className="breadcrumb-item active" aria-current="page">{e.name}</li>
     })
     return<>
-        <nav aria-label="breadcrumb">
+        <nav className={"m-3 fs-3"} aria-label="breadcrumb ">
             <ol className="breadcrumb">
                 {items}
             </ol>

@@ -1,9 +1,8 @@
 import {AuthAPI} from "../api/API_AuthServer";
-import {LOG_OUT} from "./Auth-Reducer";
+import {LOCK_SCREEN, LOG_OUT} from "./Auth-Reducer";
 import {AppStateType, InfoActionsTypes} from "./redux-store";
 import {Dispatch} from "react";
 import {ThunkAction} from "redux-thunk";
-
 
 export type UserType = {
     id: number,
@@ -60,26 +59,29 @@ export const actions = {
     SetUsers: (Users: Array<UserType>, AllRoles: Array<string>) => ({type: "ADMIN_GET_USER", Users, AllRoles} as const),
     SetRoles: (Email: string, Roles: Array<string>) => ({type: "ADMIN_SET_USER_ROLES", Email, Roles} as const),
     ClearState: () => ({type: LOG_OUT} as const),
+    LockScreen:(IsLockScreen:boolean)=>({type: LOCK_SCREEN,IsLockScreen}as const)
 }
-
 
 export const GetUsersThunkCreator = () =>{
     return async (dispatch : Dispatch<ActionsTypes>,getState:()=>AppStateType) => {
+        dispatch(actions.LockScreen(true));
         await AuthAPI.GetUser().then((response:any) =>{
             dispatch(actions.SetUsers(response.data.users,response.data.allRoles));
+            dispatch(actions.LockScreen(false));
         });
-       /* AuthAPI.GetUser().then((temp : any)=>{
-            console.log(temp)
-        });*/
+
 
     }
 }
 
 export const SetUserRolesThunkCreator = (Email:string,Roles:Array<string>) : ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
     return async (dispatch ) => {
+        dispatch(actions.LockScreen(true));
         AuthAPI.AddDeleteRole(Email,Roles).then((response:any) =>{
             dispatch(actions.SetRoles(Email,Roles));
+            dispatch(actions.LockScreen(false));
         });
+
     }
 }
 

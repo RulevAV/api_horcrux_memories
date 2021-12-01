@@ -5,7 +5,7 @@ import {
     DependOnParentQuestionType,
     GetQuestsPaginationThunkCreator,
     GetQuestsReturnThunkCreator,
-    GetQuestsThunkCreator, historyType, QuestionAction,
+    GetQuestsThunkCreator, historyType, QuestionAction, SetEnableAllQuestionsThunkCreator,
 } from "../../redux/Question-Redux";
 import {StartAskThunkCreator, TestActions} from "../../redux/Test-Reducer";
 import {AppStateType} from "../../redux/redux-store";
@@ -21,6 +21,7 @@ export type mapDispatchToPropsType = {
     GetQuestsReturn:(history:historyType)=> void,
     GetQuestsPagination:(history:historyType,Page:number)=> void,
     SetRootTest:(IdRoot:string,nameTest:string)=> void,
+    SetEnableAllQuestions:(IdRoot:string,isIgnore:boolean)=>void,
 }
 export type ownPropsType = {
     pageTitle:string
@@ -40,6 +41,9 @@ let mapDispatchToProps = (dispatch:any)=>{
         },
         ClearQuests(){
             dispatch(QuestionAction.ClearQuests())
+        },
+        SetEnableAllQuestions(IdParent:string,isIgnore:boolean){
+          dispatch(SetEnableAllQuestionsThunkCreator(IdParent,isIgnore))
         },
         GetQuestsReturn(history:historyType){
             dispatch(GetQuestsReturnThunkCreator(history));

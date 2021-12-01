@@ -1,7 +1,6 @@
 import axios from "axios";
 import {AuthAPI} from "./API_AuthServer";
 import Cookies from "js-cookie";
-import {log} from "util";
 //const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
 const ServerHorcruxMemories = "https://localhost:44370/";
 const DataGuery = axios.create({
@@ -41,17 +40,27 @@ export const DataAPI = {
     TestNext : (IdRoot:string,TestHistory:string[],id:string,isIgnoreTest:boolean,nameTest:string)=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let Token=Cookies.get("Token");
-            console.log(isIgnoreTest)
             let data= JSON.stringify({IdRoot,TestHistory,id,isIgnoreTest})
             let config = {
                 headers: {
                     'Authorization': `Bearer  ${Token}`
                 },
                 params:{Type:nameTest},
-
             }
             return DataGuery.post('api/Test/',data,config);
         });
     },
-
+    EnableAllQuestions:(IdParent:string,isIgnore:boolean)=>{
+        return AuthAPI.IsExistsToken().then(req=>{
+            let Token=Cookies.get("Token");
+            let data= JSON.stringify({IdParent,isIgnore})
+            let config = {
+                headers: {
+                    'Authorization': `Bearer  ${Token}`
+                },
+                params: {IdParent,isIgnore}
+            }
+            return DataGuery.post('api/Question/EnableAllQuestions',data,config);
+        });
+    }
 }

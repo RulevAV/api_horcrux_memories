@@ -15,6 +15,7 @@ let root = document.getElementById('root');
 
 ReactDOM.render( <BrowserRouter basename="/React">
     <Provider store={store}>
+
         <App />
     </Provider>
 </BrowserRouter>, root)

@@ -3,6 +3,8 @@ import {InfoActionsTypes, ThunkActionType} from "./redux-store";
 import Cookies from "js-cookie";
 
 export const LOG_OUT = "LOG_OUT";
+export const LOCK_SCREEN="LOCK_SCREEN";
+
 
 export type AuthType = {
     message: string|null,
@@ -36,7 +38,8 @@ const initialState = {
         isRegister : false,
         LoginRegistration:"",
     } as Register,
-    InitialApp:false
+    InitialApp:false,
+    IsLockScreen:false
 };
 export type initialStateType = typeof initialState;
 
@@ -64,6 +67,12 @@ export const authReducer = (state=initialState, action : ActionsTypes) :initialS
                     isRegister : action.isRegister,
 
                 }
+            };
+        }
+        case "LOCK_SCREEN":{
+            return {
+                ...state,
+               IsLockScreen: action.IsLockScreen
             };
         }
         case "INITIAL_APP":{
@@ -99,12 +108,14 @@ export const AuthActions = {
     SetUser :(data :AuthType)=>({type : "SET_USER_DATA", data: data } as const),
     UserRegister :(isRegister :boolean,Login:string)=>({type : "USER_REGISTER",isRegister :isRegister}as const),
     Logout :()=>({type : LOG_OUT} as const),
-    InitialApp:()=>({type : "INITIAL_APP"}as const)
+    InitialApp:()=>({type : "INITIAL_APP"}as const),
+    LockScreen:(IsLockScreen:boolean)=>({type: "LOCK_SCREEN",IsLockScreen}as const)
 }
 
 //SET_USER_DATA
 export const SetUserThunkCreator = (Email:string,Password:string) :ThankType=>{
     return async (dispatch ) => {
+        dispatch(AuthActions.LockScreen(true));
         AuthAPI.Token(Email,Password).then((response:PromiseApiType) =>{
             let {status,data} = response;
             if(status === 200)
@@ -133,14 +144,13 @@ export const RefreshAuthCookieThunkCreator = () :ThankType =>{
 //USER_REGISTER
 export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Username:string,Email:string,Password:string) :ThankType =>{
     return async (dispatch ) => {
+        dispatch(AuthActions.LockScreen(true));
         AuthAPI.Register(FirstName,LastName,Username,Email,Password).then((response:any) =>{
             if(response.status === 200)
             {
                 dispatch(AuthActions.UserRegister(true,Username));
             }
         });
-
-
     }
 }
 
@@ -151,6 +161,7 @@ export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Userna
 //LOG_OUT
 export const LogoutThunkCreator = ()  :ThankType  =>{
     return async (dispatch ) => {
+        dispatch(AuthActions.LockScreen(true));
         AuthAPI.RevokeToken().then((response:any) =>{
             dispatch(AuthActions.Logout());
         });

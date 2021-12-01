@@ -11,7 +11,7 @@ type PropsType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType;
 
 
 const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
-                                       stories,SetRootTest,GetQuestsPagination,GetQuestsReturn,GetQuests,ClearQuests
+                                       stories,SetRootTest,GetQuestsPagination,GetQuestsReturn,GetQuests,ClearQuests,SetEnableAllQuestions
 }) =>{
     useEffect(()=>{
         GetQuests();
@@ -20,7 +20,7 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
         }
     },[]);
     let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index)=>{
-            return <Question key={index} SetRootTest={SetRootTest} {...question} GetQuests={GetQuests} />
+            return <Question key={index} SetEnableAllQuestions={SetEnableAllQuestions} SetRootTest={SetRootTest} {...question} GetQuests={GetQuests} />
     });
     let isRender = !!(DependOnParentQuestion.questions?.length);
     return <div>

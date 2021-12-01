@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import './App.css';
 import {Route} from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap';
@@ -12,8 +12,10 @@ import {WithHomeRedirect} from "./Components/hoc/HomeRedirect";
 import NavbarContainer from "./Components/Navbar/NavbarContainer";
 import AdminCompose from "./Components/Admin/AdminContainer";
 import {WithInitialApp} from "./Components/hoc/InitialApp";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AuthActions} from "./redux/Auth-Reducer";
+import {LockScreen} from "./Components/LockScreen/LockScreen";
+import {AppStateType} from "./redux/redux-store";
 let Login = WithHomeRedirect(ConnectLoginContainer);
 
 let Content = ()=>{
@@ -32,6 +34,11 @@ let InitialApp = WithInitialApp(Content);
 
 const App : React.FC= () => {
 
+    let IsLockScreen = useSelector((state:AppStateType)=>{
+        return {
+            IsLockScreen : state.authReducer.IsLockScreen
+        }
+    })
     let dispath = useDispatch();
 
     useEffect(()=>{
@@ -39,6 +46,10 @@ const App : React.FC= () => {
     },[])
   return (
     <div >
+        {IsLockScreen.IsLockScreen?<LockScreen/>
+            :null
+        }
+
         <NavbarContainer/>
         <InitialApp/>
     </div>

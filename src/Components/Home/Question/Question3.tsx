@@ -36,7 +36,10 @@ const Question:React.FC<any> = (props) =>{
             <ul className="postcard__tagbox">
 
                 <li className="tag__item">
-                    <a onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
+                    <a onClick={()=>{props.SetEnableAllQuestions(props.id,false)}}>Включить все вопросы в тест </a>
+                </li>
+                <li className="tag__item">
+                    <a onClick={()=>{props.SetEnableAllQuestions(props.id,true)}}>Исключить все вопросы в тест </a>
                 </li>
                 <li className={"tag__item play "+Color}>
                     <NavLink id={"TestNormal"} onClick={()=>{props.SetRootTest(props.id,"Normal")}} to={'/Test/Normal'} > Начать тест</NavLink>
