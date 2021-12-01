@@ -10,8 +10,12 @@ const Question:React.FC<any> = (props) =>{
         image = new Image();
         image.src = 'data:image/png;base64,' + props.images;
     }
-    let Color = "green";//blue,red,green,yellow
+    //blue,red,green,yellow
+    let Color = !props.isIgnoreTest?"green":"red";
     let theme = "dark";//light,dark
+    let date = new Date( Date.parse(props.dateAdd) );
+
+
 
     return <article className={"postcard "+ theme + " " + Color}>
         <a onClick={()=>{props.GetQuests(props.id)}} className="postcard__img_link" href="#">
@@ -20,9 +24,10 @@ const Question:React.FC<any> = (props) =>{
         <div className={"postcard__text " + (theme==="light"?"t-dark":"")}>
             <h1 className={"postcard__title "+Color}><a onClick={()=>{props.GetQuests(props.id)}} href="#">{props.name}</a></h1>
             <div className="postcard__subtitle small">
-                <time dateTime="2020-05-25 12:00:00">
-                    <i className="fas fa-calendar-alt mr-2"></i>Mon, May 25th 2020
+                <time dateTime={props.dateAdd}>
+                    <i className="bi bi-calendar3 " aria-hidden="true"></i> Дата создания {date.getFullYear() +"/"+date.getMonth()+"/"+date.getDay() }
                 </time>
+
             </div>
             <div className="postcard__bar"></div>
             <div className="postcard__preview-txt" dangerouslySetInnerHTML={{__html: props.description}}>
