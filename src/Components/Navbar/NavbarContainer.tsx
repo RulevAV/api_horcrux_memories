@@ -4,7 +4,6 @@ import {
     LogoutThunkCreator,
 } from "../../redux/Auth-Reducer";
 import Navbar from "./Navbar";
-import Cookies from "js-cookie";
 
 
 export type TypeProps= {

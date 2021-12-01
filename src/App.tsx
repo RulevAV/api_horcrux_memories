@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Route} from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap';
@@ -12,6 +12,8 @@ import {WithHomeRedirect} from "./Components/hoc/HomeRedirect";
 import NavbarContainer from "./Components/Navbar/NavbarContainer";
 import AdminCompose from "./Components/Admin/AdminContainer";
 import {WithInitialApp} from "./Components/hoc/InitialApp";
+import {useDispatch} from "react-redux";
+import {AuthActions} from "./redux/Auth-Reducer";
 let Login = WithHomeRedirect(ConnectLoginContainer);
 
 let Content = ()=>{
@@ -30,7 +32,11 @@ let InitialApp = WithInitialApp(Content);
 
 const App : React.FC= () => {
 
+    let dispath = useDispatch();
 
+    useEffect(()=>{
+        dispath(AuthActions.InitialApp())
+    },[])
   return (
     <div >
         <NavbarContainer/>

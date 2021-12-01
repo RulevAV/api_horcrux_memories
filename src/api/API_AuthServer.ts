@@ -54,7 +54,8 @@ export const setCookies = (data:TokenUserType)=>{
     }
     if(data)
     {
-        Cookies.set("Auth",JSON.stringify(data));
+        let date = new Date( Date.parse(data.refreshTokenExpiration) );
+        Cookies.set("Auth",JSON.stringify(data),{expires:date });
     }
 }
 

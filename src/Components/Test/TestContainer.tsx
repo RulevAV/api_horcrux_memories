@@ -13,7 +13,7 @@ export type PropsTypeTest = {
     Test:TestType,
     match:any,
     ShowContent:(value:boolean)=>void,
-    SetFinishFalse:()=>void,
+    OutputCard:()=>void,
     NextAsk: (IdRoot: string, TestHistory: Array<string>, id: string, isIgnoreTest: boolean, nameTest: string) => void
 }
 
@@ -30,8 +30,10 @@ let mapDispatchToProps = (dispatch:any)=>{
         ShowContent(value:boolean){
             dispatch(TestActions.ShowContent(value));
         },
-        SetFinishFalse(){
+        OutputCard(){
             dispatch(TestActions.SetIsFinish(false));
+            dispatch(TestActions.TestClear());
+
         },
     }
 };

@@ -13,7 +13,7 @@ export type QuestionTestType ={
 let Test : React.FC<PropsTypeTest> = ({...props}) =>{
     useEffect(()=>{
         return ()=>{
-            props.SetFinishFalse();
+            props.OutputCard();
         }
     },[]);
 
@@ -39,7 +39,7 @@ let Test : React.FC<PropsTypeTest> = ({...props}) =>{
         <h1>Test</h1>
         {
             props.Test.Ask.sizeAsk!==0?<>
-                    <h3>{props.Test.TestHistory.length+1 + "/" + props.Test.Ask.sizeAsk}</h3>
+                    <h3>{props.Test.Ask.passedAsk + "/" + props.Test.Ask.sizeAsk}</h3>
                     {QuestionTestUI}
                      </>
                 :null

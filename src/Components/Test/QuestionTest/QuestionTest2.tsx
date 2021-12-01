@@ -8,6 +8,11 @@ import {QuestionTestType} from "../Test";
 
 
 let QuestionTest:React.FC<QuestionTestType> = ({...props}) =>{
+    let [isIgnoreTest,setIsIgnoreTest] = useState(props.question.isIgnoreTest);
+
+    useEffect(()=>{
+        setIsIgnoreTest(props.question.isIgnoreTest);
+    },[props.question])
 
     let image=new Image();
     image.src = img;
@@ -32,9 +37,9 @@ let QuestionTest:React.FC<QuestionTestType> = ({...props}) =>{
                     <BImage src={image.src} fluid />
                 </Row>
                 <Row>
-                    <FormCheckInput isIgnoreTest={props.question.isIgnoreTest}/>
+                    <FormCheckInput isIgnoreTest={isIgnoreTest} setIsIgnoreTest={setIsIgnoreTest}/>
                     <input className="btn btn-success" type="submit" value="Дальше" onClick={()=>{
-                        props.QuestionTestFun(props.question.id,props.question.isIgnoreTest);
+                        props.QuestionTestFun(props.question.id,isIgnoreTest);
                     }}/>
                     <NavLink className="btn btn-warning"to={'/'} > Выход</NavLink>
                 </Row>

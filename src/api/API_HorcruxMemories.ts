@@ -1,8 +1,9 @@
 import axios from "axios";
 import {AuthAPI} from "./API_AuthServer";
 import Cookies from "js-cookie";
-const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
-//const ServerHorcruxMemories = "https://localhost:44370/";
+import {log} from "util";
+//const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
+const ServerHorcruxMemories = "https://localhost:44370/";
 const DataGuery = axios.create({
     withCredentials : true,
     baseURL : ServerHorcruxMemories,
@@ -40,6 +41,7 @@ export const DataAPI = {
     TestNext : (IdRoot:string,TestHistory:string[],id:string,isIgnoreTest:boolean,nameTest:string)=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let Token=Cookies.get("Token");
+            console.log(isIgnoreTest)
             let data= JSON.stringify({IdRoot,TestHistory,id,isIgnoreTest})
             let config = {
                 headers: {
