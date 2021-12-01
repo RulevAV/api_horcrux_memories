@@ -4,34 +4,26 @@ import {Card,Button,Image as BImage,Row,Col} from "react-bootstrap";
 
 import React, {useEffect, useState} from "react";
 import FormCheckInput from "./FormCheckInput/FormCheckInput";
+import {QuestionTestType} from "../Test";
 
-type PropsType = {
-    isIgnoreTest:boolean,
-    isHiddenContentTest:boolean,
-    images:string,
-    name:string,
-    id:string,
-    QuestionTestFun:any,
-    description:string,
-    ShowContent:(value:boolean)=>void
-}
 
-let QuestionTest:React.FC<PropsType> = ({...props}) =>{
-
+let QuestionTest:React.FC<QuestionTestType> = ({...props}) =>{
 
     let image=new Image();
     image.src = img;
-    if(props.images){
+    if(props.question.images){
         image = new Image();
-        image.src = 'data:image/png;base64,' + props.images;
+        image.src = 'data:image/png;base64,' + props.question.images;
     }
+    let description=props.question.description?props.question.description:"";
+
     return <div>
         <Row>
             <Col>
-                <h1>{props.name}</h1>
-                {props.isHiddenContentTest?<Button onClick={()=>{
+                <h1>{props.question.name}</h1>
+                {props.question.isHiddenContentTest?<Button onClick={()=>{
                         props.ShowContent(false)}}>Показать контент!</Button>
-                    :<div dangerouslySetInnerHTML={{__html: props.description}}>
+                    :<div dangerouslySetInnerHTML={{__html: description}}>
                     </div>
                 }
             </Col>
@@ -40,9 +32,9 @@ let QuestionTest:React.FC<PropsType> = ({...props}) =>{
                     <BImage src={image.src} fluid />
                 </Row>
                 <Row>
-                    <FormCheckInput isIgnoreTest={props.isIgnoreTest}/>
+                    <FormCheckInput isIgnoreTest={props.question.isIgnoreTest}/>
                     <input className="btn btn-success" type="submit" value="Дальше" onClick={()=>{
-                        props.QuestionTestFun(props.id,props.isIgnoreTest);
+                        props.QuestionTestFun(props.question.id,props.question.isIgnoreTest);
                     }}/>
                     <NavLink className="btn btn-warning"to={'/'} > Выход</NavLink>
                 </Row>

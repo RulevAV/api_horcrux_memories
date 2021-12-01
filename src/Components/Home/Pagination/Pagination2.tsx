@@ -7,7 +7,6 @@ type PropsType = {
     page: number,
     stories: Array<historyType>,
     GetQuestsPagination: (stories: historyType, Page: number) => void,
-    Link:  React.LegacyRef<HTMLUListElement>
 }
 
 let callItem=5;
@@ -36,7 +35,7 @@ const ItemInterval=(page:number,sizePage:number)=>{
 }
 
 
-const PaginationConstructor:React.FC<PropsType> = ({id,sizePage,page,stories,GetQuestsPagination,Link}) =>{
+const PaginationConstructor:React.FC<PropsType> = ({id,sizePage,page,stories,GetQuestsPagination}) =>{
     let mass=[];
 
     let {start,end} = ItemInterval(page,sizePage);

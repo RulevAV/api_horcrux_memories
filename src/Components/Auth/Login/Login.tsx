@@ -1,7 +1,7 @@
 import React from 'react'
 import {NavLink} from "react-router-dom";
 import {outValid, useInput} from "../UseValidator";
-import user from '../../../img/User.png';
+import user from '../../../img/among_us_player_light_green_icon_156936.png';
 type PropsType = {
     SetUser:(Email:string,Password:string)=>void,
     RegisterUser:()=>void,
@@ -16,11 +16,15 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
         SetUser(login.value,password.value);
     }
 
-    return <div>
-        <div className="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 col-xxl-2">
+    return <div className={"text-white container d-flex align-items-center justify-content-center"}>
+        <div className="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
             <div className="div-box" >
-                <img src={user} style={{height:50,width:50}} alt="icon_User"/>
-                <h1>{title}</h1>
+                <div className={"d-flex align-items-center justify-content-center"}>
+                    <img src={user} style={{height:100,width:100}} alt="icon_User"/>
+                </div>
+                <div className={"d-flex align-items-center justify-content-center"}>
+                    <h1>{title}</h1>
+                </div>
 
                 <div className="mb-3">
                     <label htmlFor="Login" className="form-label" >Логин</label>
@@ -37,7 +41,7 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                     <input id="RememberMe" type="checkbox" className="form-check-input" />
                 </div>
                 <div className="mb-3">
-                    <NavLink id={"Registration"} className="link-success" onClick={RegisterUser}  to={"/registration"}>Зарегаться</NavLink>
+                    <NavLink id={"Registration"} className="link-success p-3" onClick={RegisterUser}  to={"/registration"}>Зарегаться</NavLink>
                     <a className="link-success" href={"https://maagserver/HorcruxMemories/Account/ForgotPassword"}>Забыли пароль?</a>
                 </div>
 

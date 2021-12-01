@@ -1,5 +1,6 @@
 import React from 'react'
 import {outValid, useInput} from "../UseValidator";
+import user from "../../../img/2998137-clover-four-leaf_99856.svg";
 
 const Registration = (props:any) =>{
 
@@ -20,10 +21,13 @@ const Registration = (props:any) =>{
     }
 
 
-    return <div >
-        <div className="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 col-xxl-2">
+    return <div className={"text-white container d-flex align-items-center justify-content-center"}>
+        <div className="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
             {!props.isRegister
                 ?<div className="div-box" >
+                    <div className={"d-flex align-items-center justify-content-center"}>
+                        <img src={user} style={{height:100,width:100}} alt="icon_User"/>
+                    </div>
                 <h1>Регистрация</h1>
                 <div className="mb-3">
                     <label className="form-label" >Логин</label>

@@ -1,6 +1,5 @@
 import img from "../../../img/2T5qG95FFcs.jpg";
 import {NavLink} from "react-router-dom";
-import {Card,ListGroup,ListGroupItem} from "react-bootstrap";
 import React from "react";
 
 const Question:React.FC<any> = (props) =>{
@@ -35,10 +34,10 @@ const Question:React.FC<any> = (props) =>{
                     <a onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
                 </li>
                 <li className={"tag__item play "+Color}>
-                    <NavLink id={"TestNormal"} onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Normal'} > Начать тест</NavLink>
+                    <NavLink id={"TestNormal"} onClick={()=>{props.SetRootTest(props.id,"Normal")}} to={'/Test/Normal'} > Начать тест</NavLink>
                 </li>
                 <li className={"tag__item play "+Color}>
-                    <NavLink id={"TestGlobal"} onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Global'} > Начать подробный тест</NavLink>
+                    <NavLink id={"TestGlobal"} onClick={()=>{props.SetRootTest(props.id,"Global")}} to={'/Test/Global'} > Начать подробный тест</NavLink>
                 </li>
             </ul>
         </div>

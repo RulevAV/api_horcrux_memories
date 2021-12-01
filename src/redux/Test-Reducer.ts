@@ -10,14 +10,16 @@ type AskType = {
     sizeAsk: number
 }
 
-type initialStateType ={
+export type TestType ={
     IdRoot:string,
+    isFinish:boolean,
     Ask:AskType,
     TestHistory:Array<string>
 }
 
-export const initialState:initialStateType = {
+export const initialState:TestType = {
     IdRoot:"",
+    isFinish:false,
     Ask:{
         passedAsk:0,
         question:null,
@@ -27,7 +29,7 @@ export const initialState:initialStateType = {
 };
 export const TestReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
-        case "TEST_START":{
+        case "SET_ASK":{
             return {
                 ...state,
                 Ask:{
@@ -40,6 +42,12 @@ export const TestReducer = (state=initialState, action : ActionsTypes) => {
                 ...state,
                 IdRoot: action.IdRoot,
             };
+        }
+        case "SET_IS_FINISH":{
+            return {
+                ...state,
+                isFinish:action.isFinish
+            }
         }
         case "SET_TEST_HISTOTY":{
             return {
@@ -72,8 +80,9 @@ export const TestReducer = (state=initialState, action : ActionsTypes) => {
 type ActionsTypes = InfoActionsTypes<typeof TestActions>;
 
 export const TestActions = {
+    SetAsk :(Ask:AskType)=>( {type : "SET_ASK",Ask}as const),
     SetIdRoot :(IdRoot:string)=>({type : "SET_ID_ROOT",IdRoot} as const),
-    SetAsk :(Ask:AskType)=>( {type : "TEST_START",Ask}as const),
+    SetIsFinish :(isFinish:boolean)=>({type : "SET_IS_FINISH",isFinish} as const),
     TestClear : ()=>({type : "TEST_CLEAR"}as const),
     ShowContent:(value:boolean)=>({type : "SHOW_CONTENT",value} as const),
     SetTestHistory :(TestHistory:Array<string>)=>({type : "SET_TEST_HISTOTY",TestHistory}as const),
@@ -85,20 +94,23 @@ export const TestActions = {
 export const StartAskThunkCreator = (IdRoot:string,nameTest:string) =>{
     return async (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
        await DataAPI.TestStart(IdRoot,nameTest).then((response:any) =>{
+            dispatch(TestActions.SetIsFinish(false));
+            dispatch(TestActions.SetIdRoot(IdRoot));
             dispatch(TestActions.SetTestHistory([]));
             dispatch(TestActions.SetAsk(response.data));
         });
     }
 }
-//SET_TEST_HISTOTY
+//Next_Ask
 export const NextAskThunkCreator = (IdRoot:string,TestHistory:Array<string>,id:string ,isIgnoreTest:boolean,nameTest:string) =>{
     return async (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
         await DataAPI.TestNext(IdRoot,TestHistory,id,isIgnoreTest,nameTest).then((response:any) =>{
             if(!response.data){
-                dispatch(TestActions.TestClear());
+                dispatch(TestActions.SetIsFinish(true));
+                //dispatch(TestActions.TestClear());
             }else {
+                dispatch(TestActions.SetTestHistory([...TestHistory,id]));
                 dispatch(TestActions.SetAsk(response.data));
-                //dispatch(TestActions.SetTestHistory([...TestHistory,id]));
             }
         });
     }
