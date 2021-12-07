@@ -1,36 +1,27 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
-    AuthActions, AuthType,
-    LogoutThunkCreator,
+     AuthActionsThunkCreator,
 } from "../../redux/Auth-Reducer";
 import Navbar from "./Navbar";
+import {AppStateType} from "../../redux/redux-store";
 
 
-export type TypeProps= {
-    data:{
-        isAuthenticated:boolean,
-        roles : Array<string>
-    },
-    Logout:()=>void,
-    InitialApp:()=>void,
-}
 
 const NavbarContainer = ()=>{
-    const data = useSelector((state:any)=>{
+    const state = useSelector((state:AppStateType)=>{
         return {
             isAuthenticated:state.authReducer.Auth.isAuthenticated,
             roles : state.authReducer.Auth.roles
         }
     });
     const dispatch = useDispatch();
+
     const Logout = ()=>{
-        dispatch(LogoutThunkCreator());
-    };
-    const InitialApp = ()=>{
-        dispatch(AuthActions.InitialApp());
+        dispatch(AuthActionsThunkCreator.Logout());
     };
 
-    return <Navbar data={data} Logout={Logout} InitialApp={InitialApp}/>
+
+    return <Navbar state={state} Logout={Logout} />
 }
 
 export default NavbarContainer;

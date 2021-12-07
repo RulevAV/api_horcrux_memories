@@ -1,38 +1,39 @@
 import {AuthAPI} from "../api/API_AuthServer";
 import {InfoActionsTypes, ThunkActionType} from "./redux-store";
 import Cookies from "js-cookie";
+import {AuthType} from "../api/API_AuthServer_Type";
 
 export const LOG_OUT = "LOG_OUT";
 export const LOCK_SCREEN="LOCK_SCREEN";
 
-
-export type AuthType = {
-    message: string|null,
-    isAuthenticated: boolean,
-    userName: string|null,
-    email: string|null,
-    roles: Array<string>,
-    token: string|null,
-    refreshToken: string|null,
-    refreshTokenExpiration: string|null
+//Api type
+type PromiseApiType ={
+    status:number,
+    data:AuthType
 }
+//AllTypeAction
+export type ActionsTypesAuth = InfoActionsTypes<typeof AuthActions>;
+
+type ThankType = ThunkActionType<ActionsTypesAuth,Promise<void>>;
+
 export type Register ={
     isRegister : boolean,
     LoginRegistration:string,
 }
 
-type ThankType = ThunkActionType<ActionsTypes,Promise<void>>;
+export type initialStateType = typeof initialState;
 
-const initialState = {
+
+export const initialState = {
     Auth:{
-        message: null,
+        message: "",
         isAuthenticated: false,
-        userName: null,
-        email: null,
+        userName: "",
+        email: "",
         roles: [],
-        token: null,
-        refreshToken: null,
-        refreshTokenExpiration: null
+        token: "",
+        refreshToken: "",
+        refreshTokenExpiration: ""
     } as AuthType,
     Register: {
         isRegister : false,
@@ -41,9 +42,9 @@ const initialState = {
     InitialApp:false,
     IsLockScreen:false
 };
-export type initialStateType = typeof initialState;
 
-export const authReducer = (state=initialState, action : ActionsTypes) :initialStateType=> {
+
+export const authReducer = (state=initialState, action : ActionsTypesAuth) :initialStateType=> {
     switch (action.type) {
         case "SET_USER_DATA":{
             return {
@@ -96,14 +97,6 @@ export const authReducer = (state=initialState, action : ActionsTypes) :initialS
     }
 }
 
-//Api type
-type PromiseApiType ={
-    status:number,
-    data:AuthType
-}
-//AllTypeAction
-type ActionsTypes = InfoActionsTypes<typeof AuthActions>;
-
 export const AuthActions = {
     SetUser :(data :AuthType)=>({type : "SET_USER_DATA", data: data } as const),
     UserRegister :(isRegister :boolean,Login:string)=>({type : "USER_REGISTER",isRegister :isRegister}as const),
@@ -112,61 +105,58 @@ export const AuthActions = {
     LockScreen:(IsLockScreen:boolean)=>({type: "LOCK_SCREEN",IsLockScreen}as const)
 }
 
-//SET_USER_DATA
-export const SetUserThunkCreator = (Email:string,Password:string) :ThankType=>{
-    return async (dispatch ) => {
-        dispatch(AuthActions.LockScreen(true));
-        AuthAPI.Token(Email,Password).then((response:PromiseApiType) =>{
-            let {status,data} = response;
-            if(status === 200)
-            {
-               dispatch(AuthActions.SetUser(data));
-            }
-        });
+export const AuthActionsThunkCreator = {
+    SetUser: (Email:string,Password:string) :ThankType=>{
+        return async (dispatch ) => {
+            dispatch(AuthActions.LockScreen(true));
+            AuthAPI.Token(Email,Password).then((response:PromiseApiType) =>{
+                let {status,data} = response;
+                if(status === 200)
+                {
+                    dispatch(AuthActions.SetUser(data));
+                }
+            });
+            dispatch(AuthActions.LockScreen(false));
 
+        }
+    },
+    RefreshAuthCookie:() :ThankType =>{
+        return async (dispatch ) => {
+            dispatch(AuthActions.LockScreen(true));
+            AuthAPI.RefreshToken().then((response:PromiseApiType) =>{
+                if(response.status === 200)
+                {
+                    if(response.data.isAuthenticated)
+                        dispatch(AuthActions.SetUser(response.data));
+                }
+            });
+            dispatch(AuthActions.LockScreen(false));
+        }
+    },
+    UserRegister:(FirstName:string,LastName:string,Username:string,Email:string,Password:string) :ThankType =>{
+        return async (dispatch ) => {
+            dispatch(AuthActions.LockScreen(true));
+            AuthAPI.Register(FirstName,LastName,Username,Email,Password).then((response) =>{
+                if(response.status === 200)
+                {
+                    dispatch(AuthActions.UserRegister(true,Username));
+                }
+            });
+            dispatch(AuthActions.LockScreen(false));
+        }
+    },
+    Logout:()  :ThankType  =>{
+        return async (dispatch ) => {
+            dispatch(AuthActions.LockScreen(true));
+            AuthAPI.RevokeToken().then((response) =>{
+                dispatch(AuthActions.Logout());
+            });
 
-    }
+        }
+    },
+
 }
-export const RefreshAuthCookieThunkCreator = () :ThankType =>{
-    return async (dispatch ) => {
-        AuthAPI.RefreshToken().then((response:PromiseApiType) =>{
-            if(response.status === 200)
-            {
-                if(response.data.isAuthenticated)
-                    dispatch(AuthActions.SetUser(response.data));
-            }
-        });
 
-
-    }
-}
-
-//USER_REGISTER
-export const UserRegisterThunkCreator = (FirstName:string,LastName:string,Username:string,Email:string,Password:string) :ThankType =>{
-    return async (dispatch ) => {
-        dispatch(AuthActions.LockScreen(true));
-        AuthAPI.Register(FirstName,LastName,Username,Email,Password).then((response:any) =>{
-            if(response.status === 200)
-            {
-                dispatch(AuthActions.UserRegister(true,Username));
-            }
-        });
-    }
-}
-
-
-
-
-
-//LOG_OUT
-export const LogoutThunkCreator = ()  :ThankType  =>{
-    return async (dispatch ) => {
-        dispatch(AuthActions.LockScreen(true));
-        AuthAPI.RevokeToken().then((response:any) =>{
-            dispatch(AuthActions.Logout());
-        });
-    }
-}
 
 export default authReducer;
 

@@ -1,3 +1,4 @@
+
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -28,7 +29,15 @@ describe("Application root", () => {
         try {
             reportWebVitals(()=>{});
         }catch (e){
+        }
 
+
+    });
+    it("reportWebVitals null", () => {
+
+        try {
+            reportWebVitals();
+        }catch (e){
         }
 
 

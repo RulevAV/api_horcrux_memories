@@ -3,7 +3,7 @@
 }
 
 .pagination {
-  font-family: "Itim", cursive;
+  /*font-family: "Itim", cursive;*/
   border-radius: 10px 10px 0 0;
   border-top: 10px solid #ff9f1a;
   display: inline-flex;

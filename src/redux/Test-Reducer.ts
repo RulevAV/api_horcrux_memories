@@ -1,14 +1,13 @@
-import {LOG_OUT} from "./Auth-Reducer";
-import {QueryType} from "./Question-Redux";
+import {LOCK_SCREEN, LOG_OUT} from "./Auth-Reducer";
+
 import {Dispatch} from "react";
 import {AppStateType, InfoActionsTypes} from "./redux-store";
 import {DataAPI} from "../api/API_HorcruxMemories";
+import {AskType} from "../api/API_HorcruxMemories_Type";
 
-type AskType = {
-    passedAsk: number
-    question: QueryType|null,
-    sizeAsk: number
-}
+
+//AllTypeAction
+type ActionsTypes = InfoActionsTypes<typeof TestActions>;
 
 export type TestType ={
     IdRoot:string,
@@ -27,6 +26,8 @@ export const initialState:TestType = {
     },
     TestHistory:[]
 };
+
+
 export const TestReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
         case "SET_ASK":{
@@ -76,8 +77,6 @@ export const TestReducer = (state=initialState, action : ActionsTypes) => {
         default: return state;
     }
 }
-//AllTypeAction
-type ActionsTypes = InfoActionsTypes<typeof TestActions>;
 
 export const TestActions = {
     SetAsk :(Ask:AskType)=>( {type : "SET_ASK",Ask}as const),
@@ -87,33 +86,36 @@ export const TestActions = {
     ShowContent:(value:boolean)=>({type : "SHOW_CONTENT",value} as const),
     SetTestHistory :(TestHistory:Array<string>)=>({type : "SET_TEST_HISTOTY",TestHistory}as const),
     LOG_OUT : ()=>({type : "LOG_OUT"}as const),
+    LockScreen:(IsLockScreen:boolean)=>({type: LOCK_SCREEN,IsLockScreen}as const)
 }
 
-
-//TEST_START
-export const StartAskThunkCreator = (IdRoot:string,nameTest:string) =>{
-    return async (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
-       await DataAPI.TestStart(IdRoot,nameTest).then((response:any) =>{
-            dispatch(TestActions.SetIsFinish(false));
-            dispatch(TestActions.SetIdRoot(IdRoot));
-            dispatch(TestActions.SetTestHistory([]));
-            dispatch(TestActions.SetAsk(response.data));
-        });
-    }
-}
-//Next_Ask
-export const NextAskThunkCreator = (IdRoot:string,TestHistory:Array<string>,id:string ,isIgnoreTest:boolean,nameTest:string) =>{
-    return async (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
-        await DataAPI.TestNext(IdRoot,TestHistory,id,isIgnoreTest,nameTest).then((response:any) =>{
-            if(!response.data){
-                dispatch(TestActions.SetIsFinish(true));
-                //dispatch(TestActions.TestClear());
-            }else {
-                dispatch(TestActions.SetTestHistory([...TestHistory,id]));
+export const TestActionsThunkCreator = {
+    StartAsk:(IdRoot:string,nameTest:string) =>{
+        return async (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
+            dispatch(TestActions.LockScreen(true));
+            await DataAPI.TestStart(IdRoot,nameTest).then((response) =>{
+                dispatch(TestActions.SetIsFinish(false));
+                dispatch(TestActions.SetIdRoot(IdRoot));
+                dispatch(TestActions.SetTestHistory([]));
                 dispatch(TestActions.SetAsk(response.data));
-            }
-        });
-    }
+            });
+            dispatch(TestActions.LockScreen(false));
+        }
+    },
+    NextAsk:(IdRoot:string,TestHistory:Array<string>,id:string ,isIgnoreTest:boolean,nameTest:string) =>{
+        return async (dispatch : Dispatch<ActionsTypes>, getState:()=>AppStateType) => {
+            dispatch(TestActions.LockScreen(true));
+            await DataAPI.TestNext(IdRoot,TestHistory,id,isIgnoreTest,nameTest).then((response) =>{
+                if(!response.data){
+                    dispatch(TestActions.SetIsFinish(true));
+                }else {
+                    dispatch(TestActions.SetTestHistory([...TestHistory,id]));
+                    dispatch(TestActions.SetAsk(response.data));
+                }
+            });
+            dispatch(TestActions.LockScreen(false));
+        }
+    },
 }
 
 export default TestReducer;

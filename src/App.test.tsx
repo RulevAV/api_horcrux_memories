@@ -1,32 +1,33 @@
-import {configure, mount,shallow} from "enzyme";
+import {configure} from "enzyme";
 import React from "react";
 import App from "./App";
 import {Provider} from "react-redux";
-import {BrowserRouter, NavLink, Redirect} from "react-router-dom";
+import {BrowserRouter, NavLink} from "react-router-dom";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-import {fireEvent, render, screen} from "@testing-library/react";
-import authReducer, {AuthType, LOG_OUT, Register} from "./redux/Auth-Reducer";
-import {combineReducers, createStore} from "redux";
-import {AdminReducer} from "./redux/Admin-Reducer";
-import {QuestionReducer} from "./redux/Question-Redux";
-import {TestReducer} from "./redux/Test-Reducer";
+import {fireEvent, render} from "@testing-library/react";
+import { createStore} from "redux";
+import store, {AppStateType, reducer} from "./redux/redux-store";
 configure({ adapter: new Adapter() });
 
-let reducer = combineReducers({
-    authReducer,
-    AdminReducer,
-    QuestionReducer,
-    TestReducer
-});
+const updateState = (NewState?:AppStateType)=>{
+    let NewStore;
+    if (NewState)
+        NewStore = createStore(reducer,NewState);
+    else
+        NewStore = createStore(reducer);
 
-let Store = createStore(reducer);
-Store.dispatch=jest.fn();
+    NewStore.dispatch=jest.fn();
+    return NewStore;
+}
+
+let Store = updateState();
+
 
 const renderWithRedux = (
-    component,
-    {initialState, store=Store}={}
+    component:any, State?:AppStateType
 
 )=>{
+    let store = State?updateState(State):Store;
     return{
         ...render( <BrowserRouter basename="/">
             <NavLink className="navbar-brand " to={"/login"} >Login</NavLink>
@@ -46,8 +47,22 @@ const renderWithRedux = (
 
 
 describe('test redirect', ()=>{
+
+    it('IsLockScreen true', ()=>{
+        let state = store.getState();
+        state.authReducer.IsLockScreen=true;
+        let dom = renderWithRedux(<App />,state);
+    })
+    it('IsLockScreen false', ()=>{
+        let state = store.getState();
+        state.authReducer.IsLockScreen=false;
+        let dom = renderWithRedux(<App />,state);
+    })
     it('Login Direct', ()=>{
-        let dom = renderWithRedux(<App />);
+        let state = store.getState();
+        state.authReducer.InitialApp=true;
+
+        let dom = renderWithRedux(<App />,state);
         let HomeDirect = dom.getByText("Login");
         fireEvent.click(HomeDirect)
     })

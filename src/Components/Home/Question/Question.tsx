@@ -10,24 +10,47 @@ const Question:React.FC<any> = (props) =>{
         image = new Image();
         image.src = 'data:image/png;base64,' + props.images;
     }
-    return <div key={props.id} className="row bg-secondary m-1 p-1 Question">
-        <div className="col-sm-4 Question_img">
-            <a onClick={()=>{props.GetQuests(props.id)}}>
-                <img src={image.src} />
-            </a>
-        </div>
-        <div className="col-sm-8 Question_Ask">
-            <h3 className="text-white text-break">{props.name}</h3>
-            <div className="text-white ckeditor" >
-                <div dangerouslySetInnerHTML={{__html: props.description}}/>
+    //blue,red,green,yellow
+    let Color = !props.isIgnoreTest?"green":"red";
+    let theme = "dark";//light,dark
+    let postcard = "";//theme==="light"?"t-dark":""
+    let date = new Date( Date.parse(props.dateAdd) );
+
+
+
+    return <article className={"postcard "+ theme + " " + Color}>
+        <a onClick={()=>{props.GetQuests(props.id)}} className="Question_img postcard__img_link" href="#">
+            <img  className="postcard__img" src={image.src} alt="Image Title"/>
+        </a>
+        <div className={"postcard__text " + postcard}>
+            <h1 className={"postcard__title "+Color}><a onClick={()=>{props.GetQuests(props.id)}} href="#">{props.name}</a></h1>
+            <div className="postcard__subtitle small">
+                <time dateTime={props.dateAdd}>
+                    <i className="bi bi-calendar3 " aria-hidden="true"></i> Дата создания {date.getFullYear() +"/"+date.getMonth()+"/"+date.getDay() }
+                </time>
+
             </div>
-            <div className="row flex-row-reverse Question_Ask-buy">
-                <a className="m-1 col-xs-12 col-lg-2 btn btn-light" onClick={()=>{props.GetQuests(props.id)}}>Открыть</a>
-                <NavLink id={"TestNormal"} className="m-1 col-xs-12 col-lg-2 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Normal'} > Начать тест</NavLink>
-                <NavLink id={"TestGlobal"} className="m-1 col-xs-12 col-lg-4 btn btn-primary" onClick={()=>{props.SetAskTest(props.id)}} to={'/Test/Global'} > Начать подробный тест</NavLink>
+            <div className="postcard__bar"></div>
+            <div className="postcard__preview-txt" dangerouslySetInnerHTML={{__html: props.description}}>
+
             </div>
+            <ul className="postcard__tagbox">
+
+                <li className="tag__item">
+                    <a onClick={()=>{props.SetEnableAllQuestions(props.id,false)}}>Включить все вопросы в тест </a>
+                </li>
+                <li className="tag__item">
+                    <a onClick={()=>{props.SetEnableAllQuestions(props.id,true)}}>Исключить все вопросы в тест </a>
+                </li>
+                <li className={"tag__item play "+Color}>
+                    <NavLink id={"TestNormal"} onClick={()=>{props.SetRootTest(props.id,"Normal")}} to={'/Test/Normal'} > Начать тест</NavLink>
+                </li>
+                <li className={"tag__item play "+Color}>
+                    <NavLink id={"TestGlobal"} onClick={()=>{props.SetRootTest(props.id,"Global")}} to={'/Test/Global'} > Начать подробный тест</NavLink>
+                </li>
+            </ul>
         </div>
-    </div>
+    </article>
 }
 
 export default Question;

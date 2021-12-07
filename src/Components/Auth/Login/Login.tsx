@@ -4,7 +4,7 @@ import {outValid, useInput} from "../UseValidator";
 import user from '../../../img/among_us_player_light_green_icon_156936.png';
 type PropsType = {
     SetUser:(Email:string,Password:string)=>void,
-    RegisterUser:()=>void,
+    RegisterUser:(isRegister :boolean,Login:string)=>void,
     title:string
 }
 
@@ -33,7 +33,7 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                 </div>
                 <div className="mb-3">
                     <label htmlFor="Password" className="form-label" >Пароль</label>
-                    <input id="Password" onChange={password.onChange} value={password.value} onBlur={password.onBlur}  className="form-control" name="Password"/>
+                    <input type={"password"} id="Password" onChange={password.onChange} value={password.value} onBlur={password.onBlur}  className="form-control" name="Password"/>
                     {outValid(password)}
                 </div>
                 <div className="mb-3">
@@ -41,7 +41,7 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                     <input id="RememberMe" type="checkbox" className="form-check-input" />
                 </div>
                 <div className="mb-3">
-                    <NavLink id={"Registration"} className="link-success p-3" onClick={RegisterUser}  to={"/registration"}>Зарегаться</NavLink>
+                    <NavLink id={"Registration"} className="link-success p-3" onClick={()=>{RegisterUser(false,"")}}  to={"/registration"}>Зарегаться</NavLink>
                     <a className="link-success" href={"https://maagserver/HorcruxMemories/Account/ForgotPassword"}>Забыли пароль?</a>
                 </div>
 

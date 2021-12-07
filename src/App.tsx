@@ -16,15 +16,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {AuthActions} from "./redux/Auth-Reducer";
 import {LockScreen} from "./Components/LockScreen/LockScreen";
 import {AppStateType} from "./redux/redux-store";
+import {LoginRedirect} from "./Components/hoc/LoginRedirect";
 let Login = WithHomeRedirect(ConnectLoginContainer);
-
+let Home = LoginRedirect(HomeCompose);
 let Content = ()=>{
     return  <div className="container">
         <div className={'app-wrapper-content'}>
             <Route render={()=><Login title={"Вход в аккаунт"} />} path="/login"/>
             <Route render={()=><RegistrationCompose/>} path="/registration"/>
             <Route render={()=><AdminCompose/>} exact path="/Admin"/>
-            <Route render={()=><HomeCompose pageTitle={"Hi"}/>} exact path="/"/>
+            <Route render={()=><Home />} exact path="/"/>
             <Route render={()=><WithTestContainer/>} exact path="/Test/:nameTest"/>
         </div>
     </div>
@@ -49,7 +50,6 @@ const App : React.FC= () => {
         {IsLockScreen.IsLockScreen?<LockScreen/>
             :null
         }
-
         <NavbarContainer/>
         <InitialApp/>
     </div>

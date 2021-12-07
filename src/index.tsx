@@ -20,4 +20,6 @@ ReactDOM.render( <BrowserRouter basename="/React">
     </Provider>
 </BrowserRouter>, root)
 
+/*
 reportWebVitals(console.log);
+*/

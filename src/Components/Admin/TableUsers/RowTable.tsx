@@ -1,7 +1,8 @@
 import React from "react";
-import {UserType} from "../../../redux/Admin-Reducer";
+
 import { Button } from 'react-bootstrap';
 import {IdUserType} from "../Admin";
+import {UserType} from "../../../api/API_AuthServer_Type";
 
 type PropsType = {
     user: UserType,

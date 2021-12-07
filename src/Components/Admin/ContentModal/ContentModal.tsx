@@ -1,12 +1,16 @@
-
-
 //Таблица ролей в модальном окне
 import React, {useEffect, useState} from "react";
 import {MethodsModalRole} from "./Methods/Methods";
 import RowRol from "./RowRol/RowRol";
 
+type Props = {
+    UserRoles:Array<string>,
+    AllRoles:Array<string>,
+    RolesModal:Array<string>,
+    setRolesModal:(value:Array<string>)=>void
+}
 
-const ContentModal : React.FC<any> = ({UserRoles,AllRoles,RolesModal,setRolesModal})=>{
+const ContentModal : React.FC<Props> = ({UserRoles,AllRoles,RolesModal,setRolesModal})=>{
 
     let [RolMenu,SetRolMenu] = useState<Array<string>>([]);
     useEffect(()=>{

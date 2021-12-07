@@ -1,8 +1,12 @@
 import axios from "axios";
 import {AuthAPI} from "./API_AuthServer";
 import Cookies from "js-cookie";
-//const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
-const ServerHorcruxMemories = "https://localhost:44370/";
+import {AskType, DependOnParentQuestionType} from "./API_HorcruxMemories_Type";
+
+const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
+//const ServerHorcruxMemories = "https://localhost:44370/";
+
+
 const DataGuery = axios.create({
     withCredentials : true,
     baseURL : ServerHorcruxMemories,
@@ -21,7 +25,7 @@ export const DataAPI = {
                 },
                 params: {IdParent, Page, PortionsSize}
             }
-            return DataGuery.get('api/Question/Portions/',config)
+            return DataGuery.get<DependOnParentQuestionType>('api/Question/Portions/',config)
         });
 
     },
@@ -34,7 +38,7 @@ export const DataAPI = {
                 },
                 params: {IdRoot,Type:nameTest}
             }
-            return DataGuery.get('api/Test/',config)
+            return DataGuery.get<AskType>('api/Test/',config)
         });
     },
     TestNext : (IdRoot:string,TestHistory:string[],id:string,isIgnoreTest:boolean,nameTest:string)=>{
@@ -47,7 +51,7 @@ export const DataAPI = {
                 },
                 params:{Type:nameTest},
             }
-            return DataGuery.post('api/Test/',data,config);
+            return DataGuery.post<AskType>('api/Test/',data,config);
         });
     },
     EnableAllQuestions:(IdParent:string,isIgnore:boolean)=>{
@@ -60,7 +64,7 @@ export const DataAPI = {
                 },
                 params: {IdParent,isIgnore}
             }
-            return DataGuery.post('api/Question/EnableAllQuestions',data,config);
+            return DataGuery.post<string>('api/Question/EnableAllQuestions',data,config);
         });
     }
 }

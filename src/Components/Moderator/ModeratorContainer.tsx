@@ -10,12 +10,8 @@ let mapStateToProps = (state:AppStateType)=>{
     return {
     }
 };
-let mapDispatchToProps = (dispatch:any)=>{
-    return{
-    }
-};
 
 let ModeratorCompose = compose(
-    connect(mapStateToProps,mapDispatchToProps)
+    connect(mapStateToProps, {})
 )(Moderator);
 export default ModeratorCompose;

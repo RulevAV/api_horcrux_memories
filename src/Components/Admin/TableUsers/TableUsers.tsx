@@ -1,7 +1,8 @@
 import React from "react";
 import RowTable from "./RowTable";
-import {UserType} from "../../../redux/Admin-Reducer";
 import {IdUserType} from "../Admin";
+import {UserType} from "../../../api/API_AuthServer_Type";
+
 type PropsType = {
     Users:Array<UserType>,
     handleShow:()=>void
@@ -17,7 +18,7 @@ const TableUsers :React.FC<PropsType> = ({Users,handleShow,SetIdUser})=>{
                          handleShow={handleShow}
         />
     });
-    return  <table className="table table-dark">
+    return  <table className="table table-dark ">
         <caption> Все пользователи </caption>
         <thead>
         <tr>

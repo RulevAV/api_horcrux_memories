@@ -3,35 +3,27 @@ import {LOCK_SCREEN, LOG_OUT} from "./Auth-Reducer";
 import {AppStateType, InfoActionsTypes} from "./redux-store";
 import {Dispatch} from "react";
 import {ThunkAction} from "redux-thunk";
+import {GetUserType, UserType} from "../api/API_AuthServer_Type";
 
-export type UserType = {
-    id: number,
-    email:string,
-    lastName:string,
-    firstName:string,
-    userName:string,
-    roles: Array<string>,
-}
-export type InitialStateType = {
-    Users:Array<UserType>,
-    AllRoles:Array<string>
-}
-export let initialState = {
-    Users:[],
-    AllRoles:[]
+//TypeAction
+type ActionsTypesAdmin = InfoActionsTypes<typeof AdminActions>;
+
+export let initialState:GetUserType = {
+    users:[],
+    allRoles:[]
 };
 
-export const AdminReducer = (state=initialState, action : ActionsTypes):InitialStateType=> {
+export const AdminReducer = (state=initialState, action : ActionsTypesAdmin):GetUserType=> {
     switch (action.type) {
         case "ADMIN_GET_USER":{
             return {
                 ...state,
-                Users:action.Users,
-                AllRoles:action.AllRoles
+                users:action.Users,
+                allRoles:action.AllRoles
             };
         }
         case "ADMIN_SET_USER_ROLES":{
-            let mass = state.Users.map((e:UserType)=>{
+            let mass = state.users.map((e:UserType)=>{
                 if(e.email !==action.Email)
                 return e;
                 else return {
@@ -41,10 +33,13 @@ export const AdminReducer = (state=initialState, action : ActionsTypes):InitialS
             })
             return {
                 ...state,
-                Users :[
+                users :[
                     ...mass,
                 ]
             };
+        }
+        case "ClearState":{
+            return initialState;
         }
         case LOG_OUT: {
             return initialState;
@@ -53,38 +48,37 @@ export const AdminReducer = (state=initialState, action : ActionsTypes):InitialS
     }
 }
 
-//AllTypeAction
-type ActionsTypes = InfoActionsTypes<typeof actions>;
-export const actions = {
+
+export const AdminActions = {
     SetUsers: (Users: Array<UserType>, AllRoles: Array<string>) => ({type: "ADMIN_GET_USER", Users, AllRoles} as const),
     SetRoles: (Email: string, Roles: Array<string>) => ({type: "ADMIN_SET_USER_ROLES", Email, Roles} as const),
-    ClearState: () => ({type: LOG_OUT} as const),
+    LogOut: () => ({type: LOG_OUT} as const),
+    ClearState: () => ({type: "ClearState"} as const),
     LockScreen:(IsLockScreen:boolean)=>({type: LOCK_SCREEN,IsLockScreen}as const)
 }
 
-export const GetUsersThunkCreator = () =>{
-    return async (dispatch : Dispatch<ActionsTypes>,getState:()=>AppStateType) => {
-        dispatch(actions.LockScreen(true));
-        await AuthAPI.GetUser().then((response:any) =>{
-            dispatch(actions.SetUsers(response.data.users,response.data.allRoles));
-            dispatch(actions.LockScreen(false));
-        });
+export const AdminActionsThunkCreator = {
+    GetUsers:() =>{
+        return async (dispatch : Dispatch<ActionsTypesAdmin>) => {
+            dispatch(AdminActions.LockScreen(true));
+            await AuthAPI.GetUser().then((response) =>{
+                dispatch(AdminActions.SetUsers(response.data.users,response.data.allRoles));
+            });
+            dispatch(AdminActions.LockScreen(false));
 
-
+        }
+    },
+    SetUserRoles: (Email:string,Roles:Array<string>) : ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypesAdmin>=>{
+        return async (dispatch ) => {
+            dispatch(AdminActions.LockScreen(true));
+            AuthAPI.AddDeleteRole(Email,Roles).then((response) =>{
+                dispatch(AdminActions.SetRoles(Email,Roles));
+            });
+            dispatch(AdminActions.LockScreen(false));
+        }
     }
+
 }
-
-export const SetUserRolesThunkCreator = (Email:string,Roles:Array<string>) : ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>=>{
-    return async (dispatch ) => {
-        dispatch(actions.LockScreen(true));
-        AuthAPI.AddDeleteRole(Email,Roles).then((response:any) =>{
-            dispatch(actions.SetRoles(Email,Roles));
-            dispatch(actions.LockScreen(false));
-        });
-
-    }
-}
-
 
 export default AdminReducer;
 

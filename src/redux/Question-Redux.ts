@@ -1,42 +1,29 @@
 import {LOCK_SCREEN, LOG_OUT} from "./Auth-Reducer";
 import {InfoActionsTypes, ThunkActionType} from "./redux-store";
 import {DataAPI} from "../api/API_HorcruxMemories";
-import {actions} from "./Admin-Reducer";
+import {DependOnParentQuestionType} from "../api/API_HorcruxMemories_Type";
 
-export type QueryType = {
-    dateAdd:string,
-    description: null|string,
-    id:string,
-    idParent:string,
-    images:string,
-    isHiddenContentTest: boolean
-    isIgnoreTest: boolean
-    name:string,
-}
 
-export type DependOnParentQuestionType = {
-    idParent: string|null,
-    nameParent: string|null,
-    page: number
-    questions: Array<QueryType>|null
-    sizePage: number
-    sizeQuestions: number
-}
+//AllTypeAction
+type ActionsTypes = InfoActionsTypes<typeof QuestionAction>;
+
+type ThankType = ThunkActionType<ActionsTypes,Promise<void>>;
+
 export type historyType = {
     idParent: string,
     page: number,
     name:string
 }
 
-type ThankType = ThunkActionType<ActionsTypes,Promise<void>>;
 type initialStateType = {
     DependOnParentQuestion:DependOnParentQuestionType,
     stories:Array<historyType>,
 }
+
 export const initialState:initialStateType = {
     DependOnParentQuestion:{
-        nameParent  :null,
         idParent  :null,
+        nameParent  :null,
         page  :0,
         questions :null,
         sizePage  :0,
@@ -44,7 +31,6 @@ export const initialState:initialStateType = {
     },
     stories:[],
 };
-
 
 export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
     switch (action.type) {
@@ -59,7 +45,7 @@ export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
                 DependOnParentQuestion:{
                     ...action.data,
                 },
-                stories:[...state.stories,history]
+                stories:[...state.stories,history] as Array<historyType>
             };
         case "QUEST_IS_IGNORE":{
             if(!state.DependOnParentQuestion.questions)
@@ -102,10 +88,6 @@ export const QuestionReducer = (state=initialState, action : ActionsTypes) => {
     }
 }
 
-
-//AllTypeAction
-type ActionsTypes = InfoActionsTypes<typeof QuestionAction>;
-
 export const QuestionAction = {
     SetQuests :(data:DependOnParentQuestionType)=>({type : "SET_QUESTS",data }as const),
     SetStore :(data:historyType)=>({type : "SET_STORE", data }as const),
@@ -115,49 +97,47 @@ export const QuestionAction = {
     LockScreen:(IsLockScreen:boolean)=>({type: LOCK_SCREEN,IsLockScreen}as const)
 }
 
-//GET_QUESTS
-export const GetQuestsThunkCreator = (IdParent?:string, Page?:number, PortionsSize?:number) : ThankType =>{
+export const QuestionActionThunkCreator={
+    GetQuests:(IdParent?:string, Page?:number, PortionsSize?:number) : ThankType =>{
+        return async (dispatch) => {
+            dispatch(QuestionAction.LockScreen(true));
+            await DataAPI.Portions(IdParent, Page, PortionsSize).then((response)=>{
+                dispatch(QuestionAction.SetQuests(response.data))
+            })
+            dispatch(QuestionAction.LockScreen(false));
+        }
+    },
+    SetEnableAllQuestions:(IdParent:string,isIgnore:boolean) : ThankType =>{
+        return async (dispatch) => {
+            dispatch(QuestionAction.LockScreen(true));
+            await DataAPI.EnableAllQuestions(IdParent,isIgnore).then((response)=>{
+                dispatch(QuestionAction.QuestIsIgnore(IdParent,isIgnore))
+            })
+            dispatch(QuestionAction.LockScreen(false));
+        }
+    },
+    GetQuestsReturn:(history:historyType)  :ThankType =>{
 
-    return async (dispatch) => {
-        dispatch(QuestionAction.LockScreen(true));
-        await DataAPI.Portions(IdParent, Page, PortionsSize).then((response:any)=>{
-            dispatch(QuestionAction.SetQuests(response.data))
-        })
-       dispatch(QuestionAction.LockScreen(false));
+        return async (dispatch) => {
+            dispatch(QuestionAction.LockScreen(true));
+            dispatch(QuestionAction.SetStore(history));
+            await DataAPI.Portions(history.idParent,history.page).then((response)=>{
+                dispatch(QuestionAction.SetQuests(response.data))
+            })
+            dispatch(QuestionAction.LockScreen(false));
+        }
+    },
+    GetQuestsPagination: (history:historyType,Page:number)  :ThankType  =>{
+        return async (dispatch) => {
+            dispatch(QuestionAction.LockScreen(true));
+            history.page=Page;
+            dispatch(QuestionAction.SetStore(history));
+            await DataAPI.Portions(history.idParent,history.page).then((response)=>{
+                dispatch(QuestionAction.SetQuests(response.data))
+            })
+            dispatch(QuestionAction.LockScreen(false));
+        }
     }
 }
 
-//SetEnableAll
-export const SetEnableAllQuestionsThunkCreator = (IdParent:string,isIgnore:boolean) : ThankType =>{
-    return async (dispatch) => {
-        dispatch(QuestionAction.LockScreen(true));
-        await DataAPI.EnableAllQuestions(IdParent,isIgnore).then((response:any)=>{
-            dispatch(QuestionAction.QuestIsIgnore(IdParent,isIgnore))
-        })
-        dispatch(QuestionAction.LockScreen(false));
-    }
-}
 
-//SET_STORE
-export const GetQuestsReturnThunkCreator = (history:historyType)  :ThankType =>{
-
-    return async (dispatch) => {
-        dispatch(QuestionAction.LockScreen(true));
-        dispatch(QuestionAction.SetStore(history));
-        await DataAPI.Portions(history.idParent,history.page).then((response:any)=>{
-            dispatch(QuestionAction.SetQuests(response.data))
-        })
-        dispatch(QuestionAction.LockScreen(false));
-    }
-}
-export const GetQuestsPaginationThunkCreator = (history:historyType,Page:number)  :ThankType  =>{
-    return async (dispatch) => {
-        dispatch(QuestionAction.LockScreen(true));
-        history.page=Page;
-        dispatch(QuestionAction.SetStore(history));
-        await DataAPI.Portions(history.idParent,history.page).then((response:any)=>{
-            dispatch(QuestionAction.SetQuests(response.data))
-        })
-        dispatch(QuestionAction.LockScreen(false));
-    }
-}

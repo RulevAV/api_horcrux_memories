@@ -1,51 +1,72 @@
 import React from "react";
-
-type storiesType = {
-    idParent: string,
-    page: number
-}
+import {historyType} from "../../../redux/Question-Redux";
 
 type PropsType = {
-    id:string
     sizePage: number,
     page: number,
-    stories: Array<storiesType>,
-    GetQuestsPagination: (stories: Array<storiesType>, Page: number) => void,
-    Link:  React.LegacyRef<HTMLUListElement>
+    stories: Array<historyType>,
+    GetQuestsPagination: (stories: historyType, Page: number) => void,
+}
+
+let callItem=5;
+const ItemInterval=(page:number,sizePage:number)=>{
+    //Количество ячеек
+    let balance = callItem%2;
+    let call = Math.floor(callItem/2)
+    let start = page-call+1-balance;//1-оставшейся ячейка
+    let end = page+call;
+
+    //коректируем интервал
+    if(start<1)
+    {
+        let correct = 1-start;
+        start=start+correct;
+        end=end+correct;
+        end = end>sizePage?sizePage:end;
+        return {start,end}
+
+    }
+
+    if(end>sizePage){
+        let correct = sizePage-end;
+        start=start+correct;
+        end=end+correct;
+        return {start,end}
+    }
+
+    return {start,end}
 }
 
 
-const Pagination:React.FC<PropsType> = ({id,sizePage,page,stories,GetQuestsPagination,Link}) =>{
-
-
+const PaginationConstructor:React.FC<PropsType> = ({sizePage,page,stories,GetQuestsPagination}) =>{
     let mass=[];
-    for(let i=1; i<=sizePage; i++)
+
+    let {start,end} = ItemInterval(page,sizePage);
+    let history = stories[stories.length-1];
+    for(let i=start; i<=end; i++)
     {
-        if (page === i){
-            mass.push(<li
-                key={i} className="page-item active">
-                <a onClick={()=>{GetQuestsPagination(stories,i)}} className="page-link">{i}</a>
-            </li>)
-        }
-        else {
-            mass.push(<li key={i} className="page-item ">
-                <a  onClick={()=>{GetQuestsPagination(stories,i)}} className="page-link">{i}</a>
-            </li>)
-        }
+        mass.push(<li key={i} className={"page-item "+(page === i?"active":"")}>
+            <a onClick={()=>{GetQuestsPagination(history,i)}} className="page-link">{i}</a>
+        </li>)
     }
 
-    return <nav id={id} className="d-flex justify-content-center " aria-label="Page navigation example">
-        <div className="page-item"><a className="page-link" onClick={()=>{GetQuestsPagination(stories,page-1)}}>Previous</a>
-        </div>
-        <ul ref={Link} className="pagination Scroll m-0">
+    return <nav className="pagination-outer d-flex justify-content-center " aria-label="Page navigation">
+        <ul className="pagination">
+            <li className="page-item">
+                <a onClick={()=>{GetQuestsPagination(history,page-5)}} href="#" className="page-link" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                </a>
+            </li>
             {mass}
+            <li className="page-item">
+            <a onClick={()=>{GetQuestsPagination(history,page+5)}} href="#" className="page-link" aria-label="Next">
+                <span aria-hidden="true">»</span>
+            </a>
+        </li>
 
         </ul>
-        <div className="page-item"><a className="page-link" onClick={()=>{GetQuestsPagination(stories,page+1)}}>Next</a>
-        </div>
-
     </nav>
 
 }
 
-export default Pagination;
+export default PaginationConstructor;

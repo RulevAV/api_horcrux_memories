@@ -1,17 +1,24 @@
-import React, {useEffect, useRef, useState} from "react";
-import Question from "./Question/Question3";
-import Pagination from "./Pagination/Pagination2";
-import {QueryType} from "../../redux/Question-Redux";
-import {mapDispatchToPropsType, mapStateToPropsType, ownPropsType} from "./HomeContainer";
-import Breadcrumb from "../breadcrumb";
+import React, {useEffect} from "react";
+import Question from "./Question/Question";
+import Pagination from "./Pagination/Pagination";
+import Breadcrumb from "./Breadcrumb/Breadcrumb";
+import {DependOnParentQuestionType, QueryType} from "../../api/API_HorcruxMemories_Type";
+import {historyType} from "../../redux/Question-Redux";
+
+type Props = {
+    DependOnParentQuestion:DependOnParentQuestionType,
+    stories:Array<historyType>,
+    GetQuests:(IdParent?:string, Page?:number, PortionsSize?:number)=>void,
+    ClearQuests:()=>void,
+    SetEnableAllQuestions:(IdParent:string,isIgnore:boolean) =>void,
+    GetQuestsReturn:(history:historyType) =>void,
+    GetQuestsPagination:(history:historyType,Page:number) =>void,
+    StartAsk:(IdRoot:string,nameTest:string)=>void,
+}
 
 
-type PropsType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType;
-
-
-
-const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
-                                       stories,SetRootTest,GetQuestsPagination,GetQuestsReturn,GetQuests,ClearQuests,SetEnableAllQuestions
+const Home :React.FC<Props> = ({DependOnParentQuestion,
+                                       stories,StartAsk,GetQuestsPagination,GetQuestsReturn,GetQuests,ClearQuests,SetEnableAllQuestions
 }) =>{
     useEffect(()=>{
         GetQuests();
@@ -19,17 +26,17 @@ const Home :React.FC<PropsType> = ({isAuthenticated,DependOnParentQuestion,
             ClearQuests();
         }
     },[]);
-    let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index)=>{
-            return <Question key={index} SetEnableAllQuestions={SetEnableAllQuestions} SetRootTest={SetRootTest} {...question} GetQuests={GetQuests} />
+    let Questions = DependOnParentQuestion.questions?.map((question:QueryType,index:number)=>{
+            return <Question key={index} SetEnableAllQuestions={SetEnableAllQuestions} SetRootTest={StartAsk} {...question} GetQuests={GetQuests} />
     });
     let isRender = !!(DependOnParentQuestion.questions?.length);
     return <div>
        <Breadcrumb stories={stories} GetQuestsReturn={GetQuestsReturn}/>
         {isRender?<>
-            <Pagination id={"Pagination1"} GetQuestsPagination={GetQuestsPagination} stories={stories}
+            <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories}
                         sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
             {Questions}
-            <Pagination id={"Pagination2"} GetQuestsPagination={GetQuestsPagination} stories={stories}
+            <Pagination GetQuestsPagination={GetQuestsPagination} stories={stories}
                                                          sizePage={DependOnParentQuestion.sizePage} page={DependOnParentQuestion.page}/>
 
         </>:null}

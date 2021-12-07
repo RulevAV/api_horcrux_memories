@@ -1,11 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie'
+import {AllRefreshTokenUsers, AuthType, GetUserType, RevokeTokenType} from "./API_AuthServer_Type";
 
-
-/*
-axios.defaults.withCredentials = true;
-axios.defaults.headers['Content-Type'] = "application/json;charset=utf-8";
-*/
 
 const ServerAuth = "https://maagserver/AuthServer/";
 //const ServerAuth = "https://localhost:44397/";
@@ -18,42 +14,21 @@ const AuthGuery = axios.create({
     }
 });
 
-type ResponseTokenType = {
-    email: string
-    isAuthenticated: boolean
-    message: string|null
-    refreshToken: string
-    refreshTokenExpiration: string
-    roles: string[]
-    token: string
-    userName: string
-}
-
-type TokenUserType={
-    email: string
-    isAuthenticated: boolean
-    message: null|string
-    refreshToken: string
-    refreshTokenExpiration: string
-    roles: Array<string>
-    token: string
-    userName:string
-}
-
-export const setCookies = (data:TokenUserType)=>{
+export const setCookies = (data:AuthType|null)=>{
     let Token = data?.token;
     let RefreshToken = data?.refreshToken;
-    if(Token)
-    {
-        Cookies.set("Token",data.token);
-    }
-    if(RefreshToken)
-    {
-        let date = new Date( Date.parse(data.refreshTokenExpiration) );
-        Cookies.set("RefreshToken",data.refreshToken,{expires:date });
-    }
+
     if(data)
     {
+        if(Token)
+            Cookies.set("Token",data.token);
+
+        if(RefreshToken)
+        {
+            let date = new Date( Date.parse(data.refreshTokenExpiration) );
+            Cookies.set("RefreshToken",data.refreshToken,{expires:date });
+        }
+
         let date = new Date( Date.parse(data.refreshTokenExpiration) );
         Cookies.set("Auth",JSON.stringify(data),{expires:date });
     }
@@ -69,7 +44,7 @@ export const deleteCookies = ()=>{
 export const AuthAPI = {
     Token : (Email:string,Password:string) => {
         let data = JSON.stringify({Email,Password});
-        return AuthGuery.post<ResponseTokenType>('api/user/token',data)
+        return AuthGuery.post<AuthType>('api/user/token',data)
             .then(response =>{
                 setCookies(response.data)
                 return response;
@@ -78,14 +53,14 @@ export const AuthAPI = {
     RefreshToken : ()=>{
         let RefreshToken=Cookies.get("RefreshToken");
         let data = JSON.stringify({RefreshToken});
-        return  AuthGuery.post<ResponseTokenType>("api/user/refresh-token",data).then(response =>{
-           setCookies(response.data);
+        return  AuthGuery.post<AuthType>("api/user/refresh-token",data).then(response =>{
+            setCookies(response.data);
             return response;
         })
     },
     Register : (FirstName:string,LastName:string,Username:string,Email:string,Password:string) => {
         let data =  JSON.stringify({FirstName,LastName,Username,Email,Password});
-        return  AuthGuery.post("api/user/register",data)
+        return  AuthGuery.post<string>("api/user/register",data)
 
     },
 
@@ -102,6 +77,7 @@ export const AuthAPI = {
         return promise;
     },
 
+
     AddDeleteRole : (Email:string,Roles:string[])=>{
         return  AuthAPI.IsExistsToken().then(req=>{
             let Token = Cookies.get("Token");
@@ -111,7 +87,7 @@ export const AuthAPI = {
                     'Authorization': `Bearer  ${Token}`
                 },
             }
-            return AuthGuery.post('api/user/add-delete-roles',data,config)
+            return AuthGuery.post<string>('api/user/add-delete-roles',data,config)
         })
     },
     RevokeToken : ()=>{
@@ -119,7 +95,7 @@ export const AuthAPI = {
             let RefreshToken=Cookies.get("RefreshToken");
             let data =  JSON.stringify({RefreshToken})
             deleteCookies();
-            return AuthGuery.post('api/user/revoke-token',data).then()
+            return AuthGuery.post<RevokeTokenType>('api/user/revoke-token',data)
         })
     },
     GetUser:()=>{
@@ -130,16 +106,18 @@ export const AuthAPI = {
                     'Authorization': `Bearer  ${Token}`
                 },
             }
-            return AuthGuery.post('api/user/GetUsers',null,config)
+            return AuthGuery.post<GetUserType>('api/user/GetUsers',null,config);
         });
 
     },
-    UserTokens : (Token:string,id:string)=>{
+    UserTokens : (id:string)=>{
+        let Token=Cookies.get("Token");
         let config = {
             headers: {
                 'Authorization': `Bearer  ${Token}`
+
             },
         }
-        return AuthGuery.post('api/user/tokens/',null,config)
+        return AuthGuery.post<Array<AllRefreshTokenUsers>>(`api/user/tokens/${id}`,null,config)
     },
 }

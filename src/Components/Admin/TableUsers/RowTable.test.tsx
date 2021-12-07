@@ -3,6 +3,7 @@ import RowTable from "./RowTable";
 import React from "react";
 import {configure, mount} from "enzyme";
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import {IdUserType} from "../Admin";
 configure({ adapter: new Adapter() });
 
 const User = {
@@ -17,7 +18,7 @@ const PropsType = {
     user: User,
     index: 0,
     idModal: "string",
-    SetIdUser: (index,roles) => {}
+    SetIdUser: (value:IdUserType) => {}
 }
 
 
@@ -27,7 +28,7 @@ describe('Admin>TableUsers>RowTable component', ()=>{
     it('RowTable matching names by id', ()=>{
         let dom = render(<table>
             <tbody id="tbody">
-            <RowTable user={User} index={0} SetIdUser={SetIdUser} />
+            <RowTable user={User} index={0} SetIdUser={SetIdUser} handleShow={()=>{}} />
             </tbody>
         </table>);
         const getById = queryByAttribute.bind(null, 'id');
@@ -38,12 +39,13 @@ describe('Admin>TableUsers>RowTable component', ()=>{
         const firstName = getById(dom.container, 'firstName');
         const userName = getById(dom.container, 'userName');
         const roles = getById(dom.container, 'roles');
-        expect(index.innerHTML).toBe(User.id.toString());
-        expect(email.innerHTML).toBe(User.email);
-        expect(lastName.innerHTML).toBe(User.lastName);
-        expect(firstName.innerHTML).toBe(User.firstName);
-        expect(userName.innerHTML).toBe(User.userName);
-        expect(roles.innerHTML).toBe(User.roles.join("\n"));
+
+        expect(index?.innerHTML).toBe(User.id.toString());
+        expect(email?.innerHTML).toBe(User.email);
+        expect(lastName?.innerHTML).toBe(User.lastName);
+        expect(firstName?.innerHTML).toBe(User.firstName);
+        expect(userName?.innerHTML).toBe(User.userName);
+        expect(roles?.innerHTML).toBe(User.roles.join("\n"));
 
 
         //screen.getbyid('index')

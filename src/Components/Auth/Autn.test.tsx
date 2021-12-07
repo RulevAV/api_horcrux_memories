@@ -1,4 +1,3 @@
-import {LOG_OUT} from "../../redux/Auth-Reducer";
 import {createStore} from "redux";
 import {fireEvent, queryByAttribute, render,screen} from "@testing-library/react";
 import {BrowserRouter} from "react-router-dom";
@@ -7,65 +6,25 @@ import React from "react";
 import Login from "./Login/LoginContainer";
 import Registration from "./Registration/RegistrationContainer";
 import {outValid, useInput} from "./UseValidator";
-
-let initialState = {
-    authReducer:{
-        Auth:{
-            message: null,
-            isAuthenticated: false,
-            userName: null,
-            email: null,
-            roles: [],
-            token: null,
-            refreshToken: null,
-            refreshTokenExpiration: null
-        },
-        Register: {
-            isRegister : false,
-            LoginRegistration:"",
-        }
-    }
-
-};
+import {AppStateType, reducer} from "../../redux/redux-store";
 
 
-export const reducer = (state=initialState, action)=> {
-    switch (action.type) {
-        case "SET_USER_DATA":{
-            return {
-                ...state,
-                Auth:{
-                    ...action.data,
-                },
-            };
-        }
-        case LOG_OUT:{
-            return initialState
-        }
-        case "USER_REGISTER":{
-            return {
-                ...state,
-                Register: {
-                    ...state.Register,
-                    isRegister : action.isRegister,
 
-                }
-            };
-        }
-        default: return state;
-    }
-}
-const updateState = (NewState)=>{
-    let NewStore = createStore(reducer,NewState);
+const updateState = (NewState?:AppStateType)=>{
+    let NewStore;
+    if (NewState)
+     NewStore = createStore(reducer);
+    else
+        NewStore = createStore(reducer,NewState);
     NewStore.dispatch=jest.fn();
     return NewStore;
 }
 
-let Store = updateState(initialState);
+let Store = updateState();
 
 
 const renderWithRedux = (
-    component, State
+    component:any, State?:AppStateType
 
 )=>{
     let store = State?updateState(State):Store;
@@ -79,55 +38,63 @@ const renderWithRedux = (
 describe('Auth component', ()=>{
     //Login
     it('Login Registration click', ()=>{
-                let dom = renderWithRedux(<Login/>);
+                let dom = renderWithRedux(<Login title={"Вход в аккаунт"}/>);
                 const getById = queryByAttribute.bind(null, 'id');
                 const btn = getById(dom.container, 'Registration');
+                if (btn)
                 fireEvent.click(btn);
     })
     it('Login SetUser', ()=>{
 
-        let dom = renderWithRedux(<Login/>);
+        let dom = renderWithRedux(<Login title={"Вход в аккаунт"}/>);
         const getById = queryByAttribute.bind(null, 'id');
         const btn = getById(dom.container, 'Exit');
+        if (btn)
         fireEvent.click(btn);
     })
     it('change input login', ()=>{
 
-        let dom = renderWithRedux(<Login/>);
+        let dom = renderWithRedux(<Login title={"Вход в аккаунт"}/>);
         //const getById = queryByAttribute.bind(null, 'id');
         // const input = getById(dom.container, '#Login');
         const input = dom.container.querySelector("#Login");
 
         //screen.debug(input);
+        if (input)
         fireEvent.change(input, {target: {value: '24/05/2020'}})
         expect(input).toHaveValue("24/05/2020")
     })
     it('onBlur input login', ()=>{
 
-        let dom = renderWithRedux(<Login/>);
+        let dom = renderWithRedux(<Login title={"Вход в аккаунт"}/>);
         //const getById = queryByAttribute.bind(null, 'id');
         // const input = getById(dom.container, '#Login');
         const input = dom.container.querySelector("#Login");
         //screen.debug(input);
-        fireEvent.click(input);
-        fireEvent.blur(input)
-
+        if (input)
+        {
+            fireEvent.click(input);
+            fireEvent.blur(input)
+        }
     })
     //Registration
     it('Registration click Register', ()=>{
         let dom = renderWithRedux(<Registration/>);
         const getById = queryByAttribute.bind(null, 'id');
         const btn = getById(dom.container, 'Register');
+        if (btn)
         fireEvent.click(btn);
     })
     it('User is Registration', ()=> {
-        let NewState = JSON.parse(JSON.stringify(initialState));
-        NewState.authReducer.Register.isRegister=true;
-        let dom = renderWithRedux(<Registration/>,NewState);
+        let state =Store.getState();
+        state.authReducer.Register.isRegister=true;
+        let dom = renderWithRedux(<Registration/>,state);
     });
     //Validation input login
     it('test useValidation no parameters', ()=>{
         let TestComponent = ()=>{
+
+            // @ts-ignore
             const login = useInput("",{NoExistProperty:"asd"});
             return <div>
                 <input onChange={login.onChange}/>
@@ -146,8 +113,11 @@ describe('Auth component', ()=>{
         let dom = renderWithRedux(<TestComponent/>);
 
         const input = dom.container.querySelector("#Input");
-        fireEvent.click(input);
-        fireEvent.blur(input);
+        if(input)
+        {
+            fireEvent.click(input);
+            fireEvent.blur(input);
+        }
         dom.getByText(/Поле не должно быть пустым/i);
     })
     it('test useValidation minLength', ()=>{
@@ -161,8 +131,10 @@ describe('Auth component', ()=>{
         let dom = renderWithRedux(<TestComponent/>);
 
         const input = dom.container.querySelector("#Input");
-        fireEvent.click(input);
-        fireEvent.blur(input);
+        if(input) {
+            fireEvent.click(input);
+            fireEvent.blur(input);
+        }
         dom.getByText(/Поле не должно быть меньше/i);
     })
     it('test useValidation maxLength', ()=>{
@@ -176,8 +148,11 @@ describe('Auth component', ()=>{
         let dom = renderWithRedux(<TestComponent/>);
 
         const input = dom.container.querySelector("#Input");
-        fireEvent.change(input, {target: {value: '123456789'}})
-        fireEvent.blur(input);
+        if(input){
+            fireEvent.change(input, {target: {value: '123456789'}})
+            fireEvent.blur(input);
+        }
+
         dom.getByText(/Поле не должно быть больше/i);
     })
     it('test useValidation isEmail', ()=>{
@@ -191,8 +166,11 @@ describe('Auth component', ()=>{
         let dom = renderWithRedux(<TestComponent/>);
 
         const input = dom.container.querySelector("#Input");
-        fireEvent.blur(input);
-        fireEvent.click(input);
+        if(input){
+            fireEvent.blur(input);
+            fireEvent.click(input);
+        }
+
         dom.getByText(/Не является почтой/i);
     })
 

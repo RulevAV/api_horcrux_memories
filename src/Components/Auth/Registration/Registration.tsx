@@ -2,7 +2,12 @@ import React from 'react'
 import {outValid, useInput} from "../UseValidator";
 import user from "../../../img/2998137-clover-four-leaf_99856.svg";
 
-const Registration = (props:any) =>{
+type propsType = {
+    isRegister:boolean,
+    RegisterUser:(FirstName:string,LastName:string,Username:string,Email:string,Password:string)=>void,
+
+}
+const Registration = (props:propsType) =>{
 
     const Username = useInput("Ivan",{minLength:3,maxLength:40,isEmpty:true});
     const Password = useInput("Qwerty9.",{minLength:6,isEmpty:true});
@@ -37,7 +42,7 @@ const Registration = (props:any) =>{
 
                 <div className="mb-3">
                     <label className="form-label" >Пароль</label>
-                    <input onChange={Password.onChange} value={Password.value} onBlur={Password.onBlur}  className="form-control" name="Password"/>
+                    <input type={"password"} onChange={Password.onChange} value={Password.value} onBlur={Password.onBlur}  className="form-control" name="Password"/>
                     {outValid(Password)}
                 </div>
 

@@ -15,7 +15,11 @@
   grid-area: c;
   /*background-color: dodgerblue;*/
 }
-
+img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .content-blocker {
   position: fixed;
   top: 0;

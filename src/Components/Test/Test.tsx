@@ -1,23 +1,28 @@
 import React, {useEffect} from "react";
-import QuestionTest from "./QuestionTest/QuestionTest2";
-import {PropsTypeTest} from "./TestContainer";
-import {QueryType} from "../../redux/Question-Redux";
 import {Redirect} from "react-router-dom";
+import {QuestionTest} from "./QuestionTest/QuestionTest";
+import {TestType} from "../../redux/Test-Reducer";
+import { match} from "react-router-dom";
 
-export type QuestionTestType ={
-    question:QueryType,
-    QuestionTestFun:(id:string,isIgnoreTest:boolean)=>void,
-    ShowContent:(value:boolean)=>void
+type PropsTypeTest = {
+    Test:TestType,
+    match:match<{nameTest:string}>,
+    NextAsk: (IdRoot: string, TestHistory: Array<string>, id: string, isIgnoreTest: boolean, nameTest: string) => void
+    ShowContent:(value:boolean)=>void,
+    SetIsFinish:(isFinish:boolean)=>void,
+    TestClear:()=>void,
 }
 
 let Test : React.FC<PropsTypeTest> = ({...props}) =>{
     useEffect(()=>{
         return ()=>{
-            props.OutputCard();
+            props.SetIsFinish(true);
+            props.TestClear();
         }
     },[]);
-
-    let QuestionTestUI;
+    if(props.Test.isFinish){
+        return <Redirect to={"/"}/>
+    }
 
     let QuestionTestFun = (id:string,isIgnoreTest:boolean) => {
         props.NextAsk(
@@ -29,23 +34,10 @@ let Test : React.FC<PropsTypeTest> = ({...props}) =>{
         );
     }
 
-    if(props.Test.Ask.question){
-        QuestionTestUI = <QuestionTest question={props.Test.Ask.question} ShowContent={props.ShowContent} QuestionTestFun={QuestionTestFun}/>;
-    }
-    if(props.Test.isFinish){
-        return <Redirect to={"/"}/>
-    }
+
     return<div className={"text-white"}>
         <h1>Test</h1>
-        {
-            props.Test.Ask.sizeAsk!==0?<>
-                    <h3>{props.Test.Ask.passedAsk + "/" + props.Test.Ask.sizeAsk}</h3>
-                    {QuestionTestUI}
-                     </>
-                :null
-        }
-
-
+        <QuestionTest Ask={props.Test.Ask} ShowContent={props.ShowContent} QuestionTestFun={QuestionTestFun}  />
     </div>
 
 }

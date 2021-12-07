@@ -1,28 +1,21 @@
 import {connect} from "react-redux";
 import {compose} from "redux";
-import {GetUsersThunkCreator, SetUserRolesThunkCreator} from "../../redux/Admin-Reducer";
+import {AdminActions, AdminActionsThunkCreator} from "../../redux/Admin-Reducer";
 import Admin from "./Admin";
+import {AppStateType} from "../../redux/redux-store";
 
-
-let mapStateToProps = (state:any)=>{
+let mapStateToProps = (state:AppStateType)=>{
     return {
-        Users : state.AdminReducer.Users,
-        AllRoles : state.AdminReducer.AllRoles,
-    }
-};
-let mapDispatchToProps = (dispatch:any)=>{
-    return{
-        GetUsers (){
-            dispatch(GetUsersThunkCreator());
-        },
-        SetUserRoles(Email:string,Roles:Array<string>){
-            dispatch(SetUserRolesThunkCreator(Email,Roles));
-        }
-
+        users : state.AdminReducer.users,
+        allRoles : state.AdminReducer.allRoles,
     }
 };
 
 let AdminCompose = compose(
-    connect(mapStateToProps,mapDispatchToProps)
+    connect(mapStateToProps, {
+        GetUsers: AdminActionsThunkCreator.GetUsers,
+        SetUserRoles: AdminActionsThunkCreator.SetUserRoles,
+        ClearState: AdminActions.ClearState,
+    })
 )(Admin);
 export default AdminCompose;

@@ -1,4 +1,4 @@
-import {historyType} from "../redux/Question-Redux";
+import {historyType} from "../../../redux/Question-Redux";
 import React from "react";
 
 type propsType ={

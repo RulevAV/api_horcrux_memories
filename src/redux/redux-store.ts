@@ -4,7 +4,7 @@ import thunk, {ThunkAction} from 'redux-thunk';
 import {QuestionReducer} from "./Question-Redux";
 import {AdminReducer} from "./Admin-Reducer";
 import {TestReducer} from "./Test-Reducer";
-let reducer = combineReducers({
+export let reducer = combineReducers({
     authReducer,
     AdminReducer,
     QuestionReducer,
