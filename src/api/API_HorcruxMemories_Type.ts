@@ -10,8 +10,8 @@ export type QueryType = {
 }
 
 export type DependOnParentQuestionType = {
-    idParent: string|null,
-    nameParent: string|null,
+    idParent: string,
+    nameParent: string,
     page: number
     questions: Array<QueryType>|null
     sizePage: number
