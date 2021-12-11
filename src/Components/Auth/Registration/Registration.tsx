@@ -15,7 +15,7 @@ const Registration = (props:propsType) =>{
     const FirstName = useInput("Иван",{isEmpty:true});
     const LastName = useInput("Иван",{isEmpty:true});
 
-    const onClick = ()=>{
+    const onClick = (e:React.FormEvent<HTMLFormElement>)=>{
         props.RegisterUser(
             FirstName.value,
             LastName.value,
@@ -23,13 +23,14 @@ const Registration = (props:propsType) =>{
             Email.value,
             Password.value
             );
+        e.preventDefault()
     }
 
 
     return <div className={"text-white container d-flex align-items-center justify-content-center"}>
         <div className="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
             {!props.isRegister
-                ?<div className="div-box" >
+                ?<form onSubmit={onClick} className="div-box" >
                     <div className={"d-flex align-items-center justify-content-center"}>
                         <img src={user} style={{height:100,width:100}} alt="icon_User"/>
                     </div>
@@ -65,7 +66,7 @@ const Registration = (props:propsType) =>{
 
 
                 <div className="row">
-                    <button id={"Register"}  onClick={onClick}
+                    <button id={"Register"}
                             disabled={
                                 !Username.inputValid
                                 ||!Password.inputValid
@@ -73,7 +74,7 @@ const Registration = (props:propsType) =>{
                                 ||!FirstName.inputValid
                             }type="submit" className="btn btn-primary">Зарегаться</button>
                 </div>
-            </div>
+            </form>
                 : <h1>Пользователь зарегистрирован</h1>
             }
         </div>

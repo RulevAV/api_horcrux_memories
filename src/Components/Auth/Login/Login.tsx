@@ -12,13 +12,14 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
 
     const login = useInput("maag@mail.ru",{minLength:3,maxLength:40,isEmpty:true});
     const password = useInput("Pa$$w0rd.",{minLength:6,isEmpty:true});
-    const onClick = ()=>{
+    const onClick = (e:React.FormEvent<HTMLFormElement>)=>{
         SetUser(login.value,password.value);
+        e.preventDefault();
     }
 
     return <div className={"text-white container d-flex align-items-center justify-content-center"}>
         <div className="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
-            <div className="div-box" >
+            <form className="div-box" noValidate onSubmit={onClick}>
                 <div className={"d-flex align-items-center justify-content-center"}>
                     <img src={user} style={{height:100,width:100}} alt="icon_User"/>
                 </div>
@@ -46,9 +47,9 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                 </div>
 
                 <div className="row">
-                    <button id={"Exit"} onClick={onClick} disabled={!login.inputValid ||!password.inputValid} type="submit" className="btn btn-primary">Войти</button>
+                    <button id={"Exit"} disabled={!login.inputValid ||!password.inputValid} type="submit" className="btn btn-primary">Войти</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 }
