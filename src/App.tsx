@@ -1,57 +1,53 @@
-import React, {useEffect,useState} from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import {Route} from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import ConnectLoginContainer from "./Components/Auth/Login/LoginContainer";
-import RegistrationCompose from "./Components/Auth/Registration/RegistrationContainer";
-import HomeCompose from "./Components/Home/HomeContainer";
-import WithTestContainer from "./Components/Test/TestContainer";
-import {WithHomeRedirect} from "./Components/hoc/HomeRedirect";
 import NavbarContainer from "./Components/Navbar/NavbarContainer";
-import AdminCompose from "./Components/Admin/AdminContainer";
-import {WithInitialApp} from "./Components/hoc/InitialApp";
-import {useDispatch, useSelector} from "react-redux";
-import {AuthActions} from "./redux/Auth-Reducer";
-import {LockScreen} from "./Components/LockScreen/LockScreen";
-import {AppStateType} from "./redux/redux-store";
-import {LoginRedirect} from "./Components/hoc/LoginRedirect";
-let Login = WithHomeRedirect(ConnectLoginContainer);
-let Home = LoginRedirect(HomeCompose);
-let Content = ()=>{
-    return  <div className="container">
-        <div className={'app-wrapper-content'}>
-            <Route render={()=><Login title={"Вход в аккаунт"} />} path="/login"/>
-            <Route render={()=><RegistrationCompose/>} path="/registration"/>
-            <Route render={()=><AdminCompose/>} exact path="/Admin"/>
-            <Route render={()=><Home />} exact path="/"/>
-            <Route render={()=><WithTestContainer/>} exact path="/Test/:nameTest"/>
-        </div>
-    </div>
-};
-let InitialApp = WithInitialApp(Content);
+import { getUser } from './http/endpoints/user';
+import { LoginContainer } from './Components/Auth/Login/LoginContainer';
+import { useDispatch } from 'react-redux';
+import { AuthActions } from './redux/User/Auth-Reducer';
+import Cookies from 'js-cookie';
+import { USER_AUTH_COOKIE_KEY } from './constans';
+import RegistrationContainer from './Components/Auth/Registration/RegistrationContainer';
+import { AdminCompose } from './Components/Admin/AdminContainer';
+import { TestContainer } from './Components/Test/TestContainer';
+import { HomeContainer } from './Components/Home/HomeContainer';
 
+const App: React.FC = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const initial = async () => {
+    try {
+      const data = await getUser();
+      dispatch(AuthActions.setUser({ ...data, isAuthenticated: true }))
+      return;
+    } catch (error) {
+      Cookies.remove(USER_AUTH_COOKIE_KEY);
+    }
+    history.push("/login");
+  }
 
-const App : React.FC= () => {
+  useEffect(() => {
+    (async () => {
+      await initial();
+    })();
+  }, []);
 
-    let IsLockScreen = useSelector((state:AppStateType)=>{
-        return {
-            IsLockScreen : state.authReducer.IsLockScreen
-        }
-    })
-    let dispath = useDispatch();
-
-    useEffect(()=>{
-        dispath(AuthActions.InitialApp())
-    },[])
   return (
     <div >
-        {IsLockScreen.IsLockScreen?<LockScreen/>
-            :null
-        }
-        <NavbarContainer/>
-        <InitialApp/>
+      <NavbarContainer />
+      <div className="container">
+        <div className={'app-wrapper-content'}>
+          <Route render={() => <LoginContainer />} path="/login" />
+          <Route render={() => <RegistrationContainer />} path="/registration" />
+          <Route render={() => <AdminCompose />} exact path="/Admin" />
+          <Route render={() => <HomeContainer />} exact path="/" />
+          <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
+        </div>
+      </div>
     </div>
   );
 }

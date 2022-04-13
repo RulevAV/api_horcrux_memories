@@ -6,9 +6,8 @@ import {AppStateType} from "../../redux/redux-store";
 type  BaseProps ={
     isAuthenticated:boolean
 }
-let mapStateToPropsForRedirect = (state:AppStateType) => {
+let mapStateToPropsForRedirect = (state:any) => {
     return {
-        isAuthenticated : state.authReducer.Auth.isAuthenticated,
     }
 }
 

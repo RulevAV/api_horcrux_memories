@@ -3,8 +3,8 @@ import {AuthAPI} from "./API_AuthServer";
 import Cookies from "js-cookie";
 import {AskType, DependOnParentQuestionType} from "./API_HorcruxMemories_Type";
 
-const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
-//const ServerHorcruxMemories = "https://localhost:44370/";
+//const ServerHorcruxMemories = "https://maagserver/API_HorcruxMemories/";
+const ServerHorcruxMemories = "https://localhost:44370/";
 
 
 const DataGuery = axios.create({

@@ -3,17 +3,15 @@ import {NavLink} from "react-router-dom";
 import {outValid, useInput} from "../UseValidator";
 import user from '../../../img/among_us_player_light_green_icon_156936.png';
 type PropsType = {
-    SetUser:(Email:string,Password:string)=>void,
-    RegisterUser:(isRegister :boolean,Login:string)=>void,
-    title:string
+    setLogin:(login:string,password:string)=>void,
+    registerUser:()=>void
 }
 
-const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
-
+const Login:React.FC<PropsType> = ({setLogin,registerUser}) =>{
     const login = useInput("maag@mail.ru",{minLength:3,maxLength:40,isEmpty:true});
     const password = useInput("Pa$$w0rd.",{minLength:6,isEmpty:true});
     const onClick = (e:React.FormEvent<HTMLFormElement>)=>{
-        SetUser(login.value,password.value);
+        setLogin(login.value,password.value);
         e.preventDefault();
     }
 
@@ -23,10 +21,6 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                 <div className={"d-flex align-items-center justify-content-center"}>
                     <img src={user} style={{height:100,width:100}} alt="icon_User"/>
                 </div>
-                <div className={"d-flex align-items-center justify-content-center"}>
-                    <h1>{title}</h1>
-                </div>
-
                 <div className="mb-3">
                     <label htmlFor="Login" className="form-label" >Логин</label>
                     <input id="Login" placeholder="Введите логин" onChange={login.onChange} value={login.value} onBlur={login.onBlur} className="form-control" name="UserName"/>
@@ -42,7 +36,7 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
                     <input id="RememberMe" type="checkbox" className="form-check-input" />
                 </div>
                 <div className="mb-3">
-                    <NavLink id={"Registration"} className="link-success p-3" onClick={()=>{RegisterUser(false,"")}}  to={"/registration"}>Зарегаться</NavLink>
+                    <NavLink id={"Registration"} className="link-success p-3" onClick={registerUser}  to={"/registration"}>Зарегаться</NavLink>
                     <a className="link-success" href={"https://maagserver/HorcruxMemories/Account/ForgotPassword"}>Забыли пароль?</a>
                 </div>
 
@@ -53,8 +47,5 @@ const Login:React.FC<PropsType> = ({SetUser, RegisterUser,title}) =>{
         </div>
     </div>
 }
-
-
-
 
 export default Login;

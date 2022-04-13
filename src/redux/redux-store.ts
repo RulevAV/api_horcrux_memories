@@ -1,16 +1,15 @@
 import {applyMiddleware, combineReducers, createStore,Action} from "redux";
-import authReducer from "./Auth-Reducer";
 import thunk, {ThunkAction} from 'redux-thunk';
 import {QuestionReducer} from "./Question-Redux";
 import {AdminReducer} from "./Admin-Reducer";
 import {TestReducer} from "./Test-Reducer";
+import authReducer from "./User/Auth-Reducer";
 export let reducer = combineReducers({
     authReducer,
     AdminReducer,
     QuestionReducer,
     TestReducer
 });
-
 type RootReduserType = typeof reducer;
 export type AppStateType = ReturnType<RootReduserType>
 export type ThunkActionType<A extends Action ,R> =ThunkAction<R, AppStateType, unknown, A>;

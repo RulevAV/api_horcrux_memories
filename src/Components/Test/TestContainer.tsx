@@ -9,19 +9,6 @@ import {
 import {AppStateType} from "../../redux/redux-store";
 
 
-let mapStateToProps = (state:AppStateType)=>{
-    return {
-        Test:state.TestReducer
-    }
-};
-
-let TestCompose = compose(connect(mapStateToProps,{
-        NextAsk:TestActionsThunkCreator.NextAsk,
-        ShowContent:TestActions.ShowContent,
-        SetIsFinish:TestActions.SetIsFinish,
-        TestClear:TestActions.TestClear,
-    })
-)(Test);
-
-let WithTestContainer = withRouter(TestCompose);
-export default WithTestContainer;
+export const TestContainer = ()=>{
+    return <>TestContainer</>
+}

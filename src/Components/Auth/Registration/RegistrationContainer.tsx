@@ -2,18 +2,10 @@ import {connect} from "react-redux";
 
 import {compose} from "redux";
 import {default as WichRegistration} from "./Registration";
-import {AppStateType} from "../../../redux/redux-store";
-import {AuthActionsThunkCreator} from "../../../redux/Auth-Reducer";
+import { AppStateType } from "../../../redux/redux-store";
+import { AuthActionsThunk } from "../../../redux/User/Auth-Reducer";
 
-let mapStateToProps = (state:AppStateType)=>{
-    return {
-        isRegister:state.authReducer.Register.isRegister,
-    }
-};
-
-let Registration = compose(
-    connect(mapStateToProps, {
-        RegisterUser:AuthActionsThunkCreator.UserRegister
-    })
-)(WichRegistration);
-export default Registration;
+const RegistrationContainer = (props:any)=>{
+    return <>RegistrationContainer</>
+}
+export default RegistrationContainer;

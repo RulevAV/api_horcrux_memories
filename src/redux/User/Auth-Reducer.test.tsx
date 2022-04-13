@@ -1,10 +1,7 @@
-import authReducer, {
-    AuthActions, AuthActionsThunkCreator, initialState,
-} from "./Auth-Reducer";
-
-import {AuthAPI} from "../api/API_AuthServer";
+import {AuthAPI} from "../../api/API_AuthServer";
 import Cookies from "js-cookie";
-import {AuthType} from "../api/API_AuthServer_Type";
+import {AuthType} from "../../api/API_AuthServer_Type";
+import authReducer, { AuthActions, AuthActionsThunkCreator, initialState } from "./Auth-Reducer";
 
 jest.mock("js-cookie")
 jest.mock("../api/API_AuthServer")

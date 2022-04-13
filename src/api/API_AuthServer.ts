@@ -3,8 +3,8 @@ import Cookies from 'js-cookie'
 import {AllRefreshTokenUsers, AuthType, GetUserType, RevokeTokenType} from "./API_AuthServer_Type";
 
 
-const ServerAuth = "https://maagserver/AuthServer/";
-//const ServerAuth = "https://localhost:44397/";
+//const ServerAuth = "https://maagserver/AuthServer/";
+const ServerAuth = "https://localhost:44397/";
 
 const AuthGuery = axios.create({
     withCredentials : true,
@@ -98,7 +98,7 @@ export const AuthAPI = {
             return AuthGuery.post<RevokeTokenType>('api/user/revoke-token',data)
         })
     },
-    GetUser:()=>{
+    getUser:()=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let Token=Cookies.get("Token");
             let config = {
@@ -106,7 +106,7 @@ export const AuthAPI = {
                     'Authorization': `Bearer  ${Token}`
                 },
             }
-            return AuthGuery.post<GetUserType>('api/user/GetUsers',null,config);
+            return AuthGuery.get<GetUserType>('api/user/GetUsers',config);
         });
 
     },

@@ -3,9 +3,8 @@ import React from "react";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 //<WCP> (WrappedComponent
-let mapStateToPropsForRedirect = (state:AppStateType) => {
+let mapStateToPropsForRedirect = (state:any) => {
     return {
-        isAuthenticated : state.authReducer.Auth.isAuthenticated,
     }
 }
 
@@ -20,7 +19,7 @@ export function WithHomeRedirect<WCP> (WrappedComponent:React.ComponentType<WCP>
         if(isAuthenticated) return <Redirect to={"/"}/>
         return <WrappedComponent {...restProps as WCP}/>
     }
-    let ConnectedAuthRedirectComponent = connect<BaseProps,DispathPropsType,WCP,AppStateType>(mapStateToPropsForRedirect)
+    let ConnectedAuthRedirectComponent = connect<any>(mapStateToPropsForRedirect)
     (RedirectComponent);
 
     return ConnectedAuthRedirectComponent;
