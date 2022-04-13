@@ -1,20 +1,17 @@
 import React from "react";
 
 import { Button } from 'react-bootstrap';
-import {IdUserType} from "../Admin";
 import {UserType} from "../../../api/API_AuthServer_Type";
 
 type PropsType = {
     user: UserType,
     index: number,
-    SetIdUser: (value:IdUserType) => void
-    handleShow:()=>void
+    handleShow:(user:UserType)=>void
 }
 
-const RowTable : React.FC<PropsType> = ({user,index,handleShow,SetIdUser})=>{
+const RowTable : React.FC<PropsType> = ({user,index,handleShow})=>{
     let callback = ()=>{
-        SetIdUser(index);
-        handleShow();
+        handleShow(user);
     }
     return <tr key={user.id}>
         <td id={"index"} >{index+1}</td>

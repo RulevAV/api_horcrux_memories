@@ -1,20 +1,17 @@
 import React from "react";
 import RowTable from "./RowTable";
-import {IdUserType} from "../Admin";
 import {UserType} from "../../../api/API_AuthServer_Type";
 
 type PropsType = {
     Users:Array<UserType>,
-    handleShow:()=>void
-    SetIdUser:(value:IdUserType)=>void
+    handleShow:(user:UserType)=>void
 }
-const TableUsers :React.FC<PropsType> = ({Users,handleShow,SetIdUser})=>{
+const TableUsers :React.FC<PropsType> = ({Users,handleShow})=>{
     let massRow = Users?.map((u:UserType,index:number)=>{
 
         return <RowTable key={index}
                          user={u}
                          index={index}
-                         SetIdUser={SetIdUser}
                          handleShow={handleShow}
         />
     });

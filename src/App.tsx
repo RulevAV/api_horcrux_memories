@@ -12,7 +12,7 @@ import { AuthActions } from './redux/User/Auth-Reducer';
 import Cookies from 'js-cookie';
 import { USER_AUTH_COOKIE_KEY } from './constans';
 import RegistrationContainer from './Components/Auth/Registration/RegistrationContainer';
-import { AdminCompose } from './Components/Admin/AdminContainer';
+import { AdminContainer } from './Components/Admin/AdminContainer';
 import { TestContainer } from './Components/Test/TestContainer';
 import { HomeContainer } from './Components/Home/HomeContainer';
 
@@ -43,7 +43,7 @@ const App: React.FC = () => {
         <div className={'app-wrapper-content'}>
           <Route render={() => <LoginContainer />} path="/login" />
           <Route render={() => <RegistrationContainer />} path="/registration" />
-          <Route render={() => <AdminCompose />} exact path="/Admin" />
+          <Route render={() => <AdminContainer />} exact path="/Admin" />
           <Route render={() => <HomeContainer />} exact path="/" />
           <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
         </div>

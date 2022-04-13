@@ -1,68 +1,34 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import TableUsers from "./TableUsers/TableUsers";
-import {Button, Modal} from "react-bootstrap";
-import ContentModal from "./ContentModal/ContentModal";
-import {UserType} from "../../api/API_AuthServer_Type";
+import { UserType } from "../../api/API_AuthServer_Type";
+import { useModalAdmin } from './ModalAdminContainer/modal-admin';
+import ContentModal from './ModalAdminContainer/ContentModal/ContentModal';
 
 type PropsType = {
-    allRoles:Array<string>,
-    GetUsers:()=>void,
-    ClearState:()=>void,
-    SetUserRoles:(Email:string,Roles:Array<string>)=>void,
-    users : Array<UserType>,
+    users: Array<UserType>,
+    allRoles:string[]
 }
-export type IdUserType = number|null;
 
-const Admin :React.FC<PropsType> = ({allRoles,GetUsers,SetUserRoles,users,ClearState}) =>{
-    useEffect(()=>{
-        GetUsers();
-        return ()=>{
-            ClearState();
-        }
-    },[]);
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+const Admin: React.FC<PropsType> = ({ users,allRoles }) => {
+    const modalAdmin = useModalAdmin();
 
-    let [IdUser,SetIdUser] = useState<IdUserType>(null);
-
-
-    let Email = IdUser!=null ? users[IdUser]?.email :"";
-    let UserRoles = IdUser!==null ? users[IdUser]?.roles : [];
-
-    //Роли которые нужно установить пользователю.
-    let [RolesModal,setRolesModal] = useState<Array<string>>([]);
-    const Save = ()=>{
-        SetUserRoles(Email,RolesModal);
-        handleClose();
+    const handleShow = (user:UserType)=>{
+        modalAdmin.show({
+            onApply:()=>{
+            },
+            email:user.email,
+            dialogText: <ContentModal userRoles={user.roles} allRoles={allRoles}/>
+        });
     }
 
-   return <div>
-                <h1 className={"text-success"}>Admin</h1>
-                   <div className={"table-responsive"}>
-                        <TableUsers Users={users}
-                                    handleShow={handleShow}
-                                    SetIdUser={SetIdUser}
-                        />
-                   </div>
-
-               <Modal show={show} onHide={handleClose}>
-                   <Modal.Header closeButton>
-                       <Modal.Title>{Email}</Modal.Title>
-                   </Modal.Header>
-                   <Modal.Body>
-                      <ContentModal UserRoles={UserRoles} AllRoles={allRoles} RolesModal={RolesModal} setRolesModal={setRolesModal}/>
-                   </Modal.Body>
-                   <Modal.Footer>
-                       <Button variant="secondary" onClick={handleClose}>
-                           Закрыть
-                       </Button>
-                       <Button variant="primary" onClick={Save}>
-                           Сохранить
-                       </Button>
-                   </Modal.Footer>
-               </Modal>
-       </div>
+    return <div>
+        <h1 className={"text-success"}>Admin</h1>
+        <div className={"table-responsive"}>
+            <TableUsers Users={users}
+                handleShow={handleShow}
+            />
+        </div>
+    </div>
 }
 
 
