@@ -42,14 +42,14 @@ export const deleteCookies = ()=>{
 
 //token,refreshToken,refreshTokenExpiration
 export const AuthAPI = {
-    Token : (Email:string,Password:string) => {
-        let data = JSON.stringify({Email,Password});
-        return AuthGuery.post<AuthType>('api/user/token',data)
-            .then(response =>{
-                setCookies(response.data)
-                return response;
-            })
-    },
+    // Token : (Email:string,Password:string) => {
+    //     let data = JSON.stringify({Email,Password});
+    //     return AuthGuery.post<AuthType>('api/user/token',data)
+    //         .then(response =>{
+    //             setCookies(response.data)
+    //             return response;
+    //         })
+    // },
     RefreshToken : ()=>{
         let RefreshToken=Cookies.get("RefreshToken");
         let data = JSON.stringify({RefreshToken});
@@ -78,18 +78,18 @@ export const AuthAPI = {
     },
 
 
-    AddDeleteRole : (Email:string,Roles:string[])=>{
-        return  AuthAPI.IsExistsToken().then(req=>{
-            let Token = Cookies.get("Token");
-            let data =  JSON.stringify({Email,Roles});
-            let config = {
-                headers: {
-                    'Authorization': `Bearer  ${Token}`
-                },
-            }
-            return AuthGuery.post<string>('api/user/add-delete-roles',data,config)
-        })
-    },
+    // AddDeleteRole : (Email:string,Roles:string[])=>{
+    //     return  AuthAPI.IsExistsToken().then(req=>{
+    //         let Token = Cookies.get("Token");
+    //         let data =  JSON.stringify({Email,Roles});
+    //         let config = {
+    //             headers: {
+    //                 'Authorization': `Bearer  ${Token}`
+    //             },
+    //         }
+    //         return AuthGuery.post<string>('api/user/add-delete-roles',data,config)
+    //     })
+    // },
     RevokeToken : ()=>{
         return AuthAPI.IsExistsToken().then(req=>{
             let RefreshToken=Cookies.get("RefreshToken");
@@ -98,18 +98,18 @@ export const AuthAPI = {
             return AuthGuery.post<RevokeTokenType>('api/user/revoke-token',data)
         })
     },
-    getUser:()=>{
-        return AuthAPI.IsExistsToken().then(req=>{
-            let Token=Cookies.get("Token");
-            let config = {
-                headers: {
-                    'Authorization': `Bearer  ${Token}`
-                },
-            }
-            return AuthGuery.get<GetUserType>('api/user/GetUsers',config);
-        });
+    // getUser:()=>{
+    //     return AuthAPI.IsExistsToken().then(req=>{
+    //         let Token=Cookies.get("Token");
+    //         let config = {
+    //             headers: {
+    //                 'Authorization': `Bearer  ${Token}`
+    //             },
+    //         }
+    //         return AuthGuery.get<GetUserType>('api/user/GetUsers',config);
+    //     });
 
-    },
+    // },
     UserTokens : (id:string)=>{
         let Token=Cookies.get("Token");
         let config = {

@@ -6,15 +6,16 @@ type PropsType = {
     Users:Array<UserType>,
     handleShow:(user:UserType)=>void
 }
+
 const TableUsers :React.FC<PropsType> = ({Users,handleShow})=>{
     let massRow = Users?.map((u:UserType,index:number)=>{
-
         return <RowTable key={index}
                          user={u}
                          index={index}
                          handleShow={handleShow}
         />
     });
+
     return  <table className="table table-dark ">
         <caption> Все пользователи </caption>
         <thead>

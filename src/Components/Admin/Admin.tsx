@@ -1,23 +1,34 @@
 import React, { useState } from 'react'
 import TableUsers from "./TableUsers/TableUsers";
 import { UserType } from "../../api/API_AuthServer_Type";
-import { useModalAdmin } from './ModalAdminContainer/modal-admin';
-import ContentModal from './ModalAdminContainer/ContentModal/ContentModal';
+import { useModalWindow } from '../../providers/ModalWindow/modal';
+import ContentModal from './ContentModal/ContentModal';
+import { putRolsApi } from '../../http/endpoints/user';
 
 type PropsType = {
     users: Array<UserType>,
+    setUser:(email: string, roles: string[])=>void,
     allRoles:string[]
 }
 
-const Admin: React.FC<PropsType> = ({ users,allRoles }) => {
-    const modalAdmin = useModalAdmin();
-
+const Admin: React.FC<PropsType> = ({ users,setUser,allRoles }) => {
+    const {show,setData} = useModalWindow();
+   
     const handleShow = (user:UserType)=>{
-        modalAdmin.show({
-            onApply:()=>{
+        const roles = user.roles || [];
+        show({
+            onApply:(value)=>{
+                try {
+                    putRolsApi(user.email,value);
+                    setUser(user.email,value);
+                } catch (error) {
+                    
+                }
+                
+
             },
             email:user.email,
-            dialogText: <ContentModal userRoles={user.roles} allRoles={allRoles}/>
+            dialogText: <ContentModal userRoles={roles} allRoles={allRoles} setData={setData}/>
         });
     }
 
@@ -30,8 +41,5 @@ const Admin: React.FC<PropsType> = ({ users,allRoles }) => {
         </div>
     </div>
 }
-
-
-
 
 export default Admin;

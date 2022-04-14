@@ -14,7 +14,7 @@ interface Props {
     dialogText?: string | React.ReactNode;
 }
 
-export const ModalAdmin: React.FC<Props> = ({ onSuccess, email, show, handleClose, dialogText }) => {
+export const ModalWindow: React.FC<Props> = ({ onSuccess, email, show, handleClose, dialogText }) => {
 
     return (
         <Modal show={show} onHide={handleClose}>

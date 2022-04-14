@@ -1,32 +1,47 @@
 //Таблица ролей в модальном окне
 import React, {useEffect, useState} from "react";
-import {MethodsModalRole} from "./Methods/Methods";
 import RowRol from "./RowRol/RowRol";
 
 type Props = {
-    UserRoles:Array<string>,
-    AllRoles:Array<string>,
-    RolesModal:Array<string>,
-    setRolesModal:(value:Array<string>)=>void
+    userRoles:string[],
+    allRoles:string[],
+    setData:(data:any)=>void
 }
 
-const ContentModal : React.FC<Props> = ({UserRoles,AllRoles,RolesModal,setRolesModal})=>{
-
-    let [RolMenu,SetRolMenu] = useState<Array<string>>([]);
-    useEffect(()=>{
-        MethodsModalRole.balance(UserRoles,AllRoles,SetRolMenu,setRolesModal)
-    }, [UserRoles])
-    const DeleteRole = (name:string)=>{
-        MethodsModalRole.DeleteRole(name,RolesModal,AllRoles,SetRolMenu,setRolesModal);
+const ContentModal : React.FC<Props> = ({userRoles,allRoles,setData})=>{
+    const [roles,setRoles] = useState<string[]>([]);
+    const [newUserRoles,setNewUserRoles] = useState<string[]>([]);
+    
+    const updateRoles=(userRoles:string[])=>{
+        const roles = allRoles.filter((e)=>{
+            return !userRoles.includes(e);
+        });
+        
+        setRoles(roles);
     }
 
+    const deleteRole = (name:string)=>{
+        const _newUserRoles = newUserRoles.filter((e)=>{
+            return e!==name;
+        });
+        setNewUserRoles(_newUserRoles);
+    }
 
+    useEffect(()=>{
+        setNewUserRoles(userRoles);
+    }, [userRoles])
 
-    let AllRolesUI = RolMenu?.map((u,i)=>{
-        return  <li  key={i} onClick={()=>{MethodsModalRole.AddRole(u,RolesModal,AllRoles,SetRolMenu,setRolesModal)}}><a className="dropdown-item" href="#">{u}</a></li>
+    useEffect(()=>{
+        setData(newUserRoles);
+        updateRoles(newUserRoles);
+    }, [newUserRoles])
+    
+    let allRolesUI = roles?.map((u,i)=>{
+        return  <li  key={i} onClick={()=>{setNewUserRoles([...newUserRoles,u])}} ><a className="dropdown-item" href="#">{u}</a></li>
     });
-    let RolesModalUI = RolesModal?.map((name:string, index:number)=>{
-        return <RowRol key={index} name={name} index={index} DeleteRole={DeleteRole}/>
+
+    let rolesModalUI = newUserRoles?.map((name:string, index:number)=>{
+        return <RowRol key={index} name={name} index={index} deleteRole={deleteRole}/>
     });
 
     return   <table className="table">
@@ -38,7 +53,7 @@ const ContentModal : React.FC<Props> = ({UserRoles,AllRoles,RolesModal,setRolesM
         </tr>
         </thead>
         <tbody>
-        {RolesModalUI}
+        {rolesModalUI}
         <tr>
             <td colSpan={3}  align={"left"}>
                 <div className="dropdown">
@@ -48,7 +63,7 @@ const ContentModal : React.FC<Props> = ({UserRoles,AllRoles,RolesModal,setRolesM
                         Добавить роль
                     </button>
                     <ul id={"AllRolesUI"} className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        {AllRolesUI}
+                        {allRolesUI}
                     </ul>
                 </div>
             </td>

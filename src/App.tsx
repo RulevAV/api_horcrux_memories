@@ -15,6 +15,7 @@ import RegistrationContainer from './Components/Auth/Registration/RegistrationCo
 import { AdminContainer } from './Components/Admin/AdminContainer';
 import { TestContainer } from './Components/Test/TestContainer';
 import { HomeContainer } from './Components/Home/HomeContainer';
+import { ModalWindowProvider } from './providers/ModalWindow/modal';
 
 const App: React.FC = () => {
   const history = useHistory();
@@ -41,11 +42,13 @@ const App: React.FC = () => {
       <NavbarContainer />
       <div className="container">
         <div className={'app-wrapper-content'}>
-          <Route render={() => <LoginContainer />} path="/login" />
-          <Route render={() => <RegistrationContainer />} path="/registration" />
-          <Route render={() => <AdminContainer />} exact path="/Admin" />
-          <Route render={() => <HomeContainer />} exact path="/" />
-          <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
+          <ModalWindowProvider>
+            <Route render={() => <LoginContainer />} path="/login" />
+            <Route render={() => <RegistrationContainer />} path="/registration" />
+            <Route render={() => <AdminContainer />} exact path="/Admin" />
+            <Route render={() => <HomeContainer />} exact path="/" />
+            <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
+          </ModalWindowProvider>
         </div>
       </div>
     </div>
