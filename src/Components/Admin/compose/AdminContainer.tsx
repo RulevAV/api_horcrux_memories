@@ -1,7 +1,7 @@
-import Admin from "./Admin";
 import { useEffect, useState } from "react";
-import { UserType } from "../../api/API_AuthServer_Type";
-import { getUsersApi } from "../../http/endpoints/user";
+import { getUsersApi } from "../../../http/endpoints/user";
+import { UserType } from "../../../http/models/api/user";
+import Admin from "./Admin";
 
 export const AdminContainer = () => {
     const [allRoles, setAllRoles] = useState<Array<string>>([]);

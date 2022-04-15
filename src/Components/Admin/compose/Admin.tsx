@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import TableUsers from "./TableUsers/TableUsers";
-import { UserType } from "../../api/API_AuthServer_Type";
-import { useModalWindow } from '../../providers/ModalWindow/modal';
+import { UserType } from "../../../api/API_AuthServer_Type";
+import { useModalWindow } from '../../../providers/ModalWindow/modal';
 import ContentModal from './ContentModal/ContentModal';
-import { putRolsApi } from '../../http/endpoints/user';
+import { putRolsApi } from '../../../http/endpoints/user';
 
 type PropsType = {
     users: Array<UserType>,
@@ -24,8 +24,6 @@ const Admin: React.FC<PropsType> = ({ users,setUser,allRoles }) => {
                 } catch (error) {
                     
                 }
-                
-
             },
             email:user.email,
             dialogText: <ContentModal userRoles={roles} allRoles={allRoles} setData={setData}/>
@@ -33,7 +31,7 @@ const Admin: React.FC<PropsType> = ({ users,setUser,allRoles }) => {
     }
 
     return <div>
-        <h1 className={"text-success"}>Admin</h1>
+        <h1 className={"text-success"}>Администратор</h1>
         <div className={"table-responsive"}>
             <TableUsers Users={users}
                 handleShow={handleShow}

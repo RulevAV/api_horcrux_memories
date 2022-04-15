@@ -14,7 +14,7 @@ export const authReducer = (state=initialState, action : ActionsTypesAuth) :init
             };
         }
         case USER_LOGOUT:{
-            return state;
+            return initialState;
         }
         default: return state;
     }

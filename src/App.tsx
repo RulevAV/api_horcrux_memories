@@ -6,16 +6,17 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import NavbarContainer from "./Components/Navbar/NavbarContainer";
 import { getUser } from './http/endpoints/user';
-import { LoginContainer } from './Components/Auth/Login/LoginContainer';
 import { useDispatch } from 'react-redux';
-import { AuthActions } from './redux/User/Auth-Reducer';
+import { AuthActions } from './redux/Auth/Auth-Reducer';
 import Cookies from 'js-cookie';
 import { USER_AUTH_COOKIE_KEY } from './constans';
-import RegistrationContainer from './Components/Auth/Registration/RegistrationContainer';
-import { AdminContainer } from './Components/Admin/AdminContainer';
 import { TestContainer } from './Components/Test/TestContainer';
 import { HomeContainer } from './Components/Home/HomeContainer';
 import { ModalWindowProvider } from './providers/ModalWindow/modal';
+import { Login } from './Components/Auth/Login';
+import { Admin } from './Components/Admin';
+import { Registration } from './Components/Auth/Registration';
+import { ModalAlertProvider } from './providers/Alert/modal';
 
 const App: React.FC = () => {
   const history = useHistory();
@@ -42,13 +43,17 @@ const App: React.FC = () => {
       <NavbarContainer />
       <div className="container">
         <div className={'app-wrapper-content'}>
-          <ModalWindowProvider>
-            <Route render={() => <LoginContainer />} path="/login" />
-            <Route render={() => <RegistrationContainer />} path="/registration" />
-            <Route render={() => <AdminContainer />} exact path="/Admin" />
-            <Route render={() => <HomeContainer />} exact path="/" />
-            <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
-          </ModalWindowProvider>
+          <ModalAlertProvider>
+            <ModalWindowProvider>
+              <Route render={() => <Registration />} path="/registration" />
+              <Route render={() => <Login />} path="/login" />
+              <Route render={() => <Admin />} exact path="/Admin" />
+
+
+              <Route render={() => <HomeContainer />} exact path="/" />
+              <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
+            </ModalWindowProvider>
+          </ModalAlertProvider>
         </div>
       </div>
     </div>

@@ -12,9 +12,14 @@ export const loginApi = (email: string, password: string) => {
     return httpService.post<LoginApi>(`/user/token`, { email, password }, options);
 }
 
+export const registrationAPI = (username: string, firstName: string, lastName: string, password: string, email: string) => {
+    const options = new HttpOptions().withCredentials(true);
+    return httpService.post<LoginApi>(`/user/register`, { username, firstName, lastName, password, email }, options);
+}
+
 export const revokeTokenApi = () => {
     const options = new HttpOptions().withCredentials(true);
-    return httpService.get<LoginApi>(`/user/revoke-token`, options);
+    return httpService.get(`/user/revoke-token`, options);
 }
 
 export const getUsersApi = () => {

@@ -58,11 +58,11 @@ export const AuthAPI = {
             return response;
         })
     },
-    Register : (FirstName:string,LastName:string,Username:string,Email:string,Password:string) => {
-        let data =  JSON.stringify({FirstName,LastName,Username,Email,Password});
-        return  AuthGuery.post<string>("api/user/register",data)
+    // Register : (FirstName:string,LastName:string,Username:string,Email:string,Password:string) => {
+    //     let data =  JSON.stringify({FirstName,LastName,Username,Email,Password});
+    //     return  AuthGuery.post<string>("api/user/register",data)
 
-    },
+    // },
 
     IsExistsToken:()=>{
         let promise = new Promise((resolve:any,reject:any) => {
@@ -90,14 +90,14 @@ export const AuthAPI = {
     //         return AuthGuery.post<string>('api/user/add-delete-roles',data,config)
     //     })
     // },
-    RevokeToken : ()=>{
-        return AuthAPI.IsExistsToken().then(req=>{
-            let RefreshToken=Cookies.get("RefreshToken");
-            let data =  JSON.stringify({RefreshToken})
-            deleteCookies();
-            return AuthGuery.post<RevokeTokenType>('api/user/revoke-token',data)
-        })
-    },
+    // RevokeToken : ()=>{
+    //     return AuthAPI.IsExistsToken().then(req=>{
+    //         let RefreshToken=Cookies.get("RefreshToken");
+    //         let data =  JSON.stringify({RefreshToken})
+    //         deleteCookies();
+    //         return AuthGuery.post<RevokeTokenType>('api/user/revoke-token',data)
+    //     })
+    // },
     // getUser:()=>{
     //     return AuthAPI.IsExistsToken().then(req=>{
     //         let Token=Cookies.get("Token");

@@ -1,20 +1,20 @@
 import React from "react";
 
 import { Button } from 'react-bootstrap';
-import {UserType} from "../../../api/API_AuthServer_Type";
+import { UserType } from "../../../../http/models/api/user";
 
 type PropsType = {
     user: UserType,
     index: number,
-    handleShow:(user:UserType)=>void
+    handleShow: (user: UserType) => void
 }
 
-const RowTable : React.FC<PropsType> = ({user,index,handleShow})=>{
-    let callback = ()=>{
+const RowTable: React.FC<PropsType> = ({ user, index, handleShow }) => {
+    let callback = () => {
         handleShow(user);
     }
     return <tr key={user.id}>
-        <td id={"index"} >{index+1}</td>
+        <td id={"index"} >{index + 1}</td>
         <td id={"email"}>{user.email}</td>
         <td id={"lastName"}>{user.lastName}</td>
         <td id={"firstName"}>{user.firstName}</td>
@@ -27,4 +27,4 @@ const RowTable : React.FC<PropsType> = ({user,index,handleShow})=>{
 }
 
 
-export  default  RowTable;
+export default RowTable;

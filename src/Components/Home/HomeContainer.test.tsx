@@ -4,7 +4,7 @@ import React from "react";
 import {Provider} from "react-redux";
 
 import HomeCompose from "./HomeContainer";
-import {LOG_OUT} from "../../redux/User/Auth-Reducer";
+import {LOG_OUT} from "../../redux/Auth/Auth-Reducer";
 import {createStore} from "redux";
 import {BrowserRouter} from "react-router-dom";
 import {AppStateType, reducer} from "../../redux/redux-store";

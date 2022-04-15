@@ -3,7 +3,7 @@ import thunk, {ThunkAction} from 'redux-thunk';
 import {QuestionReducer} from "./Question-Redux";
 import {AdminReducer} from "./Admin-Reducer";
 import {TestReducer} from "./Test-Reducer";
-import authReducer from "./User/Auth-Reducer";
+import authReducer from "./Auth/Auth-Reducer";
 export let reducer = combineReducers({
     authReducer,
     AdminReducer,

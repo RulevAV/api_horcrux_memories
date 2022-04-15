@@ -1,16 +1,13 @@
 import { useDispatch, useSelector} from "react-redux";
 import Login from "./Login";
-import {AppStateType} from "../../../redux/redux-store";
-import { AuthActionsThunk } from "../../../redux/User/Auth-Reducer";
+import {AppStateType} from "../../../../redux/redux-store";
+import { AuthActionsThunk } from "../../../../redux/Auth/Auth-Reducer";
 import { useHistory } from "react-router-dom";
 
-export const LoginContainer = (props:any)=>{
+export const LoginContainer = ()=>{
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const registerUser = ()=>{
-        history.push("/registration");
-    }
     const setLogin = (login:string,password:string)=>{
         dispatch(AuthActionsThunk.login(login,password));
     }
@@ -22,5 +19,5 @@ export const LoginContainer = (props:any)=>{
     if(isAuthenticated)
         history.push("/");
 
-    return <Login setLogin={setLogin} registerUser={registerUser}/>
+    return <Login setLogin={setLogin} />
 }

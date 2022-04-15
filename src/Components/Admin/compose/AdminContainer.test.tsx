@@ -5,9 +5,9 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import {Provider} from "react-redux";
 import {cleanup, render,fireEvent} from "@testing-library/react";
 import {createStore} from "redux";
-import AdminCompose from "./AdminContainer";
-import {AppStateType, reducer} from "../../redux/redux-store";
+import {AppStateType, reducer} from "../../../redux/redux-store";
 import {BrowserRouter} from "react-router-dom";
+import { AdminContainer } from "./AdminContainer";
 
 configure({ adapter: new Adapter() });
 
@@ -51,7 +51,7 @@ const renderWithRedux = (
 describe('AdminCompose component', ()=>{
 
     it('AdminCompose null props', ()=>{
-        let dom = renderWithRedux(<AdminCompose/>);
+        let dom = renderWithRedux(<AdminContainer/>);
     })
     it('AdminCompose User not have roles', ()=>{
         let State = Store.getState();
@@ -59,7 +59,7 @@ describe('AdminCompose component', ()=>{
         cloneUser.roles=null;
         State.AdminReducer.users=[cloneUser];
         State.AdminReducer.allRoles = ["role1","role2"]
-        let dom = renderWithRedux(<AdminCompose/>,State);
+        let dom = renderWithRedux(<AdminContainer/>,State);
         const Open = dom.getByText("Открыть");
         fireEvent.click(Open);
 
@@ -69,7 +69,7 @@ describe('AdminCompose component', ()=>{
         let State = Store.getState();
 
         State.AdminReducer.users=[user];
-        let dom = renderWithRedux(<AdminCompose/>,State);
+        let dom = renderWithRedux(<AdminContainer/>,State);
         const Open = dom.getByText("Открыть");
         fireEvent.click(Open);
         const Save = dom.getByText("Сохранить");
@@ -80,7 +80,7 @@ describe('AdminCompose component', ()=>{
     it('SetUserRoles DeleteRole', ()=>{
         let State = Store.getState();
         State.AdminReducer.users=[user];
-        let dom = renderWithRedux(<AdminCompose/>,State);
+        let dom = renderWithRedux(<AdminContainer/>,State);
         const Open = dom.getByText("Открыть");
         fireEvent.click(Open);
 
@@ -99,7 +99,7 @@ describe('AdminCompose component', ()=>{
             users : [user],
             allRoles : AllRoles,
         };
-        let dom = renderWithRedux(<AdminCompose/>,State);
+        let dom = renderWithRedux(<AdminContainer/>,State);
         const Open = dom.getByText("Открыть");
         fireEvent.click(Open);
 
@@ -116,7 +116,7 @@ describe('AdminCompose component', ()=>{
             users : [user],
             allRoles : [null],
         };
-        let dom = renderWithRedux(<AdminCompose/>,State);
+        let dom = renderWithRedux(<AdminContainer/>,State);
         const Open = dom.getByText("Открыть");
         fireEvent.click(Open);
 
@@ -133,7 +133,7 @@ describe('AdminCompose component', ()=>{
             allRoles : AllRoles,
         };
         State.AdminReducer.users.roles= ["rol1","rol2","rol3","rol4"];
-        let dom = renderWithRedux(<AdminCompose/>,State);
+        let dom = renderWithRedux(<AdminContainer/>,State);
 
 
     })
