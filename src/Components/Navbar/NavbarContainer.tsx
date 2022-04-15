@@ -11,7 +11,8 @@ const NavbarContainer = ()=>{
     const state = useSelector((state:AppStateType)=>{
         return {
             isAuthenticated:state.authReducer.isAuthenticated,
-            roles :state.authReducer.roles
+            roles :state.authReducer.roles,
+            userName: state.authReducer.userName
         }
     });
    

@@ -1,56 +1,52 @@
 import img from "../../../img/2T5qG95FFcs.jpg";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import React from "react";
+import { QueryType } from "../../../api/API_HorcruxMemories_Type";
+import { propTypes } from "react-bootstrap/esm/Image";
+import { Button, Card } from "react-bootstrap";
+import moment from "moment-ru";
+type PropTypes = {
+    question: QueryType
+    openPage: (idParent: string, portionsSize: number) => void
+    portionsSize: number
+}
 
-const Question:React.FC<any> = (props) =>{
-
-    let image=new Image();
+const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize }) => {
+    let image = new Image();
     image.src = img;
-    if(props.images){
+    if (question.images) {
         image = new Image();
-        image.src = 'data:image/png;base64,' + props.images;
+        image.src = 'data:image/png;base64,' + question.images;
     }
-    //blue,red,green,yellow
-    let Color = !props.isIgnoreTest?"green":"red";
-    let theme = "dark";//light,dark
-    let postcard = "";//theme==="light"?"t-dark":""
-    let date = new Date( Date.parse(props.dateAdd) );
 
+    const _openPage = () => {
+        openPage(question.id, portionsSize)
+    }
 
-
-    return <article className={"postcard "+ theme + " " + Color}>
-        <a onClick={()=>{props.GetQuests(props.id)}} className="Question_img postcard__img_link" href="#">
-            <img  className="postcard__img" src={image.src} alt="Image Title"/>
-        </a>
-        <div className={"postcard__text " + postcard}>
-            <h1 className={"postcard__title "+Color}><a onClick={()=>{props.GetQuests(props.id)}} href="#">{props.name}</a></h1>
-            <div className="postcard__subtitle small">
-                <time dateTime={props.dateAdd}>
-                    <i className="bi bi-calendar3 " aria-hidden="true"></i> Дата создания {date.getFullYear() +"/"+date.getMonth()+"/"+date.getDay() }
-                </time>
-
+    return <Card className="mt-2">
+        <Card.Header>
+            <div className="row g-0">
+                <div className="col"> {question.name}</div>
+                <div className="col text-end"><span role="button" onClick={_openPage} >Открыть</span> <span className="ms-3"  role="button">Редактировать</span></div>
             </div>
-            <div className="postcard__bar"></div>
-            <div className="postcard__preview-txt" dangerouslySetInnerHTML={{__html: props.description}}>
-
+        </Card.Header>
+        <Card.Body>
+            <div className="row">
+                <div className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2">
+                    <img onClick={_openPage} src={image.src} className="img-fluid rounded-start" />
+                </div>
+                <div className="col-12 col-sm-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10">
+                    <div className="card-body">
+                        <h5 className="card-title">{question.name}</h5>
+                        <p className="card-text"> {question.description}</p>
+                        <p className="card-text"><small className="text-muted">{moment(question.dateAdd, "YYYYMMDD").format('LL')}</small></p>
+                        <Button variant="primary" onClick={_openPage}>Открыть</Button>
+                        <Button variant="primary">Редактировать</Button>
+                    </div>
+                </div>
             </div>
-            <ul className="postcard__tagbox">
-
-                <li className="tag__item">
-                    <a onClick={()=>{props.SetEnableAllQuestions(props.id,false)}}>Включить все вопросы в тест </a>
-                </li>
-                <li className="tag__item">
-                    <a onClick={()=>{props.SetEnableAllQuestions(props.id,true)}}>Исключить все вопросы в тест </a>
-                </li>
-                <li className={"tag__item play "+Color}>
-                    <NavLink id={"TestNormal"} onClick={()=>{props.SetRootTest(props.id,"Normal")}} to={'/Test/Normal'} > Начать тест</NavLink>
-                </li>
-                <li className={"tag__item play "+Color}>
-                    <NavLink id={"TestGlobal"} onClick={()=>{props.SetRootTest(props.id,"Global")}} to={'/Test/Global'} > Начать подробный тест</NavLink>
-                </li>
-            </ul>
-        </div>
-    </article>
+        </Card.Body>
+    </Card>
 }
 
 export default Question;

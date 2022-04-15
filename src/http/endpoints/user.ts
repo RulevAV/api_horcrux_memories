@@ -1,6 +1,6 @@
 import { GetUserType, LoginApi } from "../models/api/user";
-import { httpService } from "../service";
-import { HttpOptions } from "../service/options"
+import { httpService } from "../service/auth";
+import { HttpOptions } from "../service/options";
 
 export const getUser = () => {
     const options = new HttpOptions();

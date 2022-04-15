@@ -3,9 +3,9 @@ import {
     QuestionAction, QuestionActionThunkCreator,
     QuestionReducer
 } from "./Question-Redux";
-import {AuthAPI} from "../api/API_AuthServer";
-import {DataAPI} from "../api/API_HorcruxMemories";
-import {DependOnParentQuestionType} from "../api/API_HorcruxMemories_Type";
+import {AuthAPI} from "../../api/API_AuthServer";
+import {DataAPI} from "../../api/API_HorcruxMemories";
+import {DependOnParentQuestionType} from "../../api/API_HorcruxMemories_Type";
 
 jest.mock("../api/API_AuthServer");
 jest.mock("../api/API_HorcruxMemories")

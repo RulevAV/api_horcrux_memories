@@ -17,6 +17,7 @@ import { Login } from './Components/Auth/Login';
 import { Admin } from './Components/Admin';
 import { Registration } from './Components/Auth/Registration';
 import { ModalAlertProvider } from './providers/Alert/modal';
+import moment from "moment-ru";
 
 const App: React.FC = () => {
   const history = useHistory();
@@ -35,6 +36,7 @@ const App: React.FC = () => {
   useEffect(() => {
     (async () => {
       await initial();
+      moment.locale('ru');
     })();
   }, []);
 
@@ -48,9 +50,9 @@ const App: React.FC = () => {
               <Route render={() => <Registration />} path="/registration" />
               <Route render={() => <Login />} path="/login" />
               <Route render={() => <Admin />} exact path="/Admin" />
-
-
               <Route render={() => <HomeContainer />} exact path="/" />
+
+             
               <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
             </ModalWindowProvider>
           </ModalAlertProvider>

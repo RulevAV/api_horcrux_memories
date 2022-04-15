@@ -1,9 +1,14 @@
 import { loginApi, revokeTokenApi } from "../../http/endpoints/user";
+import { InfoActionsTypes, ThunkActionType } from "../redux-store";
 import { initialState } from "./initial-values";
-import { ActionsTypesAuth, initialStateType, ThankType } from "./types";
+import { initialStateType} from "./types";
 
 export const USER_LOGOUT = "USER_LOGOUT";
 export const USER_LOGIN="USER_LOGIN";
+
+//AllTypeAction
+export type ActionsTypesAuth = InfoActionsTypes<typeof AuthActions>;
+export type ThankType = ThunkActionType<ActionsTypesAuth,Promise<void>>;
 
 export const authReducer = (state=initialState, action : ActionsTypesAuth) :initialStateType=> {
     switch (action.type) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { USER_AUTH_COOKIE_KEY } from '../../constans';
-import { HttpBaseService } from './base-service';
+import { USER_AUTH_COOKIE_KEY } from '../../../constans';
+import { HttpBaseService } from '../base-service';
 
 export class HttpService extends HttpBaseService {}
 

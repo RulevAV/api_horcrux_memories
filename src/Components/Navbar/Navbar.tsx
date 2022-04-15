@@ -7,12 +7,13 @@ type TypeProps= {
     state:{
         isAuthenticated:boolean,
         roles : Array<string>
+        userName: string
     },
     Logout:()=>void,
 }
 
 
-const Navbar:React.FC<any> = ({state,Logout}) =>{
+const Navbar:React.FC<TypeProps> = ({state,Logout}) =>{
 
     return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
@@ -20,7 +21,7 @@ const Navbar:React.FC<any> = ({state,Logout}) =>{
             <Burger/>
             <div className="collapse navbar-collapse" id="navbar">
                 <Menu roles={state.roles}/>
-
+                <h3 className='text-white me-2'>{state.userName}</h3>
                 {!state.isAuthenticated
                     ?<NavLink className="btn btn-outline-light" to={'/login'}> Войти</NavLink>
                     :<NavLink className="btn btn-outline-light" to={'/login'} onClick={Logout}> Выйти</NavLink>

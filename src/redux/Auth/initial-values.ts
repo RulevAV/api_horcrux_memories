@@ -1,4 +1,6 @@
-export const initialState = {
+import { initialStateType } from "./types";
+
+export const initialState : initialStateType = {
     isAuthenticated: false,
     userName: "",
     email: "",
