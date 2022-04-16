@@ -4,10 +4,11 @@ import {Button,Image as BImage,Row,Col} from "react-bootstrap";
 
 import React, {useEffect, useState} from "react";
 import FormCheckInput from "./FormCheckInput/FormCheckInput";
-import {QueryType} from "../../../../api/API_HorcruxMemories_Type";
+import { QuestionsType } from "../../../../http/models/api/question";
+
 
  type QuestionTestType ={
-    question:QueryType,
+    question:QuestionsType,
     QuestionTestFun:(id:string,isIgnoreTest:boolean)=>void,
     ShowContent:(value:boolean)=>void
 }

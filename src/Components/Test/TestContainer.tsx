@@ -1,14 +1,25 @@
-import {connect} from "react-redux";
-import {compose} from "redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { compose } from "redux";
 
-import { withRouter} from "react-router-dom"
+import { useHistory, withRouter } from "react-router-dom"
 import Test from "./Test";
-import {
-    TestActions, TestActionsThunkCreator,
-} from "../../redux/Test-Reducer";
-import {AppStateType} from "../../redux/redux-store";
+
+import { AppStateType } from "../../redux/redux-store";
+import { useEffect } from "react";
+import { TestActionsThunk } from "../../redux/Test/Test-Reducer";
 
 
-export const TestContainer = ()=>{
-    return <>TestContainer</>
+export const TestContainer = () => {
+    const dispatch = useDispatch();
+    const testReducer = useSelector((state: AppStateType) => {
+        return state.testReducer
+    });
+
+    useEffect(() => {
+        if (testReducer.id)
+            dispatch(TestActionsThunk.NextAsk(testReducer.id));
+    }, [testReducer.id]);
+
+    const history = useHistory();
+    return <Test testReducer={testReducer} />
 }

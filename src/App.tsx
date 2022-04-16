@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Route, useHistory } from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap';
@@ -6,22 +6,24 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import NavbarContainer from "./Components/Navbar/NavbarContainer";
 import { getUser } from './http/endpoints/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions } from './redux/Auth/Auth-Reducer';
 import Cookies from 'js-cookie';
 import { USER_AUTH_COOKIE_KEY } from './constans';
 import { TestContainer } from './Components/Test/TestContainer';
-import { HomeContainer } from './Components/Home/HomeContainer';
 import { ModalWindowProvider } from './providers/ModalWindow/modal';
-import { Login } from './Components/Auth/Login';
-import { Admin } from './Components/Admin';
-import { Registration } from './Components/Auth/Registration';
+import { Login } from './screen/Login';
+import { Admin } from './screen/Admin';
+import { Registration } from './screen/Registration';
 import { ModalAlertProvider } from './providers/Alert/modal';
 import moment from "moment-ru";
+import { Home } from './screen/Home';
+import { Test } from './screen/Test';
 
 const App: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [isloading, setLoading] = useState(true);
   const initial = async () => {
     try {
       const data = await getUser();
@@ -30,15 +32,20 @@ const App: React.FC = () => {
     } catch (error) {
       Cookies.remove(USER_AUTH_COOKIE_KEY);
     }
-    history.push("/login");
   }
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       await initial();
       moment.locale('ru');
+      setLoading(false);
     })();
   }, []);
+  
+
+  if (isloading)
+    return <>Loading....</>
 
   return (
     <div >
@@ -50,10 +57,8 @@ const App: React.FC = () => {
               <Route render={() => <Registration />} path="/registration" />
               <Route render={() => <Login />} path="/login" />
               <Route render={() => <Admin />} exact path="/Admin" />
-              <Route render={() => <HomeContainer />} exact path="/" />
-
-             
-              <Route render={() => <TestContainer />} exact path="/Test/:nameTest" />
+              <Route render={() => <Home />} exact path="/" />
+              <Route render={() => <Test />} exact path="/Test" />
             </ModalWindowProvider>
           </ModalAlertProvider>
         </div>
