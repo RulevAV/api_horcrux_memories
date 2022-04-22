@@ -21,5 +21,6 @@ export type QuestionPageType = {
 export type TestPageType = {
     passedAsk: number
     question: QuestionsType | null,
-    sizeAsk: number
+    sizeAsk: number,
+    isFinith: boolean
 }

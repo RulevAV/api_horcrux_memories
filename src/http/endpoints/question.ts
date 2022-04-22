@@ -1,4 +1,4 @@
-import { QuestionPageType, TestPageType } from "../models/api/question";
+import { QuestionPageType, QuestionsType, TestPageType } from "../models/api/question";
 import { HttpOptions } from "../service/options";
 import { httpService } from "../service/question";
 import { buildQs } from "../shared";
@@ -11,4 +11,19 @@ export const getQuestions = (idParent: string, page: number, portionsSize: numbe
 export const nextQuestion = (IdRoot: string, type: string) => {
     const options = new HttpOptions();
     return httpService.get<TestPageType>(buildQs(`/Test/`, { IdRoot, type }), options);
+}
+
+export const getAsk = (IdRoot: string, type: string) => {
+    const options = new HttpOptions();
+    return httpService.get<TestPageType>(buildQs(`Test/GetAsk/`, { IdRoot, type }), options);
+}
+
+export const breckTest = (IdRoot: string, type: string) => {
+    const options = new HttpOptions();
+    return httpService.post<TestPageType>(buildQs(`Test/breckTest/`, { IdRoot, type }), options);
+}
+
+export const putAsk = (model: QuestionsType) => {
+    const options = new HttpOptions();
+    return httpService.put<TestPageType>(`Question`, model, options);
 }

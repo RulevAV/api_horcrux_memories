@@ -12,7 +12,7 @@ interface Props {
 
 export const ModalAlert: React.FC<Props> = ({show,setShow, dialogText,variant,title }) =>{
       return !show? null :
-        <Alert variant={variant} onClose={() => setShow(false)} dismissible>
+        <Alert className='w-25 position-fixed bottom-0 end-0' style={{zIndex:1}} variant={variant} onClose={() => setShow(false)} dismissible>
           <Alert.Heading>{title}</Alert.Heading>
           {dialogText}
         </Alert>

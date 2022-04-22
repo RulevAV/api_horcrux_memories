@@ -8,16 +8,27 @@ import { portionsSize } from "./initial-values";
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
 import { Cracker } from "../../redux/QuestionPage/types";
 import { useHistory } from "react-router-dom";
-import { TestActions } from "../../redux/Test/Test-Reducer";
+import { TestActionsThunk } from "../../redux/Test/Test-Reducer";
+import { useModalImg } from "../../providers/ModalImg/useModalImg";
 
 export const HomeContainer = () => {
     const dispatch = useDispatch();
+    const { show } = useModalImg();
     const history = useHistory();
 
     const { questionPage, breadcrumb } = useSelector((state: AppStateType) => {
         return state.questionPageReducer
     })
 
+    const testReducer = useSelector((state: AppStateType) => {
+        return state.testReducer
+    });
+
+
+    const openImg = (src:string) => {
+      show({src})
+    }
+    
     const openPage = (idParent: string, page: number, portionsSize: number) => {
         dispatch(QuestionActionThunk.setPageQuests(idParent, page, portionsSize));
     }
@@ -31,10 +42,14 @@ export const HomeContainer = () => {
         dispatch(QuestionActionThunk.setPageQuests(cracker.id, cracker.page, cracker.portionsSize));
     }
 
-    const testStart = (id: string, title: string) => {
-        dispatch(TestActions.startTest(id, title));
-        history.push("/Test")
+    const testStart = (id: string, title: string, type: string) => {
+        dispatch(TestActionsThunk.startTest(id, title, type));
     }
+
+    useEffect(() => {
+       if (testReducer.TestPage.question)
+            history.push("/Test");
+    }, [testReducer])
 
     useEffect(() => {
         if (breadcrumb.length) {
@@ -52,6 +67,6 @@ export const HomeContainer = () => {
 
     return <PaginationProvider>
         <Breadcrumb breadcrumb={breadcrumb} directPage={directPage} />
-        <Home {...questionPage} openPage={openPage} addCracker={addCracker} portionsSize={portionsSize} testStart={testStart} />
+        <Home {...questionPage} openPage={openPage} addCracker={addCracker} portionsSize={portionsSize} testStart={testStart} openImg={openImg} />
     </PaginationProvider>
 }

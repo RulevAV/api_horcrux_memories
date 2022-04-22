@@ -8,10 +8,11 @@ type PropTypes = {
     question: QuestionsType
     openPage: (idParent: string, portionsSize: number, name: string) => void
     portionsSize: number,
-    testStart: (id: string, title: string) => void
+    testStart: (id: string, title: string, type: string) => void
+    openImg: (src: string) => void
 }
 
-const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testStart }) => {
+const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testStart, openImg }) => {
     let image = new Image();
     image.src = img;
     if (question.images) {
@@ -19,13 +20,22 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
         image.src = 'data:image/png;base64,' + question.images;
     }
 
+    const _openImg = () => {
+        openImg(image.src)
+    }
+
     const _openPage = () => {
         openPage(question.id, portionsSize, question.name)
     }
 
-    const _testStart = () => {
-        testStart(question.id, question.name);
+    const _testStartNormal = () => {
+        testStart(question.id, question.name, 'normal');
     }
+
+    const _testStartGlobal = () => {
+        testStart(question.id, question.name, 'global');
+    }
+    
     return <Card className="mt-2">
         <Card.Header>
             <div className="row g-0">
@@ -36,7 +46,7 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
         <Card.Body>
             <div className="row">
                 <div className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2">
-                    <img style={{ cursor: "pointer" }} onClick={_openPage} src={image.src} className="img-fluid rounded-start" />
+                    <img style={{ cursor: "pointer" }} onClick={_openImg} src={image.src} className="img-fluid rounded-start" />
                 </div>
                 <div className="col-12 col-sm-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10">
                     <div className="card-body">
@@ -45,8 +55,8 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
                         <p className="card-text"><small className="text-muted">{moment(question.dateAdd, "YYYYMMDD").format('LL')}</small></p>
                         <Button className="m-1" variant="primary" onClick={_openPage}>Открыть</Button>
                         <Button className="m-1" variant="primary">Редактировать</Button>
-                        <Button className="m-1" variant="primary" onClick={_testStart}>Начать тест</Button>
-                        <Button className="m-1" variant="primary">Начать глобальный тест</Button>
+                        <Button className="m-1" variant="primary" onClick={_testStartNormal}>Начать тест</Button>
+                        <Button className="m-1" variant="primary" onClick={_testStartGlobal}>Начать глобальный тест</Button>
                     </div>
                 </div>
             </div>

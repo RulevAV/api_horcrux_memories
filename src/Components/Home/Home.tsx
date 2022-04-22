@@ -8,10 +8,11 @@ type Props = QuestionPageType & {
     openPage: (idParent: string, page: number, portionsSize: number) => void,
     portionsSize: number,
     addCracker: (cracker: Cracker) => void,
-    testStart: (id: string, title: string) => void
+    testStart: (id: string, title: string, type: string) => void,
+    openImg: (src: string) => void
 };
 
-const Home: React.FC<Props> = ({ idParent, nameParent, page, questions, sizePage, sizeQuestions, openPage, portionsSize, addCracker, testStart }) => {
+const Home: React.FC<Props> = ({ idParent, nameParent, page, questions, sizePage, sizeQuestions, openPage, portionsSize, addCracker, testStart, openImg }) => {
     const { Pagination, setPaginatio } = usePagination();
 
     const _openPage = (id: string, portionsSize: number, name: string) => {
@@ -24,7 +25,7 @@ const Home: React.FC<Props> = ({ idParent, nameParent, page, questions, sizePage
     }
 
     let Questions = questions?.map((question: QuestionsType, index: number) => {
-        return <Question key={index} question={question} openPage={_openPage} portionsSize={portionsSize} testStart={testStart} />
+        return <Question key={index} question={question} openPage={_openPage} portionsSize={portionsSize} testStart={testStart} openImg={openImg}/>
     });
 
     useEffect(() => {

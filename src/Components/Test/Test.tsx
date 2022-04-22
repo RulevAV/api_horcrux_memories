@@ -1,50 +1,32 @@
-import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
-import { match } from "react-router-dom";
-import { TestPageType } from "../../http/models/api/question";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { TestType } from "../../redux/Test/Test-Reducer";
 
 import { Question } from "./Question/Question";
 type PropsTypeTest = {
-    testReducer: TestType
-    // Test:TestType,
-    // match:match<{nameTest:string}>,
-    // NextAsk: (IdRoot: string, TestHistory: Array<string>, id: string, isIgnoreTest: boolean, nameTest: string) => void
-    // ShowContent:(value:boolean)=>void,
-    // SetIsFinish:(isFinish:boolean)=>void,
-    // TestClear:()=>void,
+    testReducer: TestType,
+    askNext: () => void
+    breckTest: () => void,
+    changeAsk: (isHiddenContentTest: boolean, isIgnoreTest: boolean) => void
 }
 
-let Test: React.FC<PropsTypeTest> = ({ testReducer }) => {
+let Test: React.FC<PropsTypeTest> = ({ testReducer, askNext, breckTest, changeAsk }) => {
+    const [isIgnoreTest, setIsIgnoreTest] = useState(!!testReducer.TestPage.question?.isIgnoreTest);
+    const [isHiddenContentTest, setisHiddenContentTest] = useState(!!testReducer.TestPage.question?.isHiddenContentTest);
+
+    useEffect(() => {
+        setIsIgnoreTest(!!testReducer.TestPage.question?.isIgnoreTest);
+        setisHiddenContentTest(!!testReducer.TestPage.question?.isHiddenContentTest);
+    }, [testReducer])
     
-
-    // useEffect(()=>{
-    //     return ()=>{
-    //         props.SetIsFinish(true);
-    //         props.TestClear();
-    //     }
-    // },[]);
-    // if(props.Test.isFinish){
-    //     return <Redirect to={"/"}/>
-    // }
-
-    // let QuestionTestFun = (id:string,isIgnoreTest:boolean) => {
-    //     props.NextAsk(
-    //         props.Test.IdRoot,
-    //         props.Test.TestHistory,
-    //         id,
-    //         isIgnoreTest,
-    //         props.match.params.nameTest
-    //     );
-    // }
-
-
     return <div >
-        <h1>{testReducer.title}</h1>
+        <h1>{testReducer.title + " " + testReducer.TestPage.passedAsk + "/" + testReducer.TestPage.sizeAsk}</h1>
         {
-            testReducer.TestPage.question?<Question question={testReducer.TestPage.question}/>:null
+            testReducer.TestPage.question ? <Question question={testReducer.TestPage.question} isIgnoreTest={isIgnoreTest} setIsIgnoreTest={setIsIgnoreTest} isHiddenContentTest={isHiddenContentTest} setisHiddenContentTest={setisHiddenContentTest} /> : null
         }
-       
+        <Button className="m-2" onClick={() => { changeAsk(isIgnoreTest, isHiddenContentTest) }}>Сохранить изменения</Button>
+        <Button className="m-2" onClick={breckTest}>Закончить тест</Button>
+        <Button className="m-2" onClick={askNext}>Дальше</Button>
     </div>
 
 }

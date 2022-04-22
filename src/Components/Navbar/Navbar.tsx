@@ -15,7 +15,7 @@ type TypeProps= {
 
 const Navbar:React.FC<TypeProps> = ({state,Logout}) =>{
 
-    return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    return  <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div className="container-fluid">
             <NavLink className="navbar-brand " to={"/"} >SPA_HorcruxMemories</NavLink>
             <Burger/>

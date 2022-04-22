@@ -1,25 +1,59 @@
-import { connect, useDispatch, useSelector } from "react-redux";
-import { compose } from "redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useHistory, withRouter } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 import Test from "./Test";
 
 import { AppStateType } from "../../redux/redux-store";
-import { useEffect } from "react";
-import { TestActionsThunk } from "../../redux/Test/Test-Reducer";
+import { TestActions, TestActionsThunk } from "../../redux/Test/Test-Reducer";
+import { useModalAlert } from "../../providers/Alert/modal";
+import { putAsk } from "../../http/endpoints/question";
 
 
 export const TestContainer = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
+    const { show } = useModalAlert();
+
     const testReducer = useSelector((state: AppStateType) => {
         return state.testReducer
     });
 
-    useEffect(() => {
-        if (testReducer.id)
-            dispatch(TestActionsThunk.NextAsk(testReducer.id));
-    }, [testReducer.id]);
+    const breckTest = () => {
+        dispatch(TestActionsThunk.breckTest(testReducer.id, testReducer.typeTest));
+        show({
+            title: "Тест прерван",
+            variant: "info",
+            dialogText: `Тест по теме "${testReducer.title}" закончен`
+        });
+        dispatch(TestActions.clearAsk());
+        history.push("/");
+    }
 
-    const history = useHistory();
-    return <Test testReducer={testReducer} />
+    const changeAsk = (isHiddenContentTest: boolean, isIgnoreTest: boolean) => {
+        if (!testReducer.TestPage.question)
+            return;
+
+        const question = testReducer.TestPage.question;
+        if (question.isHiddenContentTest !== isHiddenContentTest || question.isIgnoreTest !== isIgnoreTest)
+            putAsk({ ...question, isHiddenContentTest, isIgnoreTest });
+    }
+
+    const askNext = () => {
+        if (testReducer.TestPage.isFinith) {
+            show({
+                title: "Тест закончен",
+                variant: "success",
+                dialogText: `Тест по теме "${testReducer.title}" пройден`
+            });
+            dispatch(TestActions.clearAsk());
+            history.push("/");
+            return;
+        }
+        dispatch(TestActionsThunk.getAsk(testReducer.id, testReducer.typeTest));
+    }
+
+    if(!testReducer.id)
+    return <Redirect to="/"/>
+
+    return <Test testReducer={testReducer} breckTest={breckTest} askNext={askNext} changeAsk={changeAsk} />
 }

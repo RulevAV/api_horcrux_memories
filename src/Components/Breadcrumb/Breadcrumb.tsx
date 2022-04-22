@@ -1,6 +1,3 @@
-// import {historyType} from "../../../redux/Question-Redux";
-// import React from "react";
-
 import { Cracker } from "../../redux/QuestionPage/types";
 
 type propsType = {
@@ -8,7 +5,7 @@ type propsType = {
     directPage:(cracker: Cracker) => void
 }
 
-let Breadcrumb: React.FC<propsType> = ({ breadcrumb , directPage }) => {
+const Breadcrumb: React.FC<propsType> = ({ breadcrumb , directPage }) => {
     let items = breadcrumb.map((e, i: number) => {
         let lastItems = breadcrumb.length - 1 === i;
         if (!lastItems)
