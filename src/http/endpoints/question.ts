@@ -1,4 +1,4 @@
-import { QuestionPageType, QuestionsType, TestPageType } from "../models/api/question";
+import { AddQuestionsType, QuestionPageType, QuestionsType, TestPageType } from "../models/api/question";
 import { HttpOptions } from "../service/options";
 import { httpService } from "../service/question";
 import { buildQs } from "../shared";
@@ -26,4 +26,16 @@ export const breckTest = (IdRoot: string, type: string) => {
 export const putAsk = (model: QuestionsType) => {
     const options = new HttpOptions();
     return httpService.put<TestPageType>(`Question`, model, options);
+}
+
+export const postAsk = (model: AddQuestionsType) => {
+    const options = new HttpOptions();
+    return httpService.post<TestPageType>(`Question`, model, options);
+}
+
+export const deleteAskApi = (id: string) => {
+    console.log(id);
+
+    const options = new HttpOptions();
+    return httpService.delete<TestPageType>(buildQs(`Question`, { id }), options);
 }

@@ -10,11 +10,22 @@ import { Cracker } from "../../redux/QuestionPage/types";
 import { useHistory } from "react-router-dom";
 import { TestActionsThunk } from "../../redux/Test/Test-Reducer";
 import { useModalImg } from "../../providers/ModalImg/useModalImg";
+import { QuestionsType } from "../../http/models/api/question";
+import { RedactActions } from "../../redux/Redact/redact-Reducer";
+import { deleteAskApi } from "../../http/endpoints/question";
+import { useModalWindow } from "../../providers/ModalWindow/modal";
 
 export const HomeContainer = () => {
     const dispatch = useDispatch();
     const { show } = useModalImg();
     const history = useHistory();
+
+
+    const confirm = useModalWindow();
+
+    const create = () => {
+        history.push("/create");
+    }
 
     const { questionPage, breadcrumb } = useSelector((state: AppStateType) => {
         return state.questionPageReducer
@@ -24,11 +35,15 @@ export const HomeContainer = () => {
         return state.testReducer
     });
 
-
-    const openImg = (src:string) => {
-      show({src})
+    const openImg = (src: string) => {
+        show({ src })
     }
-    
+
+    const redactAsk = (model: QuestionsType) => {
+        dispatch(RedactActions.setRedact(model));
+        history.push('/redact');
+    }
+
     const openPage = (idParent: string, page: number, portionsSize: number) => {
         dispatch(QuestionActionThunk.setPageQuests(idParent, page, portionsSize));
     }
@@ -46,8 +61,27 @@ export const HomeContainer = () => {
         dispatch(TestActionsThunk.startTest(id, title, type));
     }
 
+    const deleteAsk = (id: string, name: string) => {
+        confirm.show({
+            email: name,
+            onApply: async () => {
+                await deleteAskApi(id);
+
+                if (breadcrumb.length) {
+                    const last = breadcrumb[breadcrumb.length - 1];
+                    dispatch(QuestionActionThunk.setPageQuests(last.id, last.page, portionsSize));
+                }
+                else {
+                    addCracker({ id: "", page: 1, portionsSize, name: "Главная" });
+                    dispatch(QuestionActionThunk.setPageQuests("", 1, portionsSize));
+                }
+            },
+            dialogText: `Удалить ${name}?`
+        })
+    }
+
     useEffect(() => {
-       if (testReducer.TestPage.question)
+        if (testReducer.TestPage.question)
             history.push("/Test");
     }, [testReducer])
 
@@ -67,6 +101,6 @@ export const HomeContainer = () => {
 
     return <PaginationProvider>
         <Breadcrumb breadcrumb={breadcrumb} directPage={directPage} />
-        <Home {...questionPage} openPage={openPage} addCracker={addCracker} portionsSize={portionsSize} testStart={testStart} openImg={openImg} />
+        <Home {...questionPage} create={create} openPage={openPage} addCracker={addCracker} portionsSize={portionsSize} testStart={testStart} openImg={openImg} redactAsk={redactAsk} deleteAsk={deleteAsk} />
     </PaginationProvider>
 }

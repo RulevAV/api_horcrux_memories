@@ -3,25 +3,34 @@ import React from "react";
 import { Button, Card } from "react-bootstrap";
 import moment from "moment-ru";
 import { QuestionsType } from "../../../http/models/api/question";
+import { useHistory } from "react-router-dom";
 
 type PropTypes = {
     question: QuestionsType
     openPage: (idParent: string, portionsSize: number, name: string) => void
     portionsSize: number,
     testStart: (id: string, title: string, type: string) => void
-    openImg: (src: string) => void
+    openImg: (src: string) => void,
+    redactAsk: (model: QuestionsType) => void,
+    deleteAsk: (id: string, name: string) => void
 }
 
-const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testStart, openImg }) => {
+const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testStart, openImg, redactAsk, deleteAsk }) => {
+    const history = useHistory();
+
     let image = new Image();
     image.src = img;
     if (question.images) {
         image = new Image();
         image.src = 'data:image/png;base64,' + question.images;
     }
-
+    //Redact
     const _openImg = () => {
         openImg(image.src)
+    }
+
+    const _redactAsk = () => {
+        redactAsk(question);
     }
 
     const _openPage = () => {
@@ -35,12 +44,16 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
     const _testStartGlobal = () => {
         testStart(question.id, question.name, 'global');
     }
-    
+
+    const _deleteAsk = () => {
+        deleteAsk(question.id,question.name);
+    }
+
     return <Card className="mt-2">
         <Card.Header>
             <div className="row g-0">
                 <div className="col"> {question.name}</div>
-                <div className="col text-end"><span role="button" onClick={_openPage} >Открыть</span> <span className="ms-3" role="button">Редактировать</span></div>
+                <div className="col text-end"><span role="button" onClick={_openPage} >Открыть</span> <span onClick={_redactAsk} className="ms-3" role="button">Редактировать</span> <span className="ms-3" role="button" onClick={_deleteAsk}>Удалить</span></div>
             </div>
         </Card.Header>
         <Card.Body>
@@ -53,8 +66,6 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
                         <h5 className="card-title">{question.name}</h5>
                         <p className="card-text"> {question.description}</p>
                         <p className="card-text"><small className="text-muted">{moment(question.dateAdd, "YYYYMMDD").format('LL')}</small></p>
-                        <Button className="m-1" variant="primary" onClick={_openPage}>Открыть</Button>
-                        <Button className="m-1" variant="primary">Редактировать</Button>
                         <Button className="m-1" variant="primary" onClick={_testStartNormal}>Начать тест</Button>
                         <Button className="m-1" variant="primary" onClick={_testStartGlobal}>Начать глобальный тест</Button>
                     </div>

@@ -1,8 +1,17 @@
 export type QuestionsType = {
     dateAdd: string,
-    description: null | string,
+    description: string,
     id: string,
     idParent: string,
+    images: string,
+    isHiddenContentTest: boolean
+    isIgnoreTest: boolean
+    name: string,
+}
+
+export type AddQuestionsType = {
+    description: string,
+    idParent?: string,
     images: string,
     isHiddenContentTest: boolean
     isIgnoreTest: boolean

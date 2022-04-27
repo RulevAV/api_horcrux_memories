@@ -8,7 +8,7 @@ type ModalImgType = {
 
 const ModalImg: React.FC<ModalImgType> = ({ visible, close, src }) => {
     const display = visible ? "block" : "none";
-    return <div className="modal" style={{ display }}>
+    return <div className="modal" style={{ display }} onClick={close}>
         <span className="close" onClick={close}>×</span>
         <img className="modal-content" src={src} />
         <div></div>

@@ -9,10 +9,13 @@ type Props = QuestionPageType & {
     portionsSize: number,
     addCracker: (cracker: Cracker) => void,
     testStart: (id: string, title: string, type: string) => void,
-    openImg: (src: string) => void
+    openImg: (src: string) => void,
+    redactAsk: (model: QuestionsType) => void
+    create: () => void
+    deleteAsk: (id: string, name: string) => void
 };
 
-const Home: React.FC<Props> = ({ idParent, nameParent, page, questions, sizePage, sizeQuestions, openPage, portionsSize, addCracker, testStart, openImg }) => {
+const Home: React.FC<Props> = ({ idParent, create, nameParent, page, questions, sizePage, sizeQuestions, openPage, portionsSize, addCracker, testStart, openImg, redactAsk, deleteAsk }) => {
     const { Pagination, setPaginatio } = usePagination();
 
     const _openPage = (id: string, portionsSize: number, name: string) => {
@@ -25,7 +28,7 @@ const Home: React.FC<Props> = ({ idParent, nameParent, page, questions, sizePage
     }
 
     let Questions = questions?.map((question: QuestionsType, index: number) => {
-        return <Question key={index} question={question} openPage={_openPage} portionsSize={portionsSize} testStart={testStart} openImg={openImg}/>
+        return <Question key={index} question={question} openPage={_openPage} portionsSize={portionsSize} testStart={testStart} openImg={openImg} redactAsk={redactAsk} deleteAsk={deleteAsk} />
     });
 
     useEffect(() => {
@@ -38,6 +41,9 @@ const Home: React.FC<Props> = ({ idParent, nameParent, page, questions, sizePage
     }, [page, sizePage, portionsSize]);
 
     return <>
+        <div className="d-flex flex-row-reverse">
+            <button onClick={create} className="btn btn-success">Создать</button>
+        </div>
         {Pagination}
         {Questions}
         {Pagination}

@@ -16,6 +16,8 @@ import { Registration } from './screen/Registration';
 import moment from "moment-ru";
 import { Home } from './screen/Home';
 import { Test } from './screen/Test';
+import Redact from './screen/Redact';
+import Create from './Components/Create/Create';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,7 +45,6 @@ const App: React.FC = () => {
 
   if (isloading)
     return <>Loading....</>
-
   return (
     <div >
       <NavbarContainer />
@@ -54,6 +55,8 @@ const App: React.FC = () => {
           <Route render={() => <Admin />} exact path="/Admin" />
           <Route render={() => <Home />} exact path="/" />
           <Route render={() => <Test />} exact path="/Test" />
+          <Route render={() => <Redact />} exact path="/Redact" />
+          <Route render={() => <Create />} exact path="/create" />
         </div>
       </div>
     </div>

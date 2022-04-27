@@ -1,0 +1,37 @@
+@media only screen and (max-width: 575px) {
+    .adaptiv-textarea {
+        height: 200px;
+    }
+}
+
+@media only screen and (min-width: 576px) {
+    .adaptiv-textarea {
+        height: 200px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .adaptiv-textarea {
+        height: 300px;
+    }
+}
+
+
+@media only screen and (min-width: 992px) {
+    .adaptiv-textarea {
+        height: 245px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .adaptiv-textarea {
+        height: 300px;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    .adaptiv-textarea {
+        height: 360px;
+    }
+}
+

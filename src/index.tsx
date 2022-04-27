@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { ModalAlertProvider } from './providers/Alert/modal';
 import { ModalWindowProvider } from './providers/ModalWindow/modal';
 import { ModalImgProvider } from './providers/ModalImg/useModalImg';
+import "./styles/styles.css";
 let root = document.getElementById('root');
 
 ReactDOM.render(<BrowserRouter basename="/React">

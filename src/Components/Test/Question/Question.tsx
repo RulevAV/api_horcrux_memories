@@ -1,5 +1,4 @@
 import moment from "moment-ru";
-import { useEffect } from "react";
 import { QuestionsType } from "../../../http/models/api/question";
 import img from "../../../img/2T5qG95FFcs.jpg";
 type PropsTypeTest = {
