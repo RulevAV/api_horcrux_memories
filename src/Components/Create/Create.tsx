@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { postAsk } from "../../http/endpoints/question";
+import { postAskData } from "../../http/data/question";
 import { QuestionsType } from "../../http/models/api/question";
 import { useModalImg } from "../../providers/ModalImg/useModalImg";
 import { AppStateType } from "../../redux/redux-store";
@@ -15,8 +15,8 @@ const Create = () => {
         return state.questionPageReducer.questionPage.idParent
     });
 
-    const save = (model: QuestionsType) => {
-        postAsk(parseAddQuestions(model,idParent));
+    const save = async (model: QuestionsType) => {
+        await postAskData(parseAddQuestions(model, idParent));
         history.push("/")
     }
     const openImg = (src: string) => {

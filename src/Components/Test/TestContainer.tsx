@@ -6,8 +6,7 @@ import Test from "./Test";
 import { AppStateType } from "../../redux/redux-store";
 import { TestActions, TestActionsThunk } from "../../redux/Test/Test-Reducer";
 import { useModalAlert } from "../../providers/Alert/modal";
-import { putAsk } from "../../http/endpoints/question";
-
+import { putAskData } from "../../http/data/user";
 
 export const TestContainer = () => {
     const dispatch = useDispatch();
@@ -35,7 +34,7 @@ export const TestContainer = () => {
 
         const question = testReducer.TestPage.question;
         if (question.isHiddenContentTest !== isHiddenContentTest || question.isIgnoreTest !== isIgnoreTest)
-            putAsk({ ...question, isHiddenContentTest, isIgnoreTest });
+            putAskData({ ...question, isHiddenContentTest, isIgnoreTest });
     }
 
     const askNext = () => {

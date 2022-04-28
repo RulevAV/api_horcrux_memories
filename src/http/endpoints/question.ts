@@ -8,27 +8,12 @@ export const getQuestionsApi = (idParent: string, page: number, portionsSize: nu
     return httpService.get<QuestionPageType>(buildQs(`/Question/Portions`, { idParent, page, portionsSize }), options);
 }
 
-export const nextQuestion = (IdRoot: string, type: string) => {
-    const options = new HttpOptions();
-    return httpService.get<TestPageType>(buildQs(`/Test/`, { IdRoot, type }), options);
-}
-
-export const getAsk = (IdRoot: string, type: string) => {
-    const options = new HttpOptions();
-    return httpService.get<TestPageType>(buildQs(`Test/GetAsk/`, { IdRoot, type }), options);
-}
-
-export const breckTest = (IdRoot: string, type: string) => {
-    const options = new HttpOptions();
-    return httpService.post<TestPageType>(buildQs(`Test/breckTest/`, { IdRoot, type }), options);
-}
-
-export const putAsk = (model: QuestionsType) => {
+export const putAskAPi = (model: QuestionsType) => {
     const options = new HttpOptions();
     return httpService.put<TestPageType>(`Question`, model, options);
 }
 
-export const postAsk = (model: AddQuestionsType) => {
+export const postAskApi = (model: AddQuestionsType) => {
     const options = new HttpOptions();
     return httpService.post<TestPageType>(`Question`, model, options);
 }

@@ -7,7 +7,7 @@ export interface LoginApi  {
 };
 
 export type UserType = {
-    id: number,
+    id: string,
     email:string,
     lastName:string,
     firstName:string,
@@ -18,4 +18,15 @@ export type UserType = {
 export type GetUserType = {
     users:Array<UserType>,
     allRoles:Array<string>
+}
+
+export type AuthType={
+    email: string
+    isAuthenticated: boolean
+    message: null|string
+    refreshToken: string
+    refreshTokenExpiration: string
+    roles: Array<string>
+    token: string
+    userName:string
 }

@@ -37,8 +37,13 @@ const App: React.FC = () => {
     initial();
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
+
+
+
   if (isloading)
     return <>Loading....</>
+
+
   return (
     <div >
       <NavbarContainer />

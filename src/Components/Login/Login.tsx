@@ -28,7 +28,7 @@ const Login: React.FC<PropsType> = ({ setLogin }) => {
             login: "maag@mail.ru",
             password: "Pa$$w0rd."
         });
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <div className={"container d-flex align-items-center justify-content-center"}>
         <div className="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-4">

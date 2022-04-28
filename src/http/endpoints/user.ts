@@ -19,7 +19,7 @@ export const refreshTokenApi = () => {
     return httpService.put<LoginApi>(`/user/refresh-token`,{refresh}, options);
 }
 
-export const registrationAPI = (username: string, firstName: string, lastName: string, password: string, email: string) => {
+export const registrationApi = (username: string, firstName: string, lastName: string, password: string, email: string) => {
     const options = new HttpOptions();
     return httpService.post<LoginApi>(`/user/register`, { username, firstName, lastName, password, email }, options);
 }
@@ -38,3 +38,9 @@ export const putRolsApi = (email: string, roles: string[]) => {
     const options = new HttpOptions();
     return httpService.put(`/user/add-delete-roles`, { email, roles }, options);
 }
+
+export const deleteUserApi = (id: string) => {
+    const options = new HttpOptions();
+    return httpService.delete(`/user/DeleteUser`, { id }, options);
+}
+

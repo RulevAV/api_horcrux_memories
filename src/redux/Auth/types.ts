@@ -1,4 +1,4 @@
-import { AuthType } from "../../api/API_AuthServer_Type";
+import { AuthType } from "../../http/models/api/user";
 
 export type initialStateType = {
     isAuthenticated: boolean;

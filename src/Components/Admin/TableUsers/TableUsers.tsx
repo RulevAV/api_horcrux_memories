@@ -4,15 +4,17 @@ import RowTable from "./RowTable";
 
 type PropsType = {
     Users: Array<UserType>,
-    handleShow: (user: UserType) => void
+    handleShow: (user: UserType) => void,
+    deleteUser: (id: string, name: string) => void,
 }
 
-const TableUsers: React.FC<PropsType> = ({ Users, handleShow }) => {
+const TableUsers: React.FC<PropsType> = ({ Users, handleShow, deleteUser }) => {
     let massRow = Users?.map((u: UserType, index: number) => {
         return <RowTable key={index}
             user={u}
             index={index}
             handleShow={handleShow}
+            deleteUser={deleteUser}
         />
     });
 
@@ -27,6 +29,7 @@ const TableUsers: React.FC<PropsType> = ({ Users, handleShow }) => {
                 <th id={"userName"} scope="col">Email</th>
                 <th id={"roles"} scope="col">Роли</th>
                 <th id={"btn"} scope="col"></th>
+                <th id={"delete"} scope="col"></th>
             </tr>
         </thead>
         <tbody>

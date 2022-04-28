@@ -2,11 +2,10 @@ import {useDispatch, useSelector} from "react-redux";
 import Navbar from "./Navbar";
 import {AppStateType} from "../../redux/redux-store";
 import { AuthActionsThunk } from "../../redux/Auth/Auth-Reducer";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const NavbarContainer = ()=>{
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const state = useSelector((state:AppStateType)=>{
         return {
@@ -21,9 +20,10 @@ const NavbarContainer = ()=>{
     };
     
     if (!state.isAuthenticated) {
-        history.push("/login");
+        return <Redirect to="/login"/>
     }
 
+    
     return <Navbar state={state} Logout={Logout} />
 }
 

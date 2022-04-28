@@ -1,4 +1,4 @@
-import { putAsk } from "../../http/endpoints/question";
+import { putAskData } from "../../http/data/user";
 import { QuestionsType } from "../../http/models/api/question";
 import { InfoActionsTypes, ThunkActionType } from "../redux-store";
 import { initialState } from "./initial-values";
@@ -30,7 +30,7 @@ export const RedactActions = {
 export const RedactActionsThunk = {
     saveAsk: (model: QuestionsType): ThankType => {
         return async (dispatch) => {
-            await putAsk(model);
+            await putAskData(model);
             dispatch(RedactActions.setRedact(initialState));
         }
     }

@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { registrationAPI } from "../../http/endpoints/user";
+import { registrationApi } from "../../http/endpoints/user";
 import { useModalAlert } from "../../providers/Alert/modal";
 import Registration from "./Registration";
 
@@ -9,7 +9,7 @@ const RegistrationContainer = () => {
 
     const alertModal = async (username: string, firstName: string, lastName: string, password: string, email: string) => {
         try {
-            const res = await registrationAPI(username, firstName, lastName, password, email);
+            const res = await registrationApi(username, firstName, lastName, password, email);
             show({
                 title: "Успех",
                 variant: "success",
