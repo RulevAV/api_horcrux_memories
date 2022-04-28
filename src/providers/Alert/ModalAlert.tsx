@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Alert, Button, Modal } from 'react-bootstrap';
+import React from 'react';
+import { Alert } from 'react-bootstrap';
 
 interface Props {
     show:boolean,

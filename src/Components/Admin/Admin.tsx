@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TableUsers from "./TableUsers/TableUsers";
 import { UserType } from "../../api/API_AuthServer_Type";
 import { useModalWindow } from '../../providers/ModalWindow/modal';
@@ -25,8 +25,9 @@ const Admin: React.FC<PropsType> = ({ users,setUser,allRoles }) => {
                     
                 }
             },
-            email:user.email,
-            dialogText: <ContentModal userRoles={roles} allRoles={allRoles} setData={setData}/>
+            title:user.email,
+            dialogText: <ContentModal userRoles={roles} allRoles={allRoles} setData={setData}/>,
+            buttons:["Отмена","Сохранить"]
         });
     }
 

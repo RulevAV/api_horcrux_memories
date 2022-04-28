@@ -3,7 +3,7 @@ import { HttpOptions } from "../service/options";
 import { httpService } from "../service/question";
 import { buildQs } from "../shared";
 
-export const getQuestions = (idParent: string, page: number, portionsSize: number) => {
+export const getQuestionsApi = (idParent: string, page: number, portionsSize: number) => {
     const options = new HttpOptions();
     return httpService.get<QuestionPageType>(buildQs(`/Question/Portions`, { idParent, page, portionsSize }), options);
 }
@@ -34,8 +34,6 @@ export const postAsk = (model: AddQuestionsType) => {
 }
 
 export const deleteAskApi = (id: string) => {
-    console.log(id);
-
     const options = new HttpOptions();
     return httpService.delete<TestPageType>(buildQs(`Question`, { id }), options);
 }

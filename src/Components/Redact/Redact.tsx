@@ -71,7 +71,7 @@ const Redact: React.FC<Props> = ({ openImg, redactReducer, save }) => {
         <h1>Редактирование</h1>
         <div className="row">
             <div className="col-lg-6">
-                <img className="card-img-top" onClick={() => { openImg(image.src) }} src={image.src} />
+                <img className="card-img-top" onClick={() => { openImg(image.src) }} src={image.src} alt=""/>
                 <Button onClick={()=>{ref.current?.click()}} variant="success">Добавить изображение</Button>{' '}
                 <input ref={ref} hidden name="myFile" type="file" onChange={changeImg}></input>
                 <div className="form-check form-switch">

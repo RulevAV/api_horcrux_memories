@@ -30,7 +30,8 @@ export const RedactActions = {
 export const RedactActionsThunk = {
     saveAsk: (model: QuestionsType): ThankType => {
         return async (dispatch) => {
-            putAsk(model);
+            await putAsk(model);
+            dispatch(RedactActions.setRedact(initialState));
         }
     }
 }

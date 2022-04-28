@@ -3,7 +3,6 @@ import React from "react";
 import { Button, Card } from "react-bootstrap";
 import moment from "moment-ru";
 import { QuestionsType } from "../../../http/models/api/question";
-import { useHistory } from "react-router-dom";
 
 type PropTypes = {
     question: QuestionsType
@@ -16,8 +15,6 @@ type PropTypes = {
 }
 
 const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testStart, openImg, redactAsk, deleteAsk }) => {
-    const history = useHistory();
-
     let image = new Image();
     image.src = img;
     if (question.images) {
@@ -59,7 +56,7 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
         <Card.Body>
             <div className="row">
                 <div className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2">
-                    <img style={{ cursor: "pointer" }} onClick={_openImg} src={image.src} className="img-fluid rounded-start" />
+                    <img style={{ cursor: "pointer" }} onClick={_openImg} src={image.src} className="img-fluid rounded-start" alt=""/>
                 </div>
                 <div className="col-12 col-sm-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10">
                     <div className="card-body">

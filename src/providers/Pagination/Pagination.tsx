@@ -40,7 +40,7 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
 
     const _changeNewPage = (e: any) => {
         const value = e.target.value;
-        if (!value || value > 0 && value <= sizePage) {
+        if (!value || (value > 0 && value <= sizePage)) {
             setNewPages(value);
         }
     }
@@ -66,7 +66,7 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
         if (!newPages)
             setNewPages(page)
 
-        if (newPages != page)
+        if (newPages !== page)
             changePage(newPages, portionsSize)
     }
 
@@ -78,11 +78,11 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
 
     for (let i = start; i <= end; i++) {
         if (i === page)
-            items.push(<li className="page-item active"> <div className="page-link">
+            items.push(<li key={i} className="page-item active"> <div className="page-link">
                 <span aria-hidden="true">{i}</span>
             </div></li>)
         else
-            items.push(<li onClick={() => { _changePage(i) }} className="page-item"><div className="page-link" >
+            items.push(<li key={i} onClick={() => { _changePage(i) }} className="page-item"><div className="page-link" >
                 <span  role="button" aria-hidden="true">{i}</span>
             </div></li>)
     }

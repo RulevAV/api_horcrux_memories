@@ -2,9 +2,10 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 import { ModalWindow } from './ModalWindow';
 
 export interface ModalWindowShowProps {
-  onApply(value:any): void;
-  email:string;
-  dialogText?: string | React.ReactNode;
+  onApply(value:any): void,
+  title:string,
+  dialogText?: string | React.ReactNode,
+  buttons:Array<string>
 }
 
 export interface ModalWindowInterface {
@@ -40,10 +41,11 @@ export const ModalWindowProvider: React.FC = ({ children }) => {
     <Context.Provider value={params}>
       <ModalWindow
         onSuccess={handleApply}
-        email={dialogParams?.email}
+        title={dialogParams?.title}
         show={!!dialogParams}
         handleClose={handleClose}
         dialogText={dialogParams?.dialogText}
+        buttons={dialogParams?.buttons}
       />
       {children}
     </Context.Provider>

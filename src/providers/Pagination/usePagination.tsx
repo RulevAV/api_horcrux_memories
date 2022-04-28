@@ -1,4 +1,4 @@
-import React, { createContext, ReactElement, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { initialState } from './initial-values';
 import { Pagination } from './Pagination';
 import { PaginationInterfaceType, PaginationPropsType } from './types';
@@ -13,7 +13,7 @@ export const PaginationProvider: React.FC = ({ children }) => {
     setNewPages(PaginationParams.page);
   },[PaginationParams.page]);
 
-  const PaginationComponent = PaginationParams.sizePage!=0 ? <Pagination {...PaginationParams} newPages={newPages} setNewPages={setNewPages} /> : null;
+  const PaginationComponent = PaginationParams.sizePage!==0 ? <Pagination {...PaginationParams} newPages={newPages} setNewPages={setNewPages} /> : null;
 
   const params: PaginationInterfaceType = {
     Pagination: PaginationComponent,

@@ -3,7 +3,7 @@ import { RequestType } from './model';
 import { HttpOptions } from './options';
 
 export class HttpBaseService {
-  constructor(private readonly axiosInstance: AxiosInstance) {}
+  constructor(private readonly axiosInstance: AxiosInstance) { }
 
   get<T>(url: string, opts?: HttpOptions): Promise<T> {
     return this.processRequest(url, RequestType.Get, null, opts);
@@ -36,7 +36,7 @@ export class HttpBaseService {
       timeout: opts._timeout,
       data: d ?? undefined,
     };
-    
+
     if (opts._cancelTokenSource) {
       requestConfig.cancelToken = opts._cancelTokenSource.token;
     }

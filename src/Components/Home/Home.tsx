@@ -5,26 +5,29 @@ import { QuestionPageType, QuestionsType } from "../../http/models/api/question"
 import { Cracker } from "../../redux/QuestionPage/types";
 
 type Props = QuestionPageType & {
-    openPage: (idParent: string, page: number, portionsSize: number) => void,
-    portionsSize: number,
-    addCracker: (cracker: Cracker) => void,
-    testStart: (id: string, title: string, type: string) => void,
+    create: () => void,
+    openPage: (idParent: string, page: number, portionsSize: number, nameParent: string) => void,
+    changePage: (cracker: Cracker) => void,
     openImg: (src: string) => void,
-    redactAsk: (model: QuestionsType) => void
-    create: () => void
-    deleteAsk: (id: string, name: string) => void
+    redactAsk: (model: QuestionsType) => void,
+    testStart: (id: string, title: string, type: string) => void,
+
+    portionsSize: number,
+
+
+
+    deleteAsk: (id: string, name: string) => void,
 };
 
-const Home: React.FC<Props> = ({ idParent, create, nameParent, page, questions, sizePage, sizeQuestions, openPage, portionsSize, addCracker, testStart, openImg, redactAsk, deleteAsk }) => {
+const Home: React.FC<Props> = ({ create, openPage, changePage, openImg, redactAsk, testStart, idParent, nameParent, page, questions, sizePage, portionsSize, deleteAsk }) => {
     const { Pagination, setPaginatio } = usePagination();
 
     const _openPage = (id: string, portionsSize: number, name: string) => {
-        addCracker({ id, page: 1, portionsSize, name });
-        openPage(id, 1, portionsSize)
+        openPage(id, 1, portionsSize, name)
     }
 
     const _changePage = (page: number, portionsSize: number) => {
-        openPage(idParent, page, portionsSize)
+        changePage({ id: idParent, page, portionsSize, name: nameParent })
     }
 
     let Questions = questions?.map((question: QuestionsType, index: number) => {
@@ -38,7 +41,7 @@ const Home: React.FC<Props> = ({ idParent, create, nameParent, page, questions, 
             portionsSize,
             changePage: _changePage
         });
-    }, [page, sizePage, portionsSize]);
+    }, [page, sizePage, portionsSize]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <>
         <div className="d-flex flex-row-reverse">

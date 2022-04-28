@@ -34,7 +34,7 @@ const ContentModal: React.FC<Props> = ({ userRoles, allRoles, setData }) => {
     useEffect(() => {
         setData(newUserRoles);
         updateRoles(newUserRoles);
-    }, [newUserRoles])
+    }, [newUserRoles])// eslint-disable-line react-hooks/exhaustive-deps
 
     return <table className="table">
         <thead>
@@ -58,7 +58,7 @@ const ContentModal: React.FC<Props> = ({ userRoles, allRoles, setData }) => {
                         </button>
                         <ul id={"AllRolesUI"} className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             {roles?.map((u, i) => {
-                                return <li key={i} onClick={() => { setNewUserRoles([...newUserRoles, u]) }} ><a className="dropdown-item" href="#">{u}</a></li>
+                                return <li key={i} onClick={() => { setNewUserRoles([...newUserRoles, u]) }} ><span className="dropdown-item" style={{cursor:"pointer"}}>{u}</span></li>
                             })}
                         </ul>
                     </div>
