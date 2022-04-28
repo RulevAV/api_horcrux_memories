@@ -1,5 +1,6 @@
 import { putAskData } from "../../http/data/user";
 import { QuestionsType } from "../../http/models/api/question";
+import { loading } from "../Loading/Loading-Reducer";
 import { InfoActionsTypes, ThunkActionType } from "../redux-store";
 import { initialState } from "./initial-values";
 
@@ -30,8 +31,10 @@ export const RedactActions = {
 export const RedactActionsThunk = {
     saveAsk: (model: QuestionsType): ThankType => {
         return async (dispatch) => {
+            const hiden = loading(dispatch);
             await putAskData(model);
             dispatch(RedactActions.setRedact(initialState));
+            hiden();
         }
     }
 }

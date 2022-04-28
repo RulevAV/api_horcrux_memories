@@ -16,6 +16,7 @@ import { Test } from './screen/Test';
 import Redact from './screen/Redact';
 import Create from './Components/Create/Create';
 import { getUserData } from './http/data/user';
+import LoadingContainer from './Components/Loading/LoadingContainer';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,26 +39,28 @@ const App: React.FC = () => {
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
 
-
-
   if (isloading)
-    return <>Loading....</>
+    return <>
+      Loading....
+    </>
 
 
   return (
     <div >
-      <NavbarContainer />
-      <div className="container">
-        <div className={'app-wrapper-content'}>
-          <Route render={() => <Registration />} path="/registration" />
-          <Route render={() => <Login />} path="/login" />
-          <Route render={() => <Admin />} exact path="/Admin" />
-          <Route render={() => <Home />} exact path="/" />
-          <Route render={() => <Test />} exact path="/Test" />
-          <Route render={() => <Redact />} exact path="/Redact" />
-          <Route render={() => <Create />} exact path="/create" />
+      <LoadingContainer>
+        <NavbarContainer />
+        <div className="container">
+          <div className={'app-wrapper-content'}>
+            <Route render={() => <Registration />} path="/registration" />
+            <Route render={() => <Login />} path="/login" />
+            <Route render={() => <Admin />} exact path="/Admin" />
+            <Route render={() => <Home />} exact path="/" />
+            <Route render={() => <Test />} exact path="/Test" />
+            <Route render={() => <Redact />} exact path="/Redact" />
+            <Route render={() => <Create />} exact path="/create" />
+          </div>
         </div>
-      </div>
+      </LoadingContainer>
     </div>
   );
 }

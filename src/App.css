@@ -1,85 +1,13 @@
-#myImg {
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
+@import url("./Loading.css");
+@import url("./ModalImg.css");
+
+/* #myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-#myImg:hover {opacity: 0.7;}
-
-/* Модель (background) */
-.modal {
-    display: none; /* По умолчанию скрыто */
-    position: fixed; /* Оставаться на месте */
-    z-index: 1; /* Сидеть перед */
-    padding-top: 100px; /* Расположение коробки */
-    left: 0;
-    top: 0;
-    width: 100%; /* Полная ширина */
-    height: 100%; /* Полный высота */
-    overflow: auto; /* Включить прокрутку при необходимости */
-    background-color: rgb(0,0,0); /* Резервный цвет */
-    background-color: rgba(0,0,0,0.9); /* Черный с непрозрачностью */
+#myImg:hover {
+  opacity: 0.7;
 }
-
-/* Модаль Содержание (image) */
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
-
-/* Заголовок модального изображения */
-#caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: 150px;
-}
-
-/* Добавить Анимацию */
-.modal-content, #caption {    
-    -webkit-animation-name: zoom;
-    -webkit-animation-duration: 0.6s;
-    animation-name: zoom;
-    animation-duration: 0.6s;
-}
-
-@-webkit-keyframes zoom {
-    from {-webkit-transform: scale(0)} 
-    to {-webkit-transform: scale(1)}
-}
-
-@keyframes zoom {
-    from {transform: scale(0.1)} 
-    to {transform: scale(1)}
-}
-
-/* кнопка закрытия */
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* 100% Ширина изображения на маленьких экранах */
-@media only screen and (max-width: 700px){
-    .modal-content {
-        width: 100%;
-    }
-}
+ */

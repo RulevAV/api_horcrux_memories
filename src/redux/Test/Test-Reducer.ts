@@ -1,5 +1,6 @@
 import { breckTestData, getAskData } from "../../http/data/test";
 import { TestPageType } from "../../http/models/api/question";
+import { loading } from "../Loading/Loading-Reducer";
 import { InfoActionsTypes, ThunkActionType } from "./../redux-store";
 
 //AllTypeAction
@@ -60,25 +61,31 @@ export const TestActions = {
 export const TestActionsThunk = {
     startTest: (id: string, title: string, type: string): ThankType => {
         return async (dispatch) => {
+            const hiden = loading(dispatch);
             const data = await getAskData(id, type);//TestNormal  TestGlobal
             if (data) {
                 dispatch(TestActions.startTest(id, title, type))
                 dispatch(TestActions.setTestPage(data));
             }
+            hiden();
         }
     },
     getAsk: (id: string, type: string): ThankType => {
-      
+
         return async (dispatch) => {
+            const hiden = loading(dispatch);
             const data = await getAskData(id, type);//TestNormal  TestGlobal
-            
+
             dispatch(TestActions.setTestPage(data));
+            hiden();
         }
     },
     breckTest: (id: string, type: string): ThankType => {
         return async (dispatch) => {
+            const hiden = loading(dispatch);
             await breckTestData(id, type);
             dispatch(TestActions.clearAsk());
+            hiden();
         }
     }
 }
