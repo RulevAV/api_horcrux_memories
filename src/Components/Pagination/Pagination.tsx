@@ -1,11 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { PaginationPropsType } from './types';
 
-type PropsType = PaginationPropsType & {
-    newPages: number,
-    setNewPages: (value: number) => void
-}
+type PropsType = PaginationPropsType;
 
 const ItemInterval = (page: number, sizePage: number, portionsSize: number,) => {
     //Количество ячеек
@@ -34,7 +31,8 @@ const ItemInterval = (page: number, sizePage: number, portionsSize: number,) => 
     return { start, end }
 }
 
-export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, changePage, newPages, setNewPages }) => {
+export const Pagination: React.FC<PropsType> = ({ idParent, nameParent, page, sizePage, portionsSize, changePage }) => {
+    const [newPages, setNewPages] = useState(0);
     const { start, end } = ItemInterval(page, sizePage, portionsSize);
     let items = [];
 
@@ -46,8 +44,12 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
     }
 
     const _changePage = (i: number) => {
-        changePage(i, portionsSize);
-        setNewPages(i);
+        changePage({
+            id: idParent,
+            page: i,
+            portionsSize,
+            name: nameParent,
+        });
     }
 
     const previous = (i: number) => {
@@ -67,12 +69,17 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
             setNewPages(page)
 
         if (newPages !== page)
-            changePage(newPages, portionsSize)
+            changePage({
+                id: idParent,
+                page: newPages,
+                portionsSize,
+                name: nameParent,
+            });
     }
 
-    const keyup = (e:any)=>{
+    const keyup = (e: any) => {
         if (e.key === 'Enter' || e.keyCode === 13) {
-            e.target.blur();         
+            e.target.blur();
         }
     }
 
@@ -83,7 +90,7 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
             </div></li>)
         else
             items.push(<li key={i} onClick={() => { _changePage(i) }} className="page-item"><div className="page-link" >
-                <span  role="button" aria-hidden="true">{i}</span>
+                <span role="button" aria-hidden="true">{i}</span>
             </div></li>)
     }
 
@@ -98,14 +105,14 @@ export const Pagination: React.FC<PropsType> = ({ page, sizePage, portionsSize, 
                 {items}
                 <li className="page-item">
                     <div onClick={() => { next(page + 1) }} className="page-link">
-                        <span  role="button" aria-hidden="true">&raquo;</span>
+                        <span role="button" aria-hidden="true">&raquo;</span>
                     </div>
                 </li>
                 <li className="page-item">
                     <input value={newPages} onKeyUp={keyup} onBlur={onBlur} onChange={_changeNewPage} className='page-link' style={{ width: "60px" }} />
                 </li>
                 <li className="page-item d-flex align-items-center">
-                        <span className='ms-3'>Количество страниц: {sizePage}</span>
+                    <span className='ms-3'>Количество страниц: {sizePage}</span>
                 </li>
             </ul>
         </nav>

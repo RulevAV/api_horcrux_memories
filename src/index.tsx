@@ -12,11 +12,11 @@ let root = document.getElementById('root');
 ReactDOM.render(<BrowserRouter basename="/React">
     <Provider store={store}>
         <ModalImgProvider>
-        <ModalAlertProvider>
-            <ModalWindowProvider>
-                <App />
-            </ModalWindowProvider>
-        </ModalAlertProvider>
+            <ModalAlertProvider>
+                <ModalWindowProvider>
+                    <App />
+                </ModalWindowProvider>
+            </ModalAlertProvider>
         </ModalImgProvider>
     </Provider>
 </BrowserRouter>, root)

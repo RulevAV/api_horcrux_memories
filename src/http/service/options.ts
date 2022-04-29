@@ -13,7 +13,7 @@ export class HttpOptions {
     this._withCredentials = false;
     this._isAuthRoute = false;
     this._responseType = 'json';
-    this._timeout = 10000;
+    this._timeout = 10000000;
     this._headers = {};
     this._cancelTokenSource=undefined;
     this._isStrictAuth = undefined;

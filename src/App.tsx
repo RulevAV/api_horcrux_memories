@@ -14,9 +14,9 @@ import moment from "moment-ru";
 import { Home } from './screen/Home';
 import { Test } from './screen/Test';
 import Redact from './screen/Redact';
-import Create from './Components/Create/Create';
 import { getUserData } from './http/data/user';
 import LoadingContainer from './Components/Loading/LoadingContainer';
+import { Create } from './screen/Create';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,13 +38,11 @@ const App: React.FC = () => {
     initial();
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
-
   if (isloading)
     return <>
       Loading....
     </>
-
-
+  
   return (
     <div >
       <LoadingContainer>

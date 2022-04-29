@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { QuestionsType } from "../../http/models/api/question";
@@ -20,8 +21,11 @@ export const RedactContainer = () => {
     show({ src });
   }
 
+  const MemoRedact = useMemo(() => <Redact openImg={openImg} redactReducer={redactReducer} save={save} />, [redactReducer]);// eslint-disable-line react-hooks/exhaustive-deps
+
   if (!redactReducer.id) {
     return <Redirect to="/" />
-}
-  return <Redact openImg={openImg} redactReducer={redactReducer} save={save} />
+  }
+
+  return MemoRedact;
 }

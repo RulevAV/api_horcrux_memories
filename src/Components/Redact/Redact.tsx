@@ -7,7 +7,6 @@ type Props = {
     openImg: (src: string) => void,
     redactReducer?: QuestionsType,
     save: (model: QuestionsType) => void
-
 };
 
 const Redact: React.FC<Props> = ({ openImg, redactReducer, save }) => {
@@ -15,6 +14,7 @@ const Redact: React.FC<Props> = ({ openImg, redactReducer, save }) => {
     const ref = useRef<HTMLInputElement>(null)
     let image = new Image();
     image.src = img;
+    
     if (ask.images) {
         image = new Image();
         image.src = 'data:image/png;base64,' + ask.images;
@@ -67,6 +67,7 @@ const Redact: React.FC<Props> = ({ openImg, redactReducer, save }) => {
     const _save = () => {
         save(ask);
     }
+
     return <div>
         <h1>Редактирование</h1>
         <div className="row">

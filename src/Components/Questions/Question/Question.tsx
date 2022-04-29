@@ -1,5 +1,4 @@
 import img from "../../../img/2T5qG95FFcs.jpg";
-import React from "react";
 import { Button, Card } from "react-bootstrap";
 import moment from "moment-ru";
 import { QuestionsType } from "../../../http/models/api/question";
@@ -21,6 +20,7 @@ const Question: React.FC<PropTypes> = ({ question, openPage, portionsSize, testS
         image = new Image();
         image.src = 'data:image/png;base64,' + question.images;
     }
+    
     //Redact
     const _openImg = () => {
         openImg(image.src)

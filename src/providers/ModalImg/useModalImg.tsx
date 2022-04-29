@@ -14,10 +14,11 @@ const Context = createContext<ModalImgInterface | undefined>(undefined);
 
 export const ModalImgProvider: React.FC = ({ children }) => {
     const [dialogParams, setdialogParams] = useState<ModalImgProps | null>(null);
+
     const handleClose = () => {
         setdialogParams(null);
     };
-
+    
     const handleShow = useCallback((data: ModalImgProps) => {
         setdialogParams(data);
     }, []);

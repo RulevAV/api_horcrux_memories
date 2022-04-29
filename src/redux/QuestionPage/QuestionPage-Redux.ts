@@ -21,11 +21,17 @@ export const questionPageReducer = (state = initialState, action: ActionsTypes) 
         }
 
         case "QUESTION_SET_CRACKER": {
+            const index = state.breadcrumb.findIndex((e)=>{
+                return e.id===action.cracker.id
+            })
+            const mass = index >= 0 ? state.breadcrumb.slice(0, index) : state.breadcrumb;
+
             return {
                 ...state,
-                breadcrumb: action.mass
+                breadcrumb: [...mass, action.cracker]
             }
         }
+
 
         default: return state;
     }
@@ -33,18 +39,18 @@ export const questionPageReducer = (state = initialState, action: ActionsTypes) 
 
 export const QuestionAction = {
     setPageQuests: (data: QuestionPageType) => ({ type: "QUESTION_SET_PAGE", data } as const),
-    setCreater: (mass: Array<Cracker>) => ({ type: "QUESTION_SET_CRACKER", mass } as const),
+    setCreater: (cracker: Cracker) => ({ type: "QUESTION_SET_CRACKER", cracker } as const),
 }
 
 export const QuestionActionThunk = {
-    setPageQuests: (id: string = "", page: number = 1, portionsSize: number = 10, name: string, mass: Array<Cracker>): ThankType => {
+    setPageQuests: (id: string = "", page: number = 1, portionsSize: number = 10, name: string): ThankType => {
         return async (dispatch) => {
             const hiden = loading(dispatch);
 
             const data = await getQuestionsData(id, page, portionsSize);
             dispatch(QuestionAction.setPageQuests(data));
-            mass.push({ id, page, portionsSize, name });
-            dispatch(QuestionAction.setCreater(mass));
+            dispatch(QuestionAction.setCreater({ id, page, portionsSize, name }));
+
             hiden();
         }
     },
