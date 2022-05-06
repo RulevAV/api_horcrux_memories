@@ -26,8 +26,8 @@ const App: React.FC = () => {
     const initial = async () => {
       setLoading(true);
       try {
-        //const data = await getUserData();
-        // dispatch(AuthActions.setUser({ ...data, isAuthenticated: true }))
+        const data = await getUserData();
+        dispatch(AuthActions.setUser({ ...data, isAuthenticated: true }))
       } catch (error) {
 
       }

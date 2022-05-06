@@ -23,6 +23,11 @@ describe("questionPageReducer", () => {
     store.dispatch<any>(QuestionActionThunk.setPageQuests("", 1, 1, ""));
   })
 
+  it("setPageQuestsApi", async () => {
+    let store = mockStore(questionPageReducer);
+    store.dispatch<any>(QuestionActionThunk.setPageQuests(undefined,undefined,undefined, ""));
+  })
+
   it("setPageQuests", async () => {
     questionPageReducer(undefined, QuestionAction.setPageQuests(questionPage));
   })
