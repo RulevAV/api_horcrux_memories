@@ -11,21 +11,22 @@ type PropTypes = ModalImgInterface;
 
 const Create: React.FC<PropTypes> = ({ show }) => {
 
-    const history = useHistory();
+  const history = useHistory();
 
-    const idParent = useSelector((state: AppStateType) => {
-        return state.questionPageReducer.questionPage.idParent
-    });
+  const idParent = useSelector((state: AppStateType) => {
+    return state.questionPageReducer.questionPage.idParent
+  });
 
-    const save = async (model: QuestionsType) => {
-        await postAskData(parseAddQuestions(model, idParent));
-        history.push("/")
-    }
-    const openImg = (src: string) => {
-        show({ src });
-    }
+  const save = async (model: QuestionsType) => {
+    await postAskData(parseAddQuestions(model, idParent));
+    //return <Redirect to=""/>
+    history.push("/")
+  }
+  const openImg = (src: string) => {
+    show({ src });
+  }
 
-    return <Redact openImg={openImg} save={save} />
+  return <Redact openImg={openImg} save={save} />
 }
 
 export default Create;

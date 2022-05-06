@@ -1,39 +1,37 @@
-export default {
+import responseApi from "./responseApi"
 
-    create:()=>{
-        return AuthGuery
-    },
+const config = {
+  headers: {
+    Authorization: "Authorization"
+  }
 }
 
+const CancelToken = {
+  source: () => {
+    return { cancel: () => { }, token: { reason: { message: 'user canceled' } } }
+  }
+}
 
-const AuthGuery = {
-    get:jest.fn(),
-    post:(url,data)=>{
-        switch (url)
-        {
-            case "api/user/token":{
-                let  response ={
-                    data:{}
-                }
-                let p =Promise.resolve(response)
-                return p;
-            }
-            case "api/user/refresh-token":{
-                let  response ={
-                    data:{}
-                }
-                let p =Promise.resolve(response)
-                return p;
-            }
-            case "api/user/register":{
-                let  response ={
-                    data:{}
-                }
-                let p =Promise.resolve(response)
-                return p;
-            }
-        }
+const create = (option) => {
+  async function mockcreate(u, config) {
 
+    return {
+      data: responseApi(`${config.method} ${option.baseURL}${u}`),
+    }
+  }
 
+  mockcreate.interceptors = {
+    request: {
+      use: (fn) => {
+        fn(config);
+      }
     },
+  };
+
+  return mockcreate;
+}
+
+export default {
+  CancelToken,
+  create,
 }

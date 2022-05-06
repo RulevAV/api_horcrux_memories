@@ -9,50 +9,50 @@ import { useModalAlert } from "../../providers/Alert/modal";
 import { putAskData } from "../../http/data/user";
 
 export const TestContainer = () => {
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const { show } = useModalAlert();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { show } = useModalAlert();
 
-    const testReducer = useSelector((state: AppStateType) => {
-        return state.testReducer
+  const testReducer = useSelector((state: AppStateType) => {
+    return state.testReducer
+  });
+
+  const breckTest = () => {
+    dispatch(TestActionsThunk.breckTest(testReducer.id, testReducer.typeTest));
+    show({
+      title: "Тест прерван",
+      variant: "info",
+      dialogText: `Тест по теме "${testReducer.title}" закончен`
     });
+    dispatch(TestActions.clearAsk());
+    history.push("/");
+  }
 
-    const breckTest = () => {
-        dispatch(TestActionsThunk.breckTest(testReducer.id, testReducer.typeTest));
-        show({
-            title: "Тест прерван",
-            variant: "info",
-            dialogText: `Тест по теме "${testReducer.title}" закончен`
-        });
-        dispatch(TestActions.clearAsk());
-        history.push("/");
+  const changeAsk = (isHiddenContentTest: boolean, isIgnoreTest: boolean) => {
+    if (!testReducer.TestPage.question)
+      return;
+
+    const question = testReducer.TestPage.question;
+    if (question.isHiddenContentTest !== isHiddenContentTest || question.isIgnoreTest !== isIgnoreTest)
+      putAskData({ ...question, isHiddenContentTest, isIgnoreTest });
+  }
+
+  const askNext = () => {
+    if (testReducer.TestPage.isFinith) {
+      show({
+        title: "Тест закончен",
+        variant: "success",
+        dialogText: `Тест по теме "${testReducer.title}" пройден`
+      });
+      dispatch(TestActions.clearAsk());
+      history.push("/");
+      return;
     }
+    dispatch(TestActionsThunk.getAsk(testReducer.id, testReducer.typeTest));
+  }
 
-    const changeAsk = (isHiddenContentTest: boolean, isIgnoreTest: boolean) => {
-        if (!testReducer.TestPage.question)
-            return;
+  if (!testReducer.id)
+    return <Redirect to="/" />
 
-        const question = testReducer.TestPage.question;
-        if (question.isHiddenContentTest !== isHiddenContentTest || question.isIgnoreTest !== isIgnoreTest)
-            putAskData({ ...question, isHiddenContentTest, isIgnoreTest });
-    }
-
-    const askNext = () => {
-        if (testReducer.TestPage.isFinith) {
-            show({
-                title: "Тест закончен",
-                variant: "success",
-                dialogText: `Тест по теме "${testReducer.title}" пройден`
-            });
-            dispatch(TestActions.clearAsk());
-            history.push("/");
-            return;
-        }
-        dispatch(TestActionsThunk.getAsk(testReducer.id, testReducer.typeTest));
-    }
-
-    if(!testReducer.id)
-    return <Redirect to="/"/>
-
-    return <Test testReducer={testReducer} breckTest={breckTest} askNext={askNext} changeAsk={changeAsk} />
+  return <Test testReducer={testReducer} breckTest={breckTest} askNext={askNext} changeAsk={changeAsk} />
 }

@@ -42,6 +42,7 @@ export class HttpBaseService {
     }
 
     const response = await this.axiosInstance(u, requestConfig);
+
     const results = response.data as unknown as T;
 
     return results;

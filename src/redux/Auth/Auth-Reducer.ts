@@ -12,42 +12,42 @@ export type ActionsTypesAuth = InfoActionsTypes<typeof AuthActions>;
 export type ThankType = ThunkActionType<ActionsTypesAuth, Promise<void>>;
 
 export const authReducer = (state = initialState, action: ActionsTypesAuth): initialStateType => {
-    switch (action.type) {
-        case USER_LOGIN: {
-            return {
-                ...state,
-                ...action.data
-            };
-        }
-        case USER_LOGOUT: {
-            return initialState;
-        }
-        default: return state;
+  switch (action.type) {
+    case USER_LOGIN: {
+      return {
+        ...state,
+        ...action.data
+      };
     }
+    case USER_LOGOUT: {
+      return initialState;
+    }
+    default: return state;
+  }
 }
 
 export const AuthActions = {
-    setUser: (data: initialStateType) => ({ type: USER_LOGIN, data } as const),
-    logout: () => ({ type: USER_LOGOUT } as const),
+  setUser: (data: initialStateType) => ({ type: USER_LOGIN, data } as const),
+  logout: () => ({ type: USER_LOGOUT } as const),
 }
 
 export const AuthActionsThunk = {
-    login: (email: string, password: string): ThankType => {
-        return async (dispatch) => {
-            const hiden = loading(dispatch);
-            const data = await loginApi(email, password);
-            dispatch(AuthActions.setUser(data));
-            hiden();
-        }
-    },
-    Logout: (): ThankType => {
-        return async (dispatch) => {
-            const hiden = loading(dispatch);
-            await revokeTokenApi();
-            dispatch(AuthActions.logout());
-            hiden();
-        }
-    },
+  login: (email: string, password: string): ThankType => {
+    return async (dispatch) => {
+      const hiden = loading(dispatch);
+      const data = await loginApi(email, password);
+      dispatch(AuthActions.setUser(data));
+      hiden();
+    }
+  },
+  Logout: (): ThankType => {
+    return async (dispatch) => {
+      const hiden = loading(dispatch);
+      await revokeTokenApi();
+      dispatch(AuthActions.logout());
+      hiden();
+    }
+  },
 }
 
 export default authReducer;

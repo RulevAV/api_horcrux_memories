@@ -8,16 +8,15 @@ type propsType = {
 }
 
 const BreadcrumbContainer: React.FC<propsType> = () => {
-    const dispatch = useDispatch();
-    
-    const breadcrumb = useSelector((state: AppStateType) => {
-        return state.questionPageReducer.breadcrumb
-    })
-    const changePage = (cracker: Cracker) => {
-        dispatch(QuestionActionThunk.setPageQuests(cracker.id, cracker.page, cracker.portionsSize, cracker.name));
-    }
+  const dispatch = useDispatch();
 
-    return <Breadcrumb changePage={changePage} breadcrumb={breadcrumb} />
+  const breadcrumb = useSelector((state: AppStateType) => {
+    return state.questionPageReducer.breadcrumb
+  })
+  const changePage = (cracker: Cracker) => {
+    dispatch(QuestionActionThunk.setPageQuests(cracker.id, cracker.page, cracker.portionsSize, cracker.name));
+  }
+  return <Breadcrumb changePage={changePage} breadcrumb={breadcrumb} />
 }
 
 export default BreadcrumbContainer;

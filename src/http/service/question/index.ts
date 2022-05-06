@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { USER_AUTH_COOKIE_KEY } from '../../../constans';
 import { HttpBaseService } from '../base-service';
 
-export class HttpService extends HttpBaseService {}
+export class HttpService extends HttpBaseService { }
 
 const instance = axios.create({
   baseURL: 'https://localhost:44370/api/',
@@ -12,7 +12,7 @@ const instance = axios.create({
 instance.interceptors.request.use(async config => {
   if (!config.headers['Authorization']) {
     const token = Cookies.get(USER_AUTH_COOKIE_KEY);
-    
+
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }

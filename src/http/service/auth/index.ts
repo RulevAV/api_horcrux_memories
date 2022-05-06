@@ -3,8 +3,7 @@ import Cookies from 'js-cookie';
 import { USER_AUTH_COOKIE_KEY } from '../../../constans';
 import { HttpBaseService } from '../base-service';
 
-export class HttpService extends HttpBaseService {}
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+export class HttpService extends HttpBaseService { }
 const instance = axios.create({
   baseURL: 'https://localhost:44397/api/',
 });

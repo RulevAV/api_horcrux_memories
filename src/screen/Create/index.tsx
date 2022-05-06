@@ -1,5 +1,5 @@
-import CreateContainer from "../../Components/Create/CreateContainer";
+import { CreateContainer } from "../../Components/Create/CreateContainer"
 
 export const Create = () => {
-    return <CreateContainer />
+  return <CreateContainer />
 }
